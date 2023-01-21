@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/moment.min.js"></script>    
+    <script src="js/Chart.min.js"></script>    
+
+  <title>FizApp</title>
+</head>
+<body>
+    <div class="panel panel-success" style="margin: .5em 1em;">
+    <div class="panel-heading">Reflections (in progress)</div>
+    <div class="panel-body">
+
+      <ul class="quotes">
+        <li class="quote list-group-item list-group-item-info">
+        <div class="row">
+            <div class="col-sm-3"><b>Author</b></div>
+            <div class="col-sm-7"><b>Quote</b></div>
+            <div class="col-sm-2"></div>
+          </div></li>
+      
+      <% for(var i=0; i<quotes.length; i++) {%>
+        <li class="quote list-group-item">
+        <div class="row">
+            <div class="col-sm-3">
+            <span class="label label-primary"><b><%= quotes[i].name %></b></span>
+            </div>
+            
+            <div class="col-sm-7">
+            <span><%= quotes[i].quote %></span>
+            </div>
+            
+            <div class="col-sm-2">
+            <form action="/delquote" method="POST" style=" display:inline!important;">
+                <input type="hidden" name="name" value="<%= quotes[i].name %>" >
+                <input type="hidden" name="quote" value="<%= quotes[i].quote %>" >
+                <button type="submit" style="font-size: xx-small">Delete</button>
+            </form>
+            </div>
+          </div>
+        </li>
+      <% } %>
+    <li class="quote list-group-item">
+        <form action="/quotes" method="POST" class="form-inline">
+        <div class="row">
+        <div class="col-sm-3">
+        <input type="text" placeholder="Author" name="name" class="form-control">
+        </div>
+        
+        <div class="col-sm-7">
+        <input type="text" placeholder="Quote" name="quote" class="form-control">
+        </div>
+
+        <div class="col-sm-2">
+        <button type="submit">Add</button>
+        </div>
+        </div>
+        </form>
+
+      </li>
+      </ul>
+      
+      </div>
+      
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-6">
+        <div class="panel panel-info">
+        <div class="panel-heading">Other stuff</div>
+        <div class="panel-body">
+
+        <ul class="nav nav-pills nav-stacked">
+        <li role="presentation"><a href="weatherdata">Weather Data</a></li>
+        <li role="presentation"><a href="http://fizzypi.lan">Fiz page here</a></li>
+        <li role="presentation"><a href="https://zellwk.com/blog/crud-express-mongodb/">Mongo Crud Tutorial 1 of 2</a></li>
+        <li role="presentation"><a href="https://zellwk.com/blog/crud-express-and-mongodb-2/">Mongo Crud Tutorial 2 of 2</a></li>
+        </ul>
+        
+        </div>      
+        </div>      
+
+        </div>      
+    </div>      
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-6">
+            <div class="panel panel-info">
+            <div class="panel-heading">Chart: Election Results</div>
+            <div class="panel-body">
+                <canvas id="myChart" width="400" height="200"></canvas>
+                <script src="js/chart/election.js">
+                </script>                
+            </div>      
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <div class="panel panel-info">
+            <div class="panel-heading">Chart: Sun Times for Waterdown</div>
+            <div class="panel-body">
+                <canvas id="mySunChart" width="600" height="400"></canvas>
+            </div>      
+            </div>
+        </div>
+    </div>
+    
+    </div>      
+
+    
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    
+    <script src="js/chart/sunTimes.js"></script>                
+
+</body>
+
+</body>
+</html>

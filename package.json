@@ -1,0 +1,13 @@
+{
+  "name": "TheFizz",
+  "description": "Fizzy web app",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "body-parser": "^1.16.0",
+    "ejs": "^2.5.5",
+    "express": "3.x",
+    "mongodb": "^2.2.2",
+    "mysql": "^2.18.1"
+  }
+}

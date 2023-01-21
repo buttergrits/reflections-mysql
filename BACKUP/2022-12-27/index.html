@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MY APP</title>
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/primeicons.css" rel="stylesheet">
+  <link href="css/primevue.min.css" rel="stylesheet">
+  <link href="css/theme.css" rel="stylesheet">
+  <script src="js/vue.js"></script>
+  <script src="js/vue-resource.js"></script>
+</head>
+<body style="padding:1em;">
+
+  <div id="app" >
+    <div class="panel panel-default" style="display:none;">
+      <div class="panel-heading">My Test App: {{title}}</div>
+      <div class="panel-body">
+        Panel content
+
+        <!-- <form action="/quotes" method="POST">
+          <input type="text" placeholder="name" name="name">
+          <input type="text" placeholder="quote" name="quote">
+          <button type="submit" disabled>Submit</button>
+        </form> -->
+        <br />
+        <br />
+        <a href="weatherdata">Weather Data Here</a>
+        <br />
+        <a href="reflectionsdata">Reflections Data Here</a>
+        <br />
+        <br />
+
+          <div >
+            <p>     {{ message }}  </p>
+
+          </div>
+          
+      </div>
+    </div>
+
+    <div>
+      <p-panel header="Panel" >
+
+        <p-button @click="getData"       icon="pi pi-caret-right" type="button" label="Load Data"      style="margin-bottom:.5em;"></p-button>
+        <p-button @click="genTable(ref)" icon="pi pi-caret-right" type="button" label="Generate Table" style="margin-bottom:.5em;"></p-button>
+        <p-datatable :value="refTable || ref" :loading="loading" :filters.sync="filters" removable-sort :auto-layout="true">
+
+          <template #header>
+            <div class="flex justify-content-between align-items-center">
+                <h5 class="m-0">Reflections</h5>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <p-inputtext v-model="filters['global']" placeholder="Keyword Search" />
+                </span>
+            </div>
+          </template>
+
+          <p-column sortable field="episodeId"     header="Episode"></p-column>
+          <p-column sortable field="location"      header="Location"></p-column>
+          <p-column sortable field="scriptureId"   header="Scripture ID"></p-column>
+          <p-column sortable field="scriptureNum"  header="Scripture #"></p-column>
+          <p-column sortable field="scriptureInfo" header="Verse"></p-column>
+          <p-column sortable field="scriptureText" header="Text"></p-column>
+
+        </p-datatable>
+  
+      </p-panel>
+    </div>
+
+
+  </div>
+
+  <script src="js/primevue/inputtext.umd.min.js"></script>
+  <script src="js/primevue/datatable.umd.min.js"></script>
+  <script src="js/primevue/column.umd.min.js"></script>
+  <script src="js/primevue/button.umd.min.js"></script>
+  <script src="js/primevue/panel.umd.min.js"></script>
+  <script src="js/index.js"></script>
+
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+</body>
+</html>
