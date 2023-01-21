@@ -1,2 +1,2 @@
 start "" nodemon serverMySQL
-start "" http://localhost:3300/test
+start "" http://localhost:3300/reflections.html

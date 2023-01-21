@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MY APP</title>
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/primeicons.css" rel="stylesheet">
+  <link href="css/primevue.min.css" rel="stylesheet">
+  <link href="css/primeflex.min.css" rel="stylesheet">
+  <link href="css/theme.css" rel="stylesheet">
+  <script src="js/vue.js"></script>
+  <script src="js/vue-resource.js"></script>
+</head>
+<body style="padding:1em;">
+
+  <div id="app" >
+    <div>
+      <p-panel header="Reflections (MySQL)" >
+
+        <div style="margin-bottom:1em;">
+          <p-button @click="getData"       icon="pi pi-caret-right" type="button" class="p-button-sm" label="Load Data"      ></p-button>
+          <p-button @click="genTable(ref)" icon="pi pi-caret-right" type="button" class="p-button-sm" label="Generate Table" ></p-button>
+          <p-selectbutton id="selbut" v-model="obj" :options="objs" style="display: inline-flex;margin-left: .5em;"></p-selectbutton>
+        </div>
+
+        <p-datatable :value="refTable || ref" :loading="loading" :filters.sync="filters" removable-sort :auto-layout="true"
+                    ref="dt" :selection.sync="selectedRow" @row-select="rowSelected" selection-mode="single"
+                    data-key="rowId" >
+
+          <template #header>
+            <div >
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <p-inputtext v-model="filters['global']" placeholder="Keyword Search" />
+                </span>
+                <p-button icon="pi pi-external-link"     label="Export"    @click="exportCSV($event)" ></p-button>
+                <p-button icon="pi pi-arrow-circle-down" label="Save JSON" @click="saveFile($event)"  ></p-button>
+            </div>
+          </template>
+
+          <p-column sortable field="episodeId"     header="Episode"></p-column>
+          <p-column sortable field="location"      header="Location"></p-column>
+          <p-column sortable field="startTime"     header="Start"></p-column>
+          <p-column sortable field="scriptureId"   header="Scripture ID"></p-column>
+          <p-column sortable field="scriptureNum"  header="Scripture #"></p-column>
+          <p-column sortable field="scriptureInfo" header="Verse"></p-column>
+          <p-column sortable field="scriptureText" header="Text"></p-column>
+
+        </p-datatable>
+  
+      </p-panel>
+    </div>
+    <p-dialog id="dlg" header="Episode" :visible.sync="dlgEpisode" v-if="selectedRow">
+
+      <div class="formgroup-inline">
+
+        <!-- ------------------------------------------------------------------------------------  -->
+        <!-- Episode                                                                              -->
+        <!-- ------------------------------------------------------------------------------------  -->
+        <p-card >
+          <template #title>
+            Episode
+          </template>
+          <template #content>
+            <div class="field">
+              <label for="season">Season</label>
+              <!-- <p-inputtext id="season" v-model="selectedEp.season" placeholder="Season" class="w-full"/> -->
+              <p-inputnumber id="episode" v-model="selectedEp.season" placeholder="Season" class="w-full"/>
+            </div>
+            <div class="field">
+              <label for="episode">Episode</label>
+              <!-- <p-inputtext id="episode" v-model="selectedEp.episode" placeholder="Season" class="w-full"/> -->
+              <p-inputnumber id="episode" v-model="selectedEp.episode" placeholder="Episode" class="w-full"/>
+            </div>
+          </template>
+          <template #footer>
+            <p-button icon="pi pi-plus" label="Add Location" v-on:click="addLocation" class="p-button-sm p-button-outlined"></p-button>
+            <p-button icon="pi pi-save" label="Save As New"  v-on:click="saveDoc"     class="p-button-sm p-button-outlined p-button-danger"></p-button>
+          </template>
+        </p-card>
+
+        <!-- ------------------------------------------------------------------------------------  -->
+        <!-- Location                                                                              -->
+        <!-- ------------------------------------------------------------------------------------  -->
+        <p-card class="ml-3 mr-3" v-if="selectedLoc">
+          <template #title>
+            Location
+          </template>
+          <template #content>
+            <div class="field">
+              <label for="locationNum">Location #</label>
+              <p-inputtext id="locationNum" v-model="selectedLoc.locationNum" placeholder="Location Name" class="w-full"/>
+            </div>
+            <div class="field">
+              <label for="locationName">Location Name</label>
+              <p-inputtext id="locationName" v-model="selectedLoc.locationName" placeholder="Location Name" class="w-full"/>
+            </div>
+            <div class="field">
+              <label for="locationProv">Location Province/State</label>
+              <p-inputtext id="locationProv" v-model="selectedLoc.locationProv" placeholder="State / Prov" class="w-full"/>
+            </div>
+            <div class="field">
+              <label for="locationCountry">Country</label>
+              <p-inputtext id="locationCountry" v-model="selectedLoc.locationCountry" placeholder="Country" class="w-full"/>
+            </div>
+            <div class="field">
+              <label for="songName">Song</label>
+              <p-inputtext id="songName" v-model="selectedLoc.songName" placeholder="Song" class="w-full"/>
+            </div>
+            <div class="field">
+              <label for="startTime">Start Time</label>
+              <!-- <p-inputtext id="startTime" v-model="selectedLoc.startTime" placeholder="Time" class="w-full"/> -->
+              <p-inputmask id="startTime" v-model="selectedLoc.startTime" mask="99:99" class="w-full"></p-inputmask>
+            </div>
+          </template>
+          <template #footer>
+            <p-button icon="pi pi-plus" label="Add Scripture" v-on:click="addScripture" class="p-button-sm p-button-outlined"></p-button>
+          </template>
+        </p-card>
+
+        <!-- ------------------------------------------------------------------------------------  -->
+        <!-- Scripture                                                                             -->
+        <!-- ------------------------------------------------------------------------------------  -->
+        <p-card v-if="selectedScr">
+          <template #title> 
+            Scripture
+          </template>
+          <template #content>
+            <div class="field">
+              <label for="scriptureNum">Scripture #</label>
+              <p-inputtext id="scriptureNum" v-model="selectedScr.scriptureNum" placeholder="Season" class="w-full"/>
+            </div>
+            <div class="field">
+              <label for="book">Book</label>
+              <p-inputtext id="book" v-model="selectedScr.book" placeholder="Book" class="w-full"/>
+            </div>
+            <div class="field">
+              <label for="chapter">Chapter</label>
+              <p-inputtext id="chapter" v-model="selectedScr.chapter" placeholder="Chapter" class="w-full"/>
+            </div>
+            <div class="field">
+              <label for="verse">Verse</label>
+              <p-inputtext id="verse" v-model="selectedScr.verse" placeholder="Verse" class="w-full"/>
+            </div>
+            <div class="field">
+              <label for="translation">Translation</label>
+              <p-inputtext id="translation" v-model="selectedScr.translation" placeholder="Translation" class="w-full"/>
+            </div>
+            <div class="field">
+              <label for="text">Text</label>
+              <p-inputtext id="text" v-model="selectedScr.text" placeholder="Text" class="w-full"/>
+            </div>
+          </template>
+        </p-card>
+
+      </div>
+      
+      <template #footer>
+        <p-button icon="pi pi-save" label="Save" v-on:click="updateDoc" class="p-button-sm p-button-outlined p-button-danger"></p-button>
+      </template>
+
+    </p-dialog>
+
+  </div>
+
+  <script src="js/primevue/selectbutton.umd.min.js"></script>
+  <script src="js/primevue/card.umd.min.js"></script>
+  <script src="js/primevue/inputnumber.umd.min.js"></script>
+  <script src="js/primevue/dialog.umd.min.js"></script>
+  <script src="js/primevue/inputtext.umd.min.js"></script>
+  <script src="js/primevue/inputmask.umd.min.js"></script>
+  <script src="js/primevue/datatable.umd.min.js"></script>
+  <script src="js/primevue/column.umd.min.js"></script>
+  <script src="js/primevue/button.umd.min.js"></script>
+  <script src="js/primevue/panel.umd.min.js"></script>
+  <script src="js/app/reflections.js"></script>
+
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+
+  <style type="text/css">
+    #dlg .p-card {
+      opacity: 65%;
+    }
+    #dlg .p-card:focus-within{
+      background-color: #f4f4f5;
+      opacity: 100%;
+    }
+    #selbut .p-button {
+      padding: 5.5px 10px;
+    }
+  </style>
+</body>
+</html>

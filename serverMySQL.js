@@ -12,7 +12,7 @@ app.use(express.static(__dirname + '/public'));
 var db
 const MongoClient = require('mongodb').MongoClient;
 const ObjectId    = require('mongodb').ObjectId;
-
+var mysql = require('mysql');
 
 MongoClient.connect('mongodb://fizzypi.lan:27017/test', (err, database) => {
   if (err) return console.log(err)
@@ -22,15 +22,28 @@ MongoClient.connect('mongodb://fizzypi.lan:27017/test', (err, database) => {
   })
 })
 
+var con = mysql.createConnection({
+  host         : "fizzypi.lan",
+  user         : "monty",
+  password     : "some_pass",
+  database     : "reflections",
+  insecureAuth : true
+});
+con.connect();
 
-//app.listen(3000, function() {
-//  console.log('listening on 3000')
-//})
 
-//app.get('/', function(req, res) {
-  //res.send('Hello World')
-//  res.sendFile(__dirname + '/index.html')
-//})
+
+app.get('/api/ref/episode', (req, res) => {
+
+  con.query("SELECT * FROM v_episodes", function(err, result) {
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+  });
+  
+})
+
+
 
 app.get('/', (req, res) => {
   db.collection('quotes').find().toArray((err, result) => {
