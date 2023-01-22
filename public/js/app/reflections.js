@@ -179,8 +179,30 @@ var app = new Vue({
         },
 
         updateEpisode: function() {
+            if(this.selectedepi?.isnew==true)
+                this.saveNewEpisode();
+            else {
+                this.loading = true;
+                this.$http.put('/api/ref/episode',this.selectedepi).then(function(resp) {
+                    console.log(resp.body);
+                    this.loading = false;
+               });
+            }
+        },
+        newEpisode: function() {
+            this.epdlg = true;
+            this.selectedepi = {isnew : true};
+        },
+        saveNewEpisode: function() {
             this.loading = true;
-            this.$http.put('/api/ref/episode',this.selectedepi).then(function(resp) {
+            this.$http.post('/api/ref/episode',this.selectedepi).then(function(resp) {
+                console.log(resp.body);
+                this.loading = false;
+           });
+        },
+        deleteEpisode: function() {
+            this.loading = true;
+            this.$http.delete(`/api/ref/episode/${this.selectedepi.id}`).then(function(resp) {
                 console.log(resp.body);
                 this.loading = false;
            });

@@ -42,7 +42,8 @@
                       <i class="pi pi-search"></i>
                       <p-inputtext v-model="epfilters['global']" placeholder="Keyword Search" />
                   </span>
-                  <p-button icon="pi pi-external-link"     label="Export"    @click="exportCSV($event)" ></p-button>
+                  <p-button icon="pi pi-external-link"     label="Export"      @click="exportCSV($event)" ></p-button>
+                  <p-button icon="pi pi-plus"              label="New Episode" @click="newEpisode($event)" ></p-button>
               </div>
               </template>
 
@@ -133,7 +134,7 @@
                     <p-inputtext v-model="filters['global']" placeholder="Keyword Search" />
                 </span>
                 <p-button icon="pi pi-external-link"     label="Export"    @click="exportCSV($event)" ></p-button>
-                <p-button icon="pi pi-arrow-circle-down" label="Save JSON" @click="saveFile($event)"  ></p-button>
+                <p-button icon="pi pi-arrow-circle-down" label="Save JSON" @click="newEpisode($event)"  ></p-button>
             </div>
           </template>
 
@@ -177,8 +178,8 @@
           </div>
         </template>
         <template #footer>
-          <p-button icon="pi pi-plus" label="Save" v-on:click="updateEpisode" class="p-button-sm "></p-button>
-          <!-- <p-button icon="pi pi-save" label="Save As New"  v-on:click="saveDoc"     class="p-button-sm  p-button-danger"></p-button> -->
+          <p-button icon="pi pi-plus"  label="Save"   v-on:click="updateEpisode"  class="p-button-sm "></p-button>
+          <p-button icon="pi pi-times" label="Delete" v-on:click="deleteEpisode"  class="p-button-sm  p-button-danger" v-if="!selectedepi.isnew"></p-button>
         </template>
       </p-card>
 
