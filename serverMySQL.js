@@ -116,6 +116,7 @@ app.delete('/api/ref/episode/:id', (req, res) => {
 //----------------------------------------------------------------
 // Location apis
 //----------------------------------------------------------------
+// load
 app.get('/api/ref/location/:id?', (req, res) => {
   var qry = "SELECT * FROM v_locations";
   if(req.params.id)
@@ -128,9 +129,82 @@ app.get('/api/ref/location/:id?', (req, res) => {
   });
 })
 
+// update
+app.put('/api/ref/location', (req, res) => {
+  //res.send(req.body);
+  var sql = `UPDATE locations 
+             SET    locationNum       = ?,
+                    locationName      = ?, 
+                    locationProv      = ?,
+                    locationCountry   = ?,
+                    song              = ?,
+                    startTime         = ? 
+             WHERE id = ?
+             LIMIT 1`;
+  var data = [
+    req.body.locationNum     ,
+    req.body.locationName    ,
+    req.body.locationProv    ,
+    req.body.locationCountry ,
+    req.body.song            ,
+    req.body.startTime       ,
+    req.body.id
+  ];
+  con.query(sql, data, (error, results, fields) => {
+    if (error){
+      return console.error(error.message);
+    }
+    console.log('Rows affected:', results.affectedRows);
+    console.log('Fields:', fields);
+    res.send(results);
+  });  
+})
+
+// create
+app.post('/api/ref/location', (req, res) => {
+  var sql = `INSERT INTO locations (locationNum, locationName, locationProv, locationCountry, song, startTime)
+             VALUES                (?, ?, ?, ?, ?, ?)`;
+  var data = [
+    req.body.locationNum     ,
+    req.body.locationName    ,
+    req.body.locationProv    ,
+    req.body.locationCountry ,
+    req.body.song            ,
+    req.body.startTime
+  ];
+  con.query(sql, data, (error, results, fields) => {
+     if (error){
+       return console.error(error.message);
+     }
+     console.log('Rows affected:', results.affectedRows);
+     console.log('Fields:', fields);
+     res.send(results);
+   });  
+})
+
+// delete
+app.delete('/api/ref/location/:id', (req, res) => {
+  var sql = `DELETE FROM  locations
+             WHERE  id = ?
+             LIMIT 1`;
+  var data = [
+    req.params.id,
+  ];
+  //res.send(req.params.id);
+  con.query(sql, data, (error, results, fields) => {
+     if (error){
+       return console.error(error.message);
+     }
+     console.log('Rows affected:', results.affectedRows);
+     console.log('Fields:', fields);
+     res.send(results);
+   });  
+})
+
 //----------------------------------------------------------------
 // Scripture apis
 //----------------------------------------------------------------
+// load
 app.get('/api/ref/scripture/:id?', (req, res) => {
   var qry = "SELECT * FROM v_scriptures";
   if(req.params.id)
@@ -142,6 +216,9 @@ app.get('/api/ref/scripture/:id?', (req, res) => {
     res.send(result);
   });
 })
+// update
+// create
+// delete
 
 
 app.get('/', (req, res) => {
