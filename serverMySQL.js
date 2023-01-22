@@ -132,16 +132,18 @@ app.get('/api/ref/location/:id?', (req, res) => {
 // update
 app.put('/api/ref/location', (req, res) => {
   //res.send(req.body);
-  var sql = `UPDATE locations 
-             SET    locationNum       = ?,
+  var sql =  `UPDATE locations 
+]             SET   episodeId         = ?,
+                    locationNum       = ?,
                     locationName      = ?, 
                     locationProv      = ?,
                     locationCountry   = ?,
                     song              = ?,
                     startTime         = ? 
-             WHERE id = ?
-             LIMIT 1`;
+              WHERE id = ?
+              LIMIT 1`;
   var data = [
+    req.body.episodeId       ,
     req.body.locationNum     ,
     req.body.locationName    ,
     req.body.locationProv    ,
@@ -162,9 +164,10 @@ app.put('/api/ref/location', (req, res) => {
 
 // create
 app.post('/api/ref/location', (req, res) => {
-  var sql = `INSERT INTO locations (locationNum, locationName, locationProv, locationCountry, song, startTime)
-             VALUES                (?, ?, ?, ?, ?, ?)`;
+  var sql = `INSERT INTO locations (episodeId, locationNum, locationName, locationProv, locationCountry, song, startTime)
+             VALUES                (?, ?, ?, ?, ?, ?, ?)`;
   var data = [
+    req.body.episodeId       ,
     req.body.locationNum     ,
     req.body.locationName    ,
     req.body.locationProv    ,
@@ -216,9 +219,81 @@ app.get('/api/ref/scripture/:id?', (req, res) => {
     res.send(result);
   });
 })
+
 // update
+app.put('/api/ref/scripture', (req, res) => {
+  //res.send(req.body);
+  var sql =  `UPDATE scripture 
+              SET   locationId   = ?
+                    scriptureNum = ?
+                    book         = ?
+                    chapter      = ?
+                    verse        = ?
+                    translation  = ?
+                    text         = ?
+              WHERE id = ?
+              LIMIT 1`;
+  var data = [
+    req.body.locationId   ,
+    req.body.scriptureNum ,
+    req.body.book         ,
+    req.body.chapter      ,
+    req.body.verse        ,
+    req.body.translation  ,
+    req.body.text         ,
+    req.body.id
+  ];
+  con.query(sql, data, (error, results, fields) => {
+    if (error){
+      return console.error(error.message);
+    }
+    console.log('Rows affected:', results.affectedRows);
+    console.log('Fields:', fields);
+    res.send(results);
+  });  
+})
+
+
 // create
+app.post('/api/ref/scripture', (req, res) => {
+  var sql = `INSERT INTO scripture (locationNum, locationName, locationProv, locationCountry, song, startTime)
+             VALUES                (?, ?, ?, ?, ?, ?)`;
+  var data = [
+    req.body.locationNum     ,
+    req.body.locationName    ,
+    req.body.locationProv    ,
+    req.body.locationCountry ,
+    req.body.song            ,
+    req.body.startTime
+  ];
+  con.query(sql, data, (error, results, fields) => {
+     if (error){
+       return console.error(error.message);
+     }
+     console.log('Rows affected:', results.affectedRows);
+     console.log('Fields:', fields);
+     res.send(results);
+   });  
+})
+
 // delete
+app.delete('/api/ref/scripture/:id', (req, res) => {
+  var sql = `DELETE FROM  scriptures
+             WHERE  id = ?
+             LIMIT 1`;
+  var data = [
+    req.params.id,
+  ];
+  //res.send(req.params.id);
+  con.query(sql, data, (error, results, fields) => {
+     if (error){
+       return console.error(error.message);
+     }
+     console.log('Rows affected:', results.affectedRows);
+     console.log('Fields:', fields);
+     res.send(results);
+   });  
+})
 
 
 app.get('/', (req, res) => {
