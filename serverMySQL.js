@@ -34,7 +34,7 @@ con.connect();
 //----------------------------------------------------------------
 // Episode apis
 //----------------------------------------------------------------
-
+// load
 app.get('/api/ref/episode/:id?', (req, res) => {
   var qry = "SELECT * FROM v_episodes";
   if(req.params.id)
@@ -47,6 +47,7 @@ app.get('/api/ref/episode/:id?', (req, res) => {
   });
 })
 
+// update
 app.put('/api/ref/episode', (req, res) => {
   //res.send(req.body);
   var sql = `UPDATE episodes 
@@ -73,6 +74,44 @@ app.put('/api/ref/episode', (req, res) => {
   });  
 })
 
+// create
+app.post('/api/ref/episode', (req, res) => {
+  var sql = `INSERT INTO episodes (seasonNum, episodeNum, episodeNumAlt, notes)
+             VALUES               (?, ?, ?, ?)`;
+  var data = [
+    req.body.seasonNum,
+    req.body.episodeNum,
+    req.body.episodeNumAlt,
+    req.body.notes
+  ];
+  con.query(sql, data, (error, results, fields) => {
+     if (error){
+       return console.error(error.message);
+     }
+     console.log('Rows affected:', results.affectedRows);
+     console.log('Fields:', fields);
+     res.send(results);
+   });  
+})
+
+// delete
+app.delete('/api/ref/episode/:id', (req, res) => {
+  var sql = `DELETE FROM  episodes
+             WHERE  id = ?
+             LIMIT 1`;
+  var data = [
+    req.params.id,
+  ];
+  //res.send(req.params.id);
+  con.query(sql, data, (error, results, fields) => {
+     if (error){
+       return console.error(error.message);
+     }
+     console.log('Rows affected:', results.affectedRows);
+     console.log('Fields:', fields);
+     res.send(results);
+   });  
+})
 
 //----------------------------------------------------------------
 // Location apis
