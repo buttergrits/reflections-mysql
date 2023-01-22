@@ -31,9 +31,9 @@ var con = mysql.createConnection({
 });
 con.connect();
 
-//----------------------------------------------------------------
+//------------------------------------------------------------------------------------------
 // Episode apis
-//----------------------------------------------------------------
+//------------------------------------------------------------------------------------------
 // load
 app.get('/api/ref/episode/:id?', (req, res) => {
   var qry = "SELECT * FROM v_episodes";
@@ -46,7 +46,7 @@ app.get('/api/ref/episode/:id?', (req, res) => {
     res.send(result);
   });
 })
-
+//------------------------------------------------------------------------------------------
 // update
 app.put('/api/ref/episode', (req, res) => {
   //res.send(req.body);
@@ -73,7 +73,7 @@ app.put('/api/ref/episode', (req, res) => {
     res.send(results);
   });  
 })
-
+//------------------------------------------------------------------------------------------
 // create
 app.post('/api/ref/episode', (req, res) => {
   var sql = `INSERT INTO episodes (seasonNum, episodeNum, episodeNumAlt, notes)
@@ -93,7 +93,7 @@ app.post('/api/ref/episode', (req, res) => {
      res.send(results);
    });  
 })
-
+//------------------------------------------------------------------------------------------
 // delete
 app.delete('/api/ref/episode/:id', (req, res) => {
   var sql = `DELETE FROM  episodes
@@ -113,9 +113,9 @@ app.delete('/api/ref/episode/:id', (req, res) => {
    });  
 })
 
-//----------------------------------------------------------------
+//------------------------------------------------------------------------------------------
 // Location apis
-//----------------------------------------------------------------
+//------------------------------------------------------------------------------------------
 // load
 app.get('/api/ref/location/:id?', (req, res) => {
   var qry = "SELECT * FROM v_locations";
@@ -128,12 +128,12 @@ app.get('/api/ref/location/:id?', (req, res) => {
     res.send(result);
   });
 })
-
+//------------------------------------------------------------------------------------------
 // update
 app.put('/api/ref/location', (req, res) => {
   //res.send(req.body);
   var sql =  `UPDATE locations 
-]             SET   episodeId         = ?,
+              SET   episodeId         = ?,
                     locationNum       = ?,
                     locationName      = ?, 
                     locationProv      = ?,
@@ -161,7 +161,7 @@ app.put('/api/ref/location', (req, res) => {
     res.send(results);
   });  
 })
-
+//------------------------------------------------------------------------------------------
 // create
 app.post('/api/ref/location', (req, res) => {
   var sql = `INSERT INTO locations (episodeId, locationNum, locationName, locationProv, locationCountry, song, startTime)
@@ -184,7 +184,7 @@ app.post('/api/ref/location', (req, res) => {
      res.send(results);
    });  
 })
-
+//------------------------------------------------------------------------------------------
 // delete
 app.delete('/api/ref/location/:id', (req, res) => {
   var sql = `DELETE FROM  locations
@@ -204,9 +204,9 @@ app.delete('/api/ref/location/:id', (req, res) => {
    });  
 })
 
-//----------------------------------------------------------------
+//------------------------------------------------------------------------------------------
 // Scripture apis
-//----------------------------------------------------------------
+//------------------------------------------------------------------------------------------
 // load
 app.get('/api/ref/scripture/:id?', (req, res) => {
   var qry = "SELECT * FROM v_scriptures";
@@ -219,7 +219,7 @@ app.get('/api/ref/scripture/:id?', (req, res) => {
     res.send(result);
   });
 })
-
+//------------------------------------------------------------------------------------------
 // update
 app.put('/api/ref/scripture', (req, res) => {
   //res.send(req.body);
@@ -252,8 +252,7 @@ app.put('/api/ref/scripture', (req, res) => {
     res.send(results);
   });  
 })
-
-
+//------------------------------------------------------------------------------------------
 // create
 app.post('/api/ref/scripture', (req, res) => {
   var sql = `INSERT INTO scripture (locationNum, locationName, locationProv, locationCountry, song, startTime)
@@ -275,7 +274,7 @@ app.post('/api/ref/scripture', (req, res) => {
      res.send(results);
    });  
 })
-
+//------------------------------------------------------------------------------------------
 // delete
 app.delete('/api/ref/scripture/:id', (req, res) => {
   var sql = `DELETE FROM  scriptures
@@ -295,6 +294,8 @@ app.delete('/api/ref/scripture/:id', (req, res) => {
    });  
 })
 
+//------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------
 
 app.get('/', (req, res) => {
   db.collection('quotes').find().toArray((err, result) => {
