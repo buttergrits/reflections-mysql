@@ -177,6 +177,14 @@ var app = new Vue({
             rv.sort((a,b) => (a.episodeId > b.episodeId) ? 1 : ((b.episodeId > a.episodeId) ? -1 : 0))
             return rv;
         },
+
+        updateEpisode: function() {
+            this.loading = true;
+            this.$http.put('/api/ref/episode',this.selectedepi).then(function(resp) {
+                console.log(resp.body);
+                this.loading = false;
+           });
+        },
         exportCSV() {
             this.$refs.dt.exportCSV();
         },

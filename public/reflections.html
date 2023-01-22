@@ -154,7 +154,34 @@
     <!-- Episode  Dialog                                                                       -->
     <!-- ------------------------------------------------------------------------------------  -->
     <p-dialog id="epdlg" header="Episode" :visible.sync="epdlg" v-if="selectedepi">
-      <h1>Fiz Episode</h1>
+      <p-card >
+        <template #content>
+          <div class="field">
+            <label for="season">Season</label>
+            <!-- <p-inputtext id="season" v-model="selectedepi.season" placeholder="Season" class="w-full"/> -->
+            <p-inputnumber id="episode" v-model="selectedepi.seasonNum" placeholder="Season" class="w-full"/>
+          </div>
+          <div class="field">
+            <label for="episode">Episode Sequence</label>
+            <!-- <p-inputtext id="episode" v-model="selectedEp.episode" placeholder="Season" class="w-full"/> -->
+            <p-inputnumber id="episode" v-model="selectedepi.episodeNum" placeholder="Episode Seq" class="w-full"/>
+          </div>
+          <div class="field">
+            <label for="episode">Episode Number</label>
+            <!-- <p-inputtext id="episode" v-model="selectedEp.episode" placeholder="Season" class="w-full"/> -->
+            <p-inputnumber id="episode" v-model="selectedepi.episodeNumAlt" placeholder="Episode #" class="w-full"/>
+          </div>
+          <div class="field">
+            <label for="episode">Notes</label>
+            <p-inputtext id="episode" v-model="selectedepi.notes" placeholder="Notes" class="w-full"/>
+          </div>
+        </template>
+        <template #footer>
+          <p-button icon="pi pi-plus" label="Save" v-on:click="updateEpisode" class="p-button-sm "></p-button>
+          <!-- <p-button icon="pi pi-save" label="Save As New"  v-on:click="saveDoc"     class="p-button-sm  p-button-danger"></p-button> -->
+        </template>
+      </p-card>
+
     </p-dialog>
 
     <!-- ------------------------------------------------------------------------------------  -->

@@ -31,7 +31,9 @@ var con = mysql.createConnection({
 });
 con.connect();
 
-
+//----------------------------------------------------------------
+// Episode apis
+//----------------------------------------------------------------
 
 app.get('/api/ref/episode/:id?', (req, res) => {
   var qry = "SELECT * FROM v_episodes";
@@ -45,6 +47,36 @@ app.get('/api/ref/episode/:id?', (req, res) => {
   });
 })
 
+app.put('/api/ref/episode', (req, res) => {
+  //res.send(req.body);
+  var sql = `UPDATE episodes 
+             SET    seasonNum     = ?,
+                    episodeNum    = ?, 
+                    episodeNumAlt = ?,
+                    notes         = ? 
+             WHERE id = ?
+             LIMIT 1`;
+  var data = [
+    req.body.seasonNum,
+    req.body.episodeNum,
+    req.body.episodeNumAlt,
+    req.body.notes,
+    req.body.id,
+  ];
+  con.query(sql, data, (error, results, fields) => {
+    if (error){
+      return console.error(error.message);
+    }
+    console.log('Rows affected:', results.affectedRows);
+    console.log('Fields:', fields);
+    res.send(results);
+  });  
+})
+
+
+//----------------------------------------------------------------
+// Location apis
+//----------------------------------------------------------------
 app.get('/api/ref/location/:id?', (req, res) => {
   var qry = "SELECT * FROM v_locations";
   if(req.params.id)
@@ -57,6 +89,9 @@ app.get('/api/ref/location/:id?', (req, res) => {
   });
 })
 
+//----------------------------------------------------------------
+// Scripture apis
+//----------------------------------------------------------------
 app.get('/api/ref/scripture/:id?', (req, res) => {
   var qry = "SELECT * FROM v_scriptures";
   if(req.params.id)
@@ -166,19 +201,6 @@ app.delete('/reflectionsdata', (req, res) => {
   })
 });
 
-
-// app.get('/', (req, res) => {
-//   //var cursor = db.collection('quotes').find()
-// //  db.collection('sunTimes').find().toArray(function(err, results) {
-// //    console.log(results);
-// //    res.send(results);
-//   res.sendfile(__dirname + '/index.html')
-//     // send HTML file populated with quotes here
-// //  })
-// 
-//   // Note: __dirname is directory that contains the JavaScript source code. Try logging it and see what you get!
-//   // Mine was '/Users/zellwk/Projects/demo-repos/crud-express-mongo' for this app.
-// })
 
 app.post('/quotes', (req, res) => {
  db.collection('quotes').save(req.body, (err, result) => {
