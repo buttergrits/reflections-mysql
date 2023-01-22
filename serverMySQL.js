@@ -33,16 +33,41 @@ con.connect();
 
 
 
-app.get('/api/ref/episode', (req, res) => {
+app.get('/api/ref/episode/:id?', (req, res) => {
+  var qry = "SELECT * FROM v_episodes";
+  if(req.params.id)
+      qry = `SELECT * FROM v_episodes WHERE id=${req.params.id}`
 
-  con.query("SELECT * FROM v_episodes", function(err, result) {
+  con.query(qry, function(err, result) {
     if (err) throw err;
-    console.log(result);
+    console.log(result?.length);
     res.send(result);
   });
-  
 })
 
+app.get('/api/ref/location/:id?', (req, res) => {
+  var qry = "SELECT * FROM v_locations";
+  if(req.params.id)
+      qry = `SELECT * FROM v_locations WHERE id=${req.params.id}`
+
+  con.query(qry, function(err, result) {
+    if (err) throw err;
+    console.log(result?.length);
+    res.send(result);
+  });
+})
+
+app.get('/api/ref/scripture/:id?', (req, res) => {
+  var qry = "SELECT * FROM v_scriptures";
+  if(req.params.id)
+      qry = `SELECT * FROM v_scriptures WHERE id=${req.params.id}`
+
+  con.query(qry, function(err, result) {
+    if (err) throw err;
+    console.log(result?.length);
+    res.send(result);
+  });
+})
 
 
 app.get('/', (req, res) => {

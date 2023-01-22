@@ -23,6 +23,68 @@
           <p-selectbutton id="selbut" v-model="obj" :options="objs" style="display: inline-flex;margin-left: .5em;"></p-selectbutton>
         </div>
 
+        <div class="row">
+            
+          <div class="col-md-6">
+            <p-datatable :value="episodes" :loading="loading" :filters.sync="epfilters" removable-sort :auto-layout="true" :rows="8"
+                      ref="dt" :selection.sync="selectedepi" @row-select="rowSelected" selection-mode="single"
+                      data-key="id" :paginator="true"
+                      paginator-template="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
+                      :rows-per-page-options="[8,20,50]"
+                      current-page-report-template="Showing {first} to {last} of {totalRecords}">
+
+              <template #header>
+              <div >
+                  <span class="p-input-icon-left">
+                      <i class="pi pi-search"></i>
+                      <p-inputtext v-model="epfilters['global']" placeholder="Keyword Search" />
+                  </span>
+                  <p-button icon="pi pi-external-link"     label="Export"    @click="exportCSV($event)" ></p-button>
+              </div>
+              </template>
+
+              <p-column sortable field="id"                header="ID"         ></p-column>
+              <p-column sortable field="seasonNum"         header="Season"     ></p-column>
+              <p-column sortable field="episodeNum"        header="Episode Seq"></p-column>
+              <p-column sortable field="episodeNumAlt"     header="Episode Num"></p-column>
+              <p-column sortable field="episodeTag"        header="Episode Tag"></p-column>
+              <p-column sortable field="notes"             header="Notes"      ></p-column>
+
+            </p-datatable>
+          </div>
+
+          
+          <div class="col-md-6">
+            <p-datatable :value="locations" :loading="loading" :filters.sync="locfilters" removable-sort :auto-layout="true" :rows="8"
+                      ref="dt" :selection.sync="selectedlocn" @row-select="rowSelected" selection-mode="single"
+                      data-key="id" :paginator="true"
+                      paginator-template="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
+                      :rows-per-page-options="[8,20,50]"
+                      current-page-report-template="Showing {first} to {last} of {totalRecords}">
+
+              <template #header>
+              <div >
+                  <span class="p-input-icon-left">
+                      <i class="pi pi-search"></i>
+                      <p-inputtext v-model="locfilters['global']" placeholder="Keyword Search" />
+                  </span>
+                  <p-button icon="pi pi-external-link"     label="Export"    @click="exportCSV($event)" ></p-button>
+              </div>
+              </template>
+
+              <p-column sortable field="id"            header="ID"         ></p-column>
+              <p-column sortable field="locationNum"   header="Num"     ></p-column>
+              <p-column sortable field="locationTag"   header="Tag"></p-column>
+              <p-column sortable field="startTime"     header="Start Time"></p-column>
+              <p-column sortable field="locationDesc"  header="Description"     ></p-column>
+              <p-column sortable field="song"          header="Song"></p-column>
+
+            </p-datatable>
+          </div>
+
+
+        </div>
+
         <p-datatable :value="refTable || ref" :loading="loading" :filters.sync="filters" removable-sort :auto-layout="true"
                     ref="dt" :selection.sync="selectedRow" @row-select="rowSelected" selection-mode="single"
                     data-key="rowId" >

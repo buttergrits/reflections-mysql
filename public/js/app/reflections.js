@@ -28,6 +28,16 @@ var app = new Vue({
         // sql items
         objs : ["Episodes", "Locations", "Scriptures"] ,
         obj : "Episodes",
+        episodes : null,
+        epfilters : {},
+        selectedepi : null,
+
+        locations : null,
+        locfilters : {},
+        selectedlocn : null,
+
+        scriptures : null,
+
     },
     methods: {
         // save as new
@@ -87,11 +97,28 @@ var app = new Vue({
         },
         getData: function() {
             this.loading = true;
-            this.$http.get('/reflectionsdata').then(function(resp) {
-                 this.ref = resp.body;
-                 this.loading = false;
-                 this.refTable = this.genTable(this.ref);
+            Promise.all([
+                this.$http.get('/reflectionsdata'),
+                this.$http.get('/api/ref/episode'),
+                this.$http.get('/api/ref/location'),
+                this.$http.get('/api/ref/scripture')
+            ]).then(resp => {
+                this.ref = resp[0].body;
+                this.refTable = this.genTable(this.ref);
+
+                this.loading = false;
+                this.episodes   = resp[1].body;
+                this.locations  = resp[2].body;
+                this.scriptures = resp[3].body;
             });
+            // this.$http.get('/reflectionsdata').then(function(resp) {
+            //      this.ref = resp.body;
+            //      this.refTable = this.genTable(this.ref);
+            //      this.$http.get('/api/ref/episode').then(function(resp) {
+            //         this.loading = false;
+            //         this.episodes = resp.body;
+            //      });
+            // });
         },
         genTable: function(refs) {
             var rv = [];
