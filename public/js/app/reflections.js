@@ -31,12 +31,17 @@ var app = new Vue({
         episodes : null,
         epfilters : {},
         selectedepi : null,
+        epdlg : null,
 
         locations : null,
         locfilters : {},
         selectedlocn : null,
+        locdlg : null,
 
         scriptures : null,
+        scrfilters : {},
+        selectedscript : null,
+        scrdlg : null,
 
     },
     methods: {

@@ -25,9 +25,12 @@
 
         <div class="row">
             
+          <!-- ------------------------------------------------------------------------------------  -->
+          <!-- Episode Table                                                                         -->
+          <!-- ------------------------------------------------------------------------------------  -->
           <div class="col-md-6">
             <p-datatable :value="episodes" :loading="loading" :filters.sync="epfilters" removable-sort :auto-layout="true" :rows="8"
-                      ref="dt" :selection.sync="selectedepi" @row-select="rowSelected" selection-mode="single"
+                      ref="dt" :selection.sync="selectedepi" @row-select="epdlg=true" selection-mode="single"
                       data-key="id" :paginator="true"
                       paginator-template="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
                       :rows-per-page-options="[8,20,50]"
@@ -52,11 +55,13 @@
 
             </p-datatable>
           </div>
-
           
+          <!-- ------------------------------------------------------------------------------------  -->
+          <!-- Location Table                                                                        -->
+          <!-- ------------------------------------------------------------------------------------  -->
           <div class="col-md-6">
             <p-datatable :value="locations" :loading="loading" :filters.sync="locfilters" removable-sort :auto-layout="true" :rows="8"
-                      ref="dt" :selection.sync="selectedlocn" @row-select="rowSelected" selection-mode="single"
+                      ref="dt" :selection.sync="selectedlocn" @row-select="locdlg=true" selection-mode="single"
                       data-key="id" :paginator="true"
                       paginator-template="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
                       :rows-per-page-options="[8,20,50]"
@@ -72,15 +77,47 @@
               </div>
               </template>
 
-              <p-column sortable field="id"            header="ID"         ></p-column>
-              <p-column sortable field="locationNum"   header="Num"     ></p-column>
-              <p-column sortable field="locationTag"   header="Tag"></p-column>
-              <p-column sortable field="startTime"     header="Start Time"></p-column>
-              <p-column sortable field="locationDesc"  header="Description"     ></p-column>
-              <p-column sortable field="song"          header="Song"></p-column>
+              <p-column sortable field="id"            header="ID"           ></p-column>
+              <p-column sortable field="locationNum"   header="Num"          ></p-column>
+              <p-column sortable field="locationTag"   header="Tag"          ></p-column>
+              <p-column sortable field="startTime"     header="Start Time"   ></p-column>
+              <p-column sortable field="locationDesc"  header="Description"  ></p-column>
+              <p-column sortable field="song"          header="Song"         ></p-column>
 
             </p-datatable>
           </div>
+
+          <!-- ------------------------------------------------------------------------------------  -->
+          <!-- Scripture Table                                                                       -->
+          <!-- ------------------------------------------------------------------------------------  -->
+          <div class="col-md-12">
+            <p-datatable :value="scriptures" :loading="loading" :filters.sync="scrfilters" removable-sort :auto-layout="true" :rows="8"
+                      ref="dt" :selection.sync="selectedscript" @row-select="scrdlg=true" selection-mode="single"
+                      data-key="id" :paginator="true"
+                      paginator-template="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
+                      :rows-per-page-options="[8,20,50]"
+                      current-page-report-template="Showing {first} to {last} of {totalRecords}">
+
+              <template #header>
+              <div >
+                  <span class="p-input-icon-left">
+                      <i class="pi pi-search"></i>
+                      <p-inputtext v-model="scrfilters['global']" placeholder="Keyword Search" />
+                  </span>
+                  <p-button icon="pi pi-external-link"     label="Export"    @click="exportCSV($event)" ></p-button>
+              </div>
+              </template>
+
+              <p-column sortable field="id"             header="ID"         ></p-column>
+              <p-column sortable field="scriptureNum"   header="#"          ></p-column>
+              <p-column sortable field="scriptureTag"   header="Tag"        ></p-column>
+              <p-column sortable field="scriptureDesc"  header="Description"></p-column>
+              <p-column sortable field="text"           header="Text"       ></p-column>
+              <p-column sortable field="locationDesc"   header="Location"   ></p-column>
+
+            </p-datatable>
+          </div>
+
 
 
         </div>
@@ -112,12 +149,34 @@
   
       </p-panel>
     </div>
+
+    <!-- ------------------------------------------------------------------------------------  -->
+    <!-- Episode  Dialog                                                                       -->
+    <!-- ------------------------------------------------------------------------------------  -->
+    <p-dialog id="epdlg" header="Episode" :visible.sync="epdlg" v-if="selectedepi">
+      <h1>Fiz Episode</h1>
+    </p-dialog>
+
+    <!-- ------------------------------------------------------------------------------------  -->
+    <!-- Location  Dialog                                                                      -->
+    <!-- ------------------------------------------------------------------------------------  -->
+    <p-dialog id="locdlg" header="Episode" :visible.sync="locdlg" v-if="selectedlocn">
+      <h1>Fiz Location</h1>
+    </p-dialog>
+
+    <!-- ------------------------------------------------------------------------------------  -->
+    <!-- Scripture  Dialog                                                                     -->
+    <!-- ------------------------------------------------------------------------------------  -->
+    <p-dialog id="scrdlg" header="Episode" :visible.sync="scrdlg" v-if="selectedscript">
+      <h1>Fiz Scripture</h1>
+    </p-dialog>
+
     <p-dialog id="dlg" header="Episode" :visible.sync="dlgEpisode" v-if="selectedRow">
 
       <div class="formgroup-inline">
 
         <!-- ------------------------------------------------------------------------------------  -->
-        <!-- Episode                                                                              -->
+        <!-- Episode                                                                               -->
         <!-- ------------------------------------------------------------------------------------  -->
         <p-card >
           <template #title>
