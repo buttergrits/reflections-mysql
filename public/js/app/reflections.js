@@ -11,6 +11,7 @@ var app = new Vue({
         'p-inputmask'   : inputmask   ,
         'p-inputnumber' : inputnumber ,
         'p-selectbutton': selectbutton,
+        'p-dropdown'    : dropdown    ,
     },
     data: {
         message : 'Hello Vue!',
@@ -37,6 +38,7 @@ var app = new Vue({
         locfilters : {},
         selectedlocn : null,
         locdlg : null,
+        epOptions : [{ name : '1', code: 1}],
 
         scriptures : null,
         scrfilters : {},
@@ -115,6 +117,7 @@ var app = new Vue({
                 this.episodes   = resp[1].body;
                 this.locations  = resp[2].body;
                 this.scriptures = resp[3].body;
+                this.genEpOpts();
             });
             // this.$http.get('/reflectionsdata').then(function(resp) {
             //      this.ref = resp.body;
@@ -124,6 +127,14 @@ var app = new Vue({
             //         this.episodes = resp.body;
             //      });
             // });
+        },
+        genEpOpts: function(){
+            var result = [];
+            this.episodes.forEach(e => result.push({ name : e.episodeTag, code : e.id}));
+            //var arr = [... new Set(result)].sort();
+            console.log(result);
+            this.epOptions = result;
+
         },
         genTable: function(refs) {
             var rv = [];

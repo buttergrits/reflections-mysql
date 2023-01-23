@@ -188,8 +188,47 @@
     <!-- ------------------------------------------------------------------------------------  -->
     <!-- Location  Dialog                                                                      -->
     <!-- ------------------------------------------------------------------------------------  -->
-    <p-dialog id="locdlg" header="Episode" :visible.sync="locdlg" v-if="selectedlocn">
-      <h1>Fiz Location</h1>
+    <p-dialog id="locdlg" header="Location" :visible.sync="locdlg" v-if="selectedlocn">
+      <p-card class="ml-3 mr-3" v-if="selectedlocn">
+        <template #content>
+          <div class="field">
+            <label for="episode">Episode</label>
+            <!-- <p-inputtext id="locationNum" v-model="selectedlocn.episodeId" placeholder="Episode Id" class="w-full"/> -->
+            <p-dropdown v-model="selectedlocn.episodeId" :options="epOptions" option-label="name" option-value="code" placeholder="Select an Episode" class="w-full"></p-dropdown>
+          </div>
+          <div class="field">
+            <label for="locationNum">Location #</label>
+            <p-inputtext id="locationNum" v-model="selectedlocn.locationNum" placeholder="Location Name" class="w-full"/>
+          </div>
+          <div class="field">
+            <label for="locationName">Location Name</label>
+            <p-inputtext id="locationName" v-model="selectedlocn.locationName" placeholder="Location Name" class="w-full"/>
+          </div>
+          <div class="field">
+            <label for="locationProv">Location Province/State</label>
+            <p-inputtext id="locationProv" v-model="selectedlocn.locationProv" placeholder="State / Prov" class="w-full"/>
+          </div>
+          <div class="field">
+            <label for="locationCountry">Country</label>
+            <p-inputtext id="locationCountry" v-model="selectedlocn.locationCountry" placeholder="Country" class="w-full"/>
+          </div>
+          <div class="field">
+            <label for="songName">Song</label>
+            <p-inputtext id="songName" v-model="selectedlocn.song" placeholder="Song" class="w-full"/>
+          </div>
+          <div class="field">
+            <label for="startTime">Start Time</label>
+            <!-- <p-inputtext id="startTime" v-model="selectedLoc.startTime" placeholder="Time" class="w-full"/> -->
+            <p-inputmask id="startTime" v-model="selectedlocn.startTime" mask="99:99" class="w-full"></p-inputmask>
+          </div>
+        </template>
+        <template #footer>
+          <p-button icon="pi pi-plus"  label="Save"   v-on:click="selectedlocn.save=true"  class="p-button-sm "></p-button>
+          <p-button icon="pi pi-times" label="Delete" v-on:click="selectedlocn.delete=true"  class="p-button-sm  p-button-danger" v-if="!selectedlocn.isnew"></p-button>
+        </template>
+      </p-card>
+
+
     </p-dialog>
 
     <!-- ------------------------------------------------------------------------------------  -->
@@ -312,6 +351,7 @@
 
   </div>
 
+  <script src="js/primevue/dropdown.umd.min.js"></script>
   <script src="js/primevue/selectbutton.umd.min.js"></script>
   <script src="js/primevue/card.umd.min.js"></script>
   <script src="js/primevue/inputnumber.umd.min.js"></script>
