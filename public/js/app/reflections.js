@@ -218,6 +218,36 @@ var app = new Vue({
                 this.loading = false;
            });
         },
+        updateLocation: function() {
+            if(this.selectedlocn?.isnew==true)
+                this.saveNewLocation();
+            else {
+                this.loading = true;
+                this.$http.put('/api/ref/location',this.selectedlocn).then(function(resp) {
+                    console.log(resp.body);
+                    this.loading = false;
+               });
+            }
+        },
+        newLocation: function() {
+            this.locdlg = true;
+            this.selectedlocn = {isnew : true};
+        },
+        saveNewLocation: function() {
+            this.loading = true;
+            this.$http.post('/api/ref/location',this.selectedlocn).then(function(resp) {
+                console.log(resp.body);
+                this.loading = false;
+           });
+        },
+        deleteLocation: function() {
+            this.loading = true;
+            this.$http.delete(`/api/ref/location/${this.selectedlocn.id}`).then(function(resp) {
+                console.log(resp.body);
+                this.loading = false;
+           });
+        },
+
         exportCSV() {
             this.$refs.dt.exportCSV();
         },

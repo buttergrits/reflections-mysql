@@ -74,7 +74,8 @@
                       <i class="pi pi-search"></i>
                       <p-inputtext v-model="locfilters['global']" placeholder="Keyword Search" />
                   </span>
-                  <p-button icon="pi pi-external-link"     label="Export"    @click="exportCSV($event)" ></p-button>
+                  <p-button icon="pi pi-external-link"     label="Export"       @click="exportCSV($event)" ></p-button>
+                  <p-button icon="pi pi-plus"              label="New Location" @click="newLocation($event)" ></p-button>
               </div>
               </template>
 
@@ -223,8 +224,8 @@
           </div>
         </template>
         <template #footer>
-          <p-button icon="pi pi-plus"  label="Save"   v-on:click="selectedlocn.save=true"  class="p-button-sm "></p-button>
-          <p-button icon="pi pi-times" label="Delete" v-on:click="selectedlocn.delete=true"  class="p-button-sm  p-button-danger" v-if="!selectedlocn.isnew"></p-button>
+          <p-button icon="pi pi-plus"  label="Save"   v-on:click="updateLocation"  class="p-button-sm "></p-button>
+          <p-button icon="pi pi-times" label="Delete" v-on:click="deleteLocation"  class="p-button-sm  p-button-danger" v-if="!selectedlocn.isnew"></p-button>
         </template>
       </p-card>
 
