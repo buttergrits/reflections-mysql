@@ -106,7 +106,8 @@
                       <i class="pi pi-search"></i>
                       <p-inputtext v-model="scrfilters['global']" placeholder="Keyword Search" />
                   </span>
-                  <p-button icon="pi pi-external-link"     label="Export"    @click="exportCSV($event)" ></p-button>
+                  <p-button icon="pi pi-external-link"     label="Export"        @click="exportCSV($event)" ></p-button>
+                  <p-button icon="pi pi-plus"              label="New Scripture" @click="newScripture($event)" ></p-button>
               </div>
               </template>
 
@@ -235,8 +236,41 @@
     <!-- ------------------------------------------------------------------------------------  -->
     <!-- Scripture  Dialog                                                                     -->
     <!-- ------------------------------------------------------------------------------------  -->
-    <p-dialog id="scrdlg" header="Episode" :visible.sync="scrdlg" v-if="selectedscript">
-      <h1>Fiz Scripture</h1>
+    <p-dialog id="scrdlg" header="Scriptures" :visible.sync="scrdlg" v-if="selectedscript">
+      <p-card v-if="selectedscript">
+        <template #content>
+          <div class="field">
+            <label for="scriptureNum">Scripture #</label>
+            <p-inputtext id="scriptureNum" v-model="selectedscript.scriptureNum" placeholder="Season" class="w-full"/>
+          </div>
+          <div class="field">
+            <label for="book">Book</label>
+            <p-inputtext id="book" v-model="selectedscript.book" placeholder="Book" class="w-full"/>
+          </div>
+          <div class="field">
+            <label for="chapter">Chapter</label>
+            <p-inputtext id="chapter" v-model="selectedscript.chapter" placeholder="Chapter" class="w-full"/>
+          </div>
+          <div class="field">
+            <label for="verse">Verse</label>
+            <p-inputtext id="verse" v-model="selectedscript.verse" placeholder="Verse" class="w-full"/>
+          </div>
+          <div class="field">
+            <label for="translation">Translation</label>
+            <p-inputtext id="translation" v-model="selectedscript.translation" placeholder="Translation" class="w-full"/>
+          </div>
+          <div class="field">
+            <label for="text">Text</label>
+            <p-inputtext id="text" v-model="selectedscript.text" placeholder="Text" class="w-full"/>
+          </div>
+        </template>
+        <template #footer>
+          <p-button icon="pi pi-plus"  label="Save"   v-on:click="updateScripture"  class="p-button-sm "></p-button>
+          <p-button icon="pi pi-times" label="Delete" v-on:click="deleteScripture"  class="p-button-sm  p-button-danger" v-if="!selectedscript.isnew"></p-button>
+        </template>
+
+      </p-card>
+
     </p-dialog>
 
     <p-dialog id="dlg" header="Episode" :visible.sync="dlgEpisode" v-if="selectedRow">
