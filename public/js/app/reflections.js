@@ -188,7 +188,9 @@ var app = new Vue({
             rv.sort((a,b) => (a.episodeId > b.episodeId) ? 1 : ((b.episodeId > a.episodeId) ? -1 : 0))
             return rv;
         },
-
+        //--------------------------------------------------------------------------------------
+        // Episode crud stuff
+        //--------------------------------------------------------------------------------------
         updateEpisode: function() {
             if(this.selectedepi?.isnew==true)
                 this.saveNewEpisode();
@@ -218,6 +220,9 @@ var app = new Vue({
                 this.loading = false;
            });
         },
+        //--------------------------------------------------------------------------------------
+        // Location crud stuff
+        //--------------------------------------------------------------------------------------
         updateLocation: function() {
             if(this.selectedlocn?.isnew==true)
                 this.saveNewLocation();
@@ -247,7 +252,38 @@ var app = new Vue({
                 this.loading = false;
            });
         },
-
+        //--------------------------------------------------------------------------------------
+        // Scripture crud stuff
+        //--------------------------------------------------------------------------------------
+        newScripture: function() {
+            this.scrdlg = true;
+            this.selectedscript = {isnew : true};
+        },
+        updateScripture: function() {
+            if(this.selectedscript?.isnew==true)
+                this.saveNewScripture();
+            else {
+                this.loading = true;
+                this.$http.put('/api/ref/scripture',this.selectedscript).then(function(resp) {
+                    console.log(resp.body);
+                    this.loading = false;
+               });
+            }
+        },
+        saveNewScripture: function() {
+            this.loading = true;
+            this.$http.post('/api/ref/scripture',this.selectedscript).then(function(resp) {
+                console.log(resp.body);
+                this.loading = false;
+           });
+        },
+        deleteScripture: function() {
+            this.loading = true;
+            this.$http.delete(`/api/ref/scripture/${this.selectedscript.id}`).then(function(resp) {
+                console.log(resp.body);
+                this.loading = false;
+           });
+        },
         exportCSV() {
             this.$refs.dt.exportCSV();
         },
