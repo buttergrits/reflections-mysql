@@ -240,6 +240,10 @@
       <p-card v-if="selectedscript">
         <template #content>
           <div class="field">
+            <label for="locationId">Location</label>
+            <p-dropdown v-model="selectedscript.locationId" :options="scOptions" option-label="name" option-value="code" placeholder="Select a Location" class="w-full"></p-dropdown>
+          </div>
+          <div class="field">
             <label for="scriptureNum">Scripture #</label>
             <p-inputtext id="scriptureNum" v-model="selectedscript.scriptureNum" placeholder="Season" class="w-full"/>
           </div>

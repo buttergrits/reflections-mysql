@@ -44,6 +44,7 @@ var app = new Vue({
         scrfilters : {},
         selectedscript : null,
         scrdlg : null,
+        scOptions : [{ name : '1', code: 1}],
 
     },
     methods: {
@@ -118,6 +119,7 @@ var app = new Vue({
                 this.locations  = resp[2].body;
                 this.scriptures = resp[3].body;
                 this.genEpOpts();
+                this.genScOpts();
             });
             // this.$http.get('/reflectionsdata').then(function(resp) {
             //      this.ref = resp.body;
@@ -135,6 +137,12 @@ var app = new Vue({
             console.log(result);
             this.epOptions = result;
 
+        },
+        genScOpts: function(){
+            var result = [];
+            this.locations.forEach(l => result.push({ name : l.locationTag + ' - ' + l.locationDesc, code : l.id}));
+            console.log(result);
+            this.scOptions = result;
         },
         genTable: function(refs) {
             var rv = [];
