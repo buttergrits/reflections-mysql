@@ -275,6 +275,21 @@ var app = new Vue({
                 this.loading = false;
            });
         },
+        locationAddScr: function() {
+            this.locdlg = false;
+            var initscrnum = 1;
+            var tmparr = this.scriptures.filter(l => l.locationId == this.selectedlocn.id);
+            if(tmparr?.length>0) {
+                initscrnum = Math.max(...tmparr.map(l => l.scriptureNum)) + 1;
+            }
+
+            this.selectedscript = {
+                isnew : true,
+                locationId : this.selectedlocn.id,
+                scriptureNum : initscrnum
+            };
+            this.scrdlg = true;
+        },
         //--------------------------------------------------------------------------------------
         // Scripture crud stuff
         //--------------------------------------------------------------------------------------

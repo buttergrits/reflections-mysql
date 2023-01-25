@@ -223,7 +223,7 @@ app.get('/api/ref/scripture/:id?', (req, res) => {
 // update
 app.put('/api/ref/scripture', (req, res) => {
   //res.send(req.body);
-  var sql =  `UPDATE scripture 
+  var sql =  `UPDATE scriptures 
               SET   locationId   = ?
                     scriptureNum = ?
                     book         = ?
@@ -255,15 +255,16 @@ app.put('/api/ref/scripture', (req, res) => {
 //------------------------------------------------------------------------------------------
 // create
 app.post('/api/ref/scripture', (req, res) => {
-  var sql = `INSERT INTO scripture (locationNum, locationName, locationProv, locationCountry, song, startTime)
-             VALUES                (?, ?, ?, ?, ?, ?)`;
+  var sql = `INSERT INTO scriptures (locationId, scriptureNum, book, chapter, verse, translation, text)
+             VALUES                 (?, ?, ?, ?, ?, ?, ?)`;
   var data = [
-    req.body.locationNum     ,
-    req.body.locationName    ,
-    req.body.locationProv    ,
-    req.body.locationCountry ,
-    req.body.song            ,
-    req.body.startTime
+    req.body.locationId   ,
+    req.body.scriptureNum ,
+    req.body.book         ,
+    req.body.chapter      ,
+    req.body.verse        ,
+    req.body.translation  ,
+    req.body.text
   ];
   con.query(sql, data, (error, results, fields) => {
      if (error){
