@@ -228,6 +228,21 @@ var app = new Vue({
                 this.loading = false;
            });
         },
+        episodeAddLoc: function() {
+            this.epdlg = false;
+            var initlocnum = 1;
+            var tmparr = this.locations.filter(l => l.episodeId == this.selectedepi.id);
+            if(tmparr?.length>0) {
+                initlocnum = Math.max(...tmparr.map(l => l.locationNum)) + 1;
+            }
+
+            this.selectedlocn = {
+                isnew : true,
+                episodeId : this.selectedepi.id,
+                locationNum : initlocnum
+            };
+            this.locdlg = true;
+        },
         //--------------------------------------------------------------------------------------
         // Location crud stuff
         //--------------------------------------------------------------------------------------

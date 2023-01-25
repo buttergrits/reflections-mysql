@@ -180,8 +180,9 @@
           </div>
         </template>
         <template #footer>
-          <p-button icon="pi pi-plus"  label="Save"   v-on:click="updateEpisode"  class="p-button-sm "></p-button>
-          <p-button icon="pi pi-times" label="Delete" v-on:click="deleteEpisode"  class="p-button-sm  p-button-danger" v-if="!selectedepi.isnew"></p-button>
+          <p-button icon="pi pi-plus"  label="Save"         v-on:click="updateEpisode"  class="p-button-sm "></p-button>
+          <p-button icon="pi pi-times" label="Delete"       v-on:click="deleteEpisode"  class="p-button-sm  p-button-danger" v-if="!selectedepi.isnew"></p-button>
+          <p-button icon="pi pi-plus"  label="Add Location" v-on:click="episodeAddLoc"  class="p-button-sm  p-button-secondary" v-if="!selectedepi.isnew"></p-button>
         </template>
       </p-card>
 
