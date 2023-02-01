@@ -298,6 +298,23 @@ app.delete('/api/ref/scripture/:id', (req, res) => {
 //------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------
 
+//------------------------------------------------------------------------------------------
+// Bible Books
+//------------------------------------------------------------------------------------------
+// load
+app.get('/api/ref/books/:id?', (req, res) => {
+  var qry = "SELECT * FROM bible_books";
+  if(req.params.id)
+      qry = `SELECT * FROM bible_books WHERE id=${req.params.id}`
+
+  con.query(qry, function(err, result) {
+    if (err) throw err;
+    console.log(`/api/ref/books - length:${result?.length}`);
+    res.send(result);
+  });
+})
+//------------------------------------------------------------------------------------------
+
 app.get('/', (req, res) => {
   db.collection('quotes').find().toArray((err, result) => {
     if (err) return console.log(err)
