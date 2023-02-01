@@ -246,12 +246,13 @@
             <p-dropdown v-model="selectedscript.locationId" :options="scOptions" option-label="name" option-value="code" placeholder="Select a Location" class="w-full"></p-dropdown>
           </div>
           <div class="field">
-            <label for="scriptureNum">Scripture #</label>
-            <p-inputtext id="scriptureNum" v-model="selectedscript.scriptureNum" placeholder="Season" class="w-full"/>
+            <label for="scriptureNum">Scripture Number (sequence)</label>
+            <p-inputtext id="scriptureNum" v-model="selectedscript.scriptureNum" placeholder="Scripture Number" class="w-full"/>
           </div>
           <div class="field">
             <label for="book">Book</label>
-            <p-inputtext id="book" v-model="selectedscript.book" placeholder="Book" class="w-full"/>
+            <!-- <p-inputtext id="book" v-model="selectedscript.book" placeholder="Book" class="w-full"/> -->
+            <p-dropdown v-model="selectedscript.book" :options="books" option-label="name" option-value="name" placeholder="Select a book" class="w-full"></p-dropdown>            
           </div>
           <div class="field">
             <label for="chapter">Chapter</label>

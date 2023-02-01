@@ -46,6 +46,8 @@ var app = new Vue({
         scrdlg : null,
         scOptions : [{ name : '1', code: 1}],
 
+        books : null,
+
     },
     methods: {
         // save as new
@@ -109,7 +111,8 @@ var app = new Vue({
                 this.$http.get('/reflectionsdata'),
                 this.$http.get('/api/ref/episode'),
                 this.$http.get('/api/ref/location'),
-                this.$http.get('/api/ref/scripture')
+                this.$http.get('/api/ref/scripture'),
+                this.$http.get('/api/ref/books'),
             ]).then(resp => {
                 this.ref = resp[0].body;
                 this.refTable = this.genTable(this.ref);
@@ -118,6 +121,7 @@ var app = new Vue({
                 this.episodes   = resp[1].body;
                 this.locations  = resp[2].body;
                 this.scriptures = resp[3].body;
+                this.books      = resp[4].body;
                 this.genEpOpts();
                 this.genScOpts();
             });
