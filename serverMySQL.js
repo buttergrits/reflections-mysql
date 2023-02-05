@@ -36,7 +36,7 @@ con.connect();
 //------------------------------------------------------------------------------------------
 // load
 app.get('/api/ref/episode/:id?', (req, res) => {
-  var qry = "SELECT * FROM v_episodes";
+  var qry = "SELECT * FROM v_episodes ORDER BY episodeTag;";
   if(req.params.id)
       qry = `SELECT * FROM v_episodes WHERE id=${req.params.id}`
 
