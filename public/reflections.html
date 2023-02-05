@@ -44,6 +44,7 @@
                   </span>
                   <p-button icon="pi pi-external-link"     label="Export"      @click="exportCSV($event)" ></p-button>
                   <p-button icon="pi pi-plus"              label="New Episode" @click="newEpisode($event)" ></p-button>
+                  <label style="margin-left: 1em;font-size: 1.5em;">Episodes</label>
               </div>
               </template>
 
@@ -76,6 +77,7 @@
                   </span>
                   <p-button icon="pi pi-external-link"     label="Export"       @click="exportCSV($event)" ></p-button>
                   <p-button icon="pi pi-plus"              label="New Location" @click="newLocation($event)" ></p-button>
+                  <label style="margin-left: 1em;font-size: 1.5em;">Locations</label>
               </div>
               </template>
 
@@ -108,6 +110,7 @@
                   </span>
                   <p-button icon="pi pi-external-link"     label="Export"        @click="exportCSV($event)" ></p-button>
                   <p-button icon="pi pi-plus"              label="New Scripture" @click="newScripture($event)" ></p-button>
+                  <label style="margin-left: 1em;font-size: 1.5em;">Scriptures</label>
               </div>
               </template>
 
@@ -125,7 +128,10 @@
 
         </div>
 
-        <p-datatable :value="refTable || ref" :loading="loading" :filters.sync="filters" removable-sort :auto-layout="true"
+        <!-- ------------------------------------------------------------------------------------  -->
+        <!-- Mongo table - disabled for now                                                        -->
+        <!-- ------------------------------------------------------------------------------------  -->
+        <p-datatable :value="refTable || ref" :loading="loading" :filters.sync="filters" removable-sort :auto-layout="true" v-if="false"
                     ref="dt" :selection.sync="selectedRow" @row-select="rowSelected" selection-mode="single"
                     data-key="rowId" >
 
@@ -204,6 +210,15 @@
             <p-inputtext id="locationNum" v-model="selectedlocn.locationNum" placeholder="Location Name" class="w-full"/>
           </div>
           <div class="field">
+            <label for="startTime">Start Time</label>
+            <!-- <p-inputtext id="startTime" v-model="selectedLoc.startTime" placeholder="Time" class="w-full"/> -->
+            <p-inputmask id="startTime" v-model="selectedlocn.startTime" mask="99:99" class="w-full"></p-inputmask>
+          </div>
+          <div class="field">
+            <label for="songName">Song</label>
+            <p-inputtext id="songName" v-model="selectedlocn.song" placeholder="Song" class="w-full"/>
+          </div>
+          <div class="field">
             <label for="locationName">Location Name</label>
             <p-inputtext id="locationName" v-model="selectedlocn.locationName" placeholder="Location Name" class="w-full"/>
           </div>
@@ -214,15 +229,6 @@
           <div class="field">
             <label for="locationCountry">Country</label>
             <p-inputtext id="locationCountry" v-model="selectedlocn.locationCountry" placeholder="Country" class="w-full"/>
-          </div>
-          <div class="field">
-            <label for="songName">Song</label>
-            <p-inputtext id="songName" v-model="selectedlocn.song" placeholder="Song" class="w-full"/>
-          </div>
-          <div class="field">
-            <label for="startTime">Start Time</label>
-            <!-- <p-inputtext id="startTime" v-model="selectedLoc.startTime" placeholder="Time" class="w-full"/> -->
-            <p-inputmask id="startTime" v-model="selectedlocn.startTime" mask="99:99" class="w-full"></p-inputmask>
           </div>
         </template>
         <template #footer>
