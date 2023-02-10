@@ -14,37 +14,37 @@ var app = new Vue({
         'p-dropdown'    : dropdown    ,
     },
     data: {
-        message : 'Hello Vue!',
-        title   : 'My test Vue app!',
-        ref     : null,
-        refTable: null,
-        loading : null,
-        filters : {},
-        dlgEpisode : null,
-        selectedRow: null,
+        message     : 'Hello Vue!',
+        title       : 'My test Vue app!',
+        ref         : null,
+        refTable    : null,
+        loading     : null,
+        filters     : {},
+        dlgEpisode  : null,
+        selectedRow : null,
         selectedEp  : null,
         selectedLoc : null,
         selectedScr : null,
 
         // sql items
-        objs : ["Episodes", "Locations", "Scriptures"] ,
-        obj : "Episodes",
-        episodes : null,
-        epfilters : {},
+        objs        : ["Episodes", "Locations", "Scriptures"] ,
+        obj         : "Episodes",
+        episodes    : null,
+        epfilters   : {},
         selectedepi : null,
-        epdlg : null,
+        epdlg       : null,
 
-        locations : null,
-        locfilters : {},
+        locations    : null,
+        locfilters   : {},
         selectedlocn : null,
-        locdlg : null,
-        epOptions : [{ name : '1', code: 1}],
+        locdlg       : null,
+        epOptions    : [{ name : '1', code: 1}],
 
-        scriptures : null,
-        scrfilters : {},
+        scriptures     : null,
+        scrfilters     : {},
         selectedscript : null,
-        scrdlg : null,
-        scOptions : [{ name : '1', code: 1}],
+        scrdlg         : null,
+        scOptions      : [{ name : '1', code: 1}],
 
         books : null,
 
@@ -258,7 +258,8 @@ var app = new Vue({
                 this.$http.put('/api/ref/location',this.selectedlocn).then(function(resp) {
                     console.log(resp.body);
                     this.loading = false;
-               });
+                    this.doneSaving();
+                });
             }
         },
         newLocation: function() {
@@ -270,7 +271,12 @@ var app = new Vue({
             this.$http.post('/api/ref/location',this.selectedlocn).then(function(resp) {
                 console.log(resp.body);
                 this.loading = false;
+                this.doneSaving();
            });
+        },
+        doneSaving: function() {
+            this.locdlg = false;
+            this.getData();
         },
         deleteLocation: function() {
             this.loading = true;
@@ -309,6 +315,7 @@ var app = new Vue({
                 this.$http.put('/api/ref/scripture',this.selectedscript).then(function(resp) {
                     console.log(resp.body);
                     this.loading = false;
+                    this.doneSaving();
                });
             }
         },
@@ -317,7 +324,8 @@ var app = new Vue({
             this.$http.post('/api/ref/scripture',this.selectedscript).then(function(resp) {
                 console.log(resp.body);
                 this.loading = false;
-           });
+                this.doneSaving();
+            });
         },
         deleteScripture: function() {
             this.loading = true;
