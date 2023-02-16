@@ -14,7 +14,6 @@
 <body style="padding:1em;">
 
   <div id="app" >
-    <test-component name="Hello from component"></test-component>
     <div>
       <p-panel header="Reflections (MySQL)" >
 
@@ -30,33 +29,8 @@
           <!-- Episode Table                                                                         -->
           <!-- ------------------------------------------------------------------------------------  -->
           <div class="col-md-6">
-            <p-datatable :value="episodes" :loading="loading" :filters.sync="epfilters" removable-sort :auto-layout="true" :rows="8"
-                      ref="dt" :selection.sync="selectedepi" @row-select="epdlg=true" selection-mode="single"
-                      data-key="id" :paginator="true"
-                      paginator-template="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
-                      :rows-per-page-options="[8,20,50]"
-                      current-page-report-template="Showing {first} to {last} of {totalRecords}">
-
-              <template #header>
-              <div >
-                  <span class="p-input-icon-left">
-                      <i class="pi pi-search"></i>
-                      <p-inputtext v-model="epfilters['global']" placeholder="Keyword Search" />
-                  </span>
-                  <p-button icon="pi pi-external-link"     label="Export"      @click="exportCSV($event)" ></p-button>
-                  <p-button icon="pi pi-plus"              label="New Episode" @click="newEpisode($event)" ></p-button>
-                  <label style="margin-left: 1em;font-size: 1.5em;">Episodes</label>
-              </div>
-              </template>
-
-              <p-column sortable field="id"                header="ID"         ></p-column>
-              <p-column sortable field="seasonNum"         header="Season"     ></p-column>
-              <p-column sortable field="episodeNum"        header="Episode Seq"></p-column>
-              <p-column sortable field="episodeNumAlt"     header="Episode Num"></p-column>
-              <p-column sortable field="episodeTag"        header="Episode Tag"></p-column>
-              <p-column sortable field="notes"             header="Notes"      ></p-column>
-
-            </p-datatable>
+            <episodes-table name="Hello from component" :episodes="episodes" :loading="loading"
+                @selrow="(e) => {selectedepi=e;epdlg=true;}" @newepi="newEpisode" @export="exportCSV"></episodes-table>
           </div>
           
           <!-- ------------------------------------------------------------------------------------  -->
@@ -411,7 +385,8 @@
   <script src="js/primevue/column.umd.min.js"></script>
   <script src="js/primevue/button.umd.min.js"></script>
   <script src="js/primevue/panel.umd.min.js"></script>
-  <script src="js/app/test-component.js"></script>
+
+  <script src="js/app/episodesTable.js"></script>
   <script src="js/app/reflections.js"></script>
 
   <script src="js/jquery.min.js"></script>
