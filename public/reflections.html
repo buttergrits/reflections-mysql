@@ -29,41 +29,18 @@
           <!-- Episode Table                                                                         -->
           <!-- ------------------------------------------------------------------------------------  -->
           <div class="col-md-6">
-            <episodes-table name="Hello from component" :episodes="episodes" :loading="loading"
-                @selrow="(e) => {selectedepi=e;epdlg=true;}" @newepi="newEpisode" @export="exportCSV"></episodes-table>
+            <episodes-table name="Episodes Table" :episodes="episodes" :loading="loading"
+                @selrow="(e) => {selectedepi=e;epdlg=true;}" @newepi="newEpisode" >
+            </episodes-table>
           </div>
           
           <!-- ------------------------------------------------------------------------------------  -->
           <!-- Location Table                                                                        -->
           <!-- ------------------------------------------------------------------------------------  -->
           <div class="col-md-6">
-            <p-datatable :value="locations" :loading="loading" :filters.sync="locfilters" removable-sort :auto-layout="true" :rows="8"
-                      ref="dt" :selection.sync="selectedlocn" @row-select="locdlg=true" selection-mode="single"
-                      data-key="id" :paginator="true"
-                      paginator-template="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
-                      :rows-per-page-options="[8,20,50]"
-                      current-page-report-template="Showing {first} to {last} of {totalRecords}">
-
-              <template #header>
-              <div >
-                  <span class="p-input-icon-left">
-                      <i class="pi pi-search"></i>
-                      <p-inputtext v-model="locfilters['global']" placeholder="Keyword Search" />
-                  </span>
-                  <p-button icon="pi pi-external-link"     label="Export"       @click="exportCSV($event)" ></p-button>
-                  <p-button icon="pi pi-plus"              label="New Location" @click="newLocation($event)" ></p-button>
-                  <label style="margin-left: 1em;font-size: 1.5em;">Locations</label>
-              </div>
-              </template>
-
-              <p-column sortable field="id"            header="ID"           ></p-column>
-              <p-column sortable field="locationNum"   header="Num"          ></p-column>
-              <p-column sortable field="locationTag"   header="Tag"          ></p-column>
-              <p-column sortable field="startTime"     header="Start Time"   ></p-column>
-              <p-column sortable field="locationDesc"  header="Description"  ></p-column>
-              <p-column sortable field="song"          header="Song"         ></p-column>
-
-            </p-datatable>
+            <locations-table name="Locations Table" :locations="locations" :loading="loading"
+                @selrow="(e) => {selectedlocn=e;locdlg=true;}" @newloc="newLocation">
+            </locations-table>
           </div>
 
           <!-- ------------------------------------------------------------------------------------  -->
@@ -387,6 +364,7 @@
   <script src="js/primevue/panel.umd.min.js"></script>
 
   <script src="js/app/episodesTable.js"></script>
+  <script src="js/app/locationsTable.js"></script>
   <script src="js/app/reflections.js"></script>
 
   <script src="js/jquery.min.js"></script>

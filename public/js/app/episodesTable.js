@@ -15,7 +15,7 @@ const episodesTable = Vue.component('episodes-table', {
                     <i class="pi pi-search"></i>
                     <p-inputtext v-model="epfilters['global']" placeholder="Keyword Search" />
                 </span>
-                <p-button icon="pi pi-external-link"     label="Export"      @click="$emit('export',false)" ></p-button>
+                <p-button icon="pi pi-external-link"     label="Export"      @click="$refs.dt.exportCSV()" ></p-button>
                 <p-button icon="pi pi-plus"              label="New Episode" @click="$emit('newepi',false)" ></p-button>
                 <label style="margin-left: 1em;font-size: 1.5em;">Episodes</label>
               </div>
