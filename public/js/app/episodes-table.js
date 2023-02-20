@@ -31,7 +31,7 @@ const episodesTable = Vue.component('episodes-table', {
             <p-column sortable field="notes"             header="Notes"      ></p-column>
             <p-column :exportable="false" :styles="{'min-width':'8rem'}">
                 <template #body="slotProps">
-                    <p-button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="$emit('opendlg', slotProps.data)" ></p-button>
+                    <p-button icon="pi pi-pencil" class="p-button-sm" style="padding:4px;" @click="$emit('opendlg', slotProps.data)" ></p-button>
                 </template>
             </p-column>            
 
