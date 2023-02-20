@@ -264,7 +264,13 @@ var app = new Vue({
         },
         newLocation: function() {
             this.locdlg = true;
-            this.selectedlocn = {isnew : true};
+            //this.selectedlocn = {isnew : !!this.selectedepi};
+            if(!!this.selectedepi) {
+                this.episodeAddLoc();
+            } else {
+                this.selectedlocn = {};
+            }
+
         },
         saveNewLocation: function() {
             this.loading = true;
