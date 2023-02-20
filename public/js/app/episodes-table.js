@@ -4,7 +4,7 @@ const episodesTable = Vue.component('episodes-table', {
     <div>
       <p-datatable :value="episodes" :loading="loading" :filters.sync="epfilters" removable-sort :auto-layout="true" :rows="8"
             ref="dt" :selection.sync="selectedepi" @row-select="$emit('selrow',selectedepi)" selection-mode="single"
-            @row-unselect="$emit('selrow',selectedepi)"
+            @row-unselect="$emit('unselrow',selectedepi)"
             :meta-key-selection="false"
             data-key="id" :paginator="true"
             paginator-template="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"

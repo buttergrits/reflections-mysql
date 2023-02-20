@@ -31,6 +31,7 @@
           <div class="col-md-6">
             <episodes-table name="Episodes" :episodes="episodes" :loading="loading"
                 @selrow="(e) => {selectedepi=e;}" @newepi="newEpisode" 
+                @unselrow="(e) => {selectedepi=e;selectedlocn=null;}" 
                 @opendlg="(e) => {selectedepi=e;epdlg=true;}" >
             </episodes-table>
           </div>
@@ -40,7 +41,8 @@
           <!-- ------------------------------------------------------------------------------------  -->
           <div class="col-md-6">
             <locations-table :name="filtLocName" :locations="filtLocations" :loading="loading"
-                @selrow="(e) => {selectedlocn=e;locdlg=true;}" @newloc="newLocation">
+                @selrow="(e) => {selectedlocn=e;}" @newloc="newLocation"
+                @opendlg="(e) => {selectedlocn=e;locdlg=true;}"  >
             </locations-table>
           </div>
 
@@ -48,7 +50,7 @@
           <!-- Scripture Table                                                                       -->
           <!-- ------------------------------------------------------------------------------------  -->
           <div class="col-md-12">
-            <scriptures-table name="Scriptures Table" :scriptures="scriptures" :loading="loading"
+            <scriptures-table :name="filtScrName" :scriptures="filtScriptures" :loading="loading"
                 @selscr="(e) => {selectedscript=e;scrdlg=true;}" @newscr="newScripture">
             </locations-table>
           </div>

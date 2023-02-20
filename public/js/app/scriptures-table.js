@@ -17,7 +17,7 @@ const scripturesTable = Vue.component('scriptures-table', {
             </span>
             <p-button icon="pi pi-external-link"     label="Export"        @click="$refs.dt.exportCSV()" ></p-button>
             <p-button icon="pi pi-plus"              label="New Scripture" @click="$emit('newscr',false)" ></p-button>
-            <label style="margin-left: 1em;font-size: 1.5em;">Scriptures</label>
+            <label style="margin-left: 1em;font-size: 1.5em;">{{ name }}</label>
           </div>
         </template>
 

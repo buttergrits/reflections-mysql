@@ -311,7 +311,12 @@ var app = new Vue({
         //--------------------------------------------------------------------------------------
         newScripture: function() {
             this.scrdlg = true;
-            this.selectedscript = {isnew : true};
+            if(!!this.selectedlocn) {
+                this.locationAddScr();
+            } else {
+                this.selectedscript = {isnew : true};
+            }
+            //this.selectedscript = {isnew : true};
         },
         updateScripture: function() {
             if(this.selectedscript?.isnew==true)
@@ -358,6 +363,8 @@ var app = new Vue({
     computed: {
         filtLocations  :  function() { return this.selectedepi ? this.locations.filter(l => l.episodeId == this.selectedepi.id) : this.locations },
         filtLocName    :  function() { return "Locations" + (this.selectedepi ? ` (in episode ${this.selectedepi.episodeTag})` : "") },
+        filtScriptures :  function() { return this.selectedlocn ? this.scriptures.filter(l => l.locationId == this.selectedlocn.id) : this.scriptures },
+        filtScrName    :  function() { return "Scriptures" + (this.selectedlocn ? ` (for ${this.selectedlocn.locationDesc} /  ${this.selectedlocn.locationTag} )` : "") },
     },
     
     mounted: function() {
