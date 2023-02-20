@@ -17,12 +17,12 @@ const locationsTable = Vue.component('locations-table', {
             </span>
             <p-button icon="pi pi-external-link"     label="Export"       @click="$refs.dt.exportCSV()" ></p-button>
             <p-button icon="pi pi-plus"              label="New Location" @click="$emit('newloc',false)" ></p-button>
-            <label style="margin-left: 1em;font-size: 1.5em;">Locations</label>
+            <label style="margin-left: 1em;font-size: 1.5em;">{{ name }}</label>
           </div>
         </template>
 
         <p-column sortable field="id"            header="ID"           ></p-column>
-        <p-column sortable field="locationNum"   header="Num"          ></p-column>
+        <p-column sortable field="locationNum"   header="Seq #"        ></p-column>
         <p-column sortable field="locationTag"   header="Tag"          ></p-column>
         <p-column sortable field="startTime"     header="Start Time"   ></p-column>
         <p-column sortable field="locationDesc"  header="Description"  ></p-column>

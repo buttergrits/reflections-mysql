@@ -4,6 +4,8 @@ const episodesTable = Vue.component('episodes-table', {
     <div>
       <p-datatable :value="episodes" :loading="loading" :filters.sync="epfilters" removable-sort :auto-layout="true" :rows="8"
             ref="dt" :selection.sync="selectedepi" @row-select="$emit('selrow',selectedepi)" selection-mode="single"
+            @row-unselect="$emit('selrow',selectedepi)"
+            :meta-key-selection="false"
             data-key="id" :paginator="true"
             paginator-template="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
             :rows-per-page-options="[8,20,50]"
@@ -17,7 +19,7 @@ const episodesTable = Vue.component('episodes-table', {
                 </span>
                 <p-button icon="pi pi-external-link"     label="Export"      @click="$refs.dt.exportCSV()" ></p-button>
                 <p-button icon="pi pi-plus"              label="New Episode" @click="$emit('newepi',false)" ></p-button>
-                <label style="margin-left: 1em;font-size: 1.5em;">Episodes</label>
+                <label style="margin-left: 1em;font-size: 1.5em;">{{ name }}</label>
               </div>
             </template>
 
@@ -27,6 +29,11 @@ const episodesTable = Vue.component('episodes-table', {
             <p-column sortable field="episodeNumAlt"     header="Episode Num"></p-column>
             <p-column sortable field="episodeTag"        header="Episode Tag"></p-column>
             <p-column sortable field="notes"             header="Notes"      ></p-column>
+            <p-column :exportable="false" :styles="{'min-width':'8rem'}">
+                <template #body="slotProps">
+                    <p-button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="$emit('opendlg', slotProps.data)" ></p-button>
+                </template>
+            </p-column>            
 
       </p-datatable>
 

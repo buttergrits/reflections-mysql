@@ -138,14 +138,14 @@ var app = new Vue({
             var result = [];
             this.episodes.forEach(e => result.push({ name : e.episodeTag, code : e.id}));
             //var arr = [... new Set(result)].sort();
-            console.log(result);
+            //console.log(result);
             this.epOptions = result;
 
         },
         genScOpts: function(){
             var result = [];
             this.locations.forEach(l => result.push({ name : l.locationTag + ' - ' + l.locationDesc, code : l.id}));
-            console.log(result);
+            //console.log(result);
             this.scOptions = result;
         },
         genTable: function(refs) {
@@ -349,6 +349,11 @@ var app = new Vue({
             a.dispatchEvent(e);
         },
     },
+    computed: {
+        filtLocations  :  function() { return this.selectedepi ? this.locations.filter(l => l.episodeId == this.selectedepi.id) : this.locations },
+        filtLocName    :  function() { return "Locations" + (this.selectedepi ? ` (in episode ${this.selectedepi.episodeTag})` : "") },
+    },
+    
     mounted: function() {
         this.getData();
     },
