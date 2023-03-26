@@ -13,13 +13,22 @@ SELECT
 		,'-L'
 		,lpad(`l`.`locationNum`, 2, '0')
 		) AS `locationTag`
-	,CONCAT (
-		`l`.`locationName`
-		,', '
-		,`l`.`locationProv`
-		,', '
-		,`l`.`locationCountry`
-		) AS `locationDesc`
+    ,CASE 
+        WHEN COALESCE(TRIM(`l`.`locationProv`), '-') IN ('', '-') THEN
+            CONCAT (
+                `l`.`locationName`
+                ,', '
+                ,`l`.`locationCountry`
+                ) 
+        ELSE
+            CONCAT (
+                `l`.`locationName`
+                ,', '
+                ,`l`.`locationProv`
+                ,', '
+                ,`l`.`locationCountry`
+                ) 
+        END AS `locationDesc`
 FROM (
 	           `locations` `l` 
     LEFT JOIN `v_episodes` `e` ON ((`e`.`id` = `l`.`episodeId`))
