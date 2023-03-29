@@ -27,6 +27,7 @@ const locationsTable = Vue.component('locations-table', {
         <p-column sortable field="locationNum"   header="Seq #"        ></p-column>
         <p-column sortable field="locationTag"   header="Tag"          ></p-column>
         <p-column sortable field="startTime"     header="Start Time"   ></p-column>
+        <p-column sortable field="duration"      header="Duration"     ></p-column>
         <p-column sortable field="locationDesc"  header="Description"  ></p-column>
         <p-column sortable field="song"          header="Song"         ></p-column>
         <p-column :exportable="false" :styles="{'min-width':'8rem'}">

@@ -28,7 +28,7 @@
           <!-- ------------------------------------------------------------------------------------  -->
           <!-- Episode Table                                                                         -->
           <!-- ------------------------------------------------------------------------------------  -->
-          <div class="col-md-6">
+          <div class="col-md-4">
             <episodes-table name="Episodes" :episodes="episodes" :loading="loading"
                 @selrow="(e) => {selectedepi=e;}" @newepi="newEpisode" 
                 @unselrow="(e) => {selectedepi=e;selectedlocn=null;}" 
@@ -39,7 +39,7 @@
           <!-- ------------------------------------------------------------------------------------  -->
           <!-- Location Table                                                                        -->
           <!-- ------------------------------------------------------------------------------------  -->
-          <div class="col-md-6">
+          <div class="col-md-8">
             <locations-table :name="filtLocName" :locations="filtLocations" :loading="loading"
                 @selrow="(e) => {selectedlocn=e;}" @newloc="newLocation"
                 @opendlg="(e) => {selectedlocn=e;locdlg=true;}"  >

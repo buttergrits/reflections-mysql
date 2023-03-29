@@ -23,10 +23,10 @@ const episodesTable = Vue.component('episodes-table', {
               </div>
             </template>
 
-            <p-column sortable field="id"                header="ID"         ></p-column>
-            <p-column sortable field="seasonNum"         header="Season"     ></p-column>
-            <p-column sortable field="episodeNum"        header="Episode Seq"></p-column>
-            <p-column sortable field="episodeNumAlt"     header="Episode Num"></p-column>
+            <!-- <p-column sortable field="id"                header="ID"         ></p-column>  -->
+            <!-- <p-column sortable field="seasonNum"         header="Season"     ></p-column>  -->
+            <!-- <p-column sortable field="episodeNum"        header="Episode Seq"></p-column>  -->
+            <!-- <p-column sortable field="episodeNumAlt"     header="Episode Num"></p-column>  -->
             <p-column sortable field="episodeTag"        header="Episode Tag"></p-column>
             <p-column sortable field="notes"             header="Notes"      ></p-column>
             <p-column :exportable="false" :styles="{'min-width':'8rem'}">
