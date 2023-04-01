@@ -1,0 +1,9 @@
+Using HeidiSQL:
+- right click DB (reflections)
+- select Export Database as SQL
+- check the Table Create box
+- Data: Insert
+- Output: Zip compressed .sql file
+- Filename: (repo folder) \sql\db-backup\mysql-heidi-export-reflections.zip
+- Click Export
+-- 
