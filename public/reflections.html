@@ -155,7 +155,10 @@
           </div>
           <div class="field">
             <label for="locationName">Location Name</label>
-            <p-inputtext id="locationName" v-model="selectedlocn.locationName" placeholder="Location Name" class="w-full"/>
+            <!-- <p-inputtext id="locationName" v-model="selectedlocn.locationName" placeholder="Location Name" class="w-full"/> -->
+            <p-autocomplete id="locationName" v-model="selectedlocn.locationName" placeholder="Location Name" class="w-full"
+               :suggestions="filteredLocs" @complete="filterLocs($event)">
+            </p-autocomplete>
           </div>
           <div class="field">
             <label for="locationProv">Location Province/State</label>

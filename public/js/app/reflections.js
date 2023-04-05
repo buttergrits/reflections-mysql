@@ -49,6 +49,7 @@ var app = new Vue({
 
         books : null,
         filteredSongs : [],
+        filteredLocs  : [],
 
     },
     methods: {
@@ -59,8 +60,18 @@ var app = new Vue({
             // unique song list
             var ul = [... new Set(fl)];
             // filtered songs
-            var sw = ul.filter(s => s.startsWith(event.query));
+            var sw = ul.filter(s => s.toUpperCase().startsWith(event.query.toUpperCase()));
             this.filteredSongs = sw;
+        },
+        // for location name dropdown
+        filterLocs: function(event) {
+            // full sorted
+            var fl = this.locations.map(l => l.locationName).sort();
+            // unique 
+            var ul = [... new Set(fl)];
+            // filtered
+            var sw = ul.filter(s => s.toUpperCase().startsWith(event.query.toUpperCase()));
+            this.filteredLocs = sw;
         },
         // save as new
         saveDoc: function() {
