@@ -1,17 +1,18 @@
 var app = new Vue({ 
     el: '#app',
     components: {
-        'p-button'      : button      ,
-        'p-datatable'   : datatable   ,
-        'p-column'      : column      ,
-        'p-panel'       : panel       ,
-        'p-inputtext'   : inputtext   ,
-        'p-dialog'      : dialog      ,
-        'p-card'        : card        ,
-        'p-inputmask'   : inputmask   ,
-        'p-inputnumber' : inputnumber ,
-        'p-selectbutton': selectbutton,
-        'p-dropdown'    : dropdown    ,
+        'p-button'       : button       ,
+        'p-datatable'    : datatable    ,
+        'p-column'       : column       ,
+        'p-panel'        : panel        ,
+        'p-inputtext'    : inputtext    ,
+        'p-dialog'       : dialog       ,
+        'p-card'         : card         ,
+        'p-inputmask'    : inputmask    ,
+        'p-inputnumber'  : inputnumber  ,
+        'p-selectbutton' : selectbutton ,
+        'p-dropdown'     : dropdown     ,
+        'p-autocomplete' : autocomplete ,
     },
     data: {
         message     : 'Hello Vue!',
@@ -47,9 +48,20 @@ var app = new Vue({
         scOptions      : [{ name : '1', code: 1}],
 
         books : null,
+        filteredSongs : [],
 
     },
     methods: {
+        // for song dropdown
+        filterSongs: function(event) {
+            // full sorted song list
+            var fl = this.locations.map(l => l.song).sort();
+            // unique song list
+            var ul = [... new Set(fl)];
+            // filtered songs
+            var sw = ul.filter(s => s.startsWith(event.query));
+            this.filteredSongs = sw;
+        },
         // save as new
         saveDoc: function() {
             delete this.selectedEp._id

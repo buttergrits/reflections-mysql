@@ -8,6 +8,7 @@
   <link href="css/primevue.min.css" rel="stylesheet">
   <link href="css/primeflex.min.css" rel="stylesheet">
   <link href="css/theme.css" rel="stylesheet">
+  <link href="css/app.css" rel="stylesheet">
   <script src="js/vue.js"></script>
   <script src="js/vue-resource.js"></script>
 </head>
@@ -147,7 +148,10 @@
           </div>
           <div class="field">
             <label for="songName">Song</label>
-            <p-inputtext id="songName" v-model="selectedlocn.song" placeholder="Song" class="w-full"/>
+            <!-- <p-inputtext id="songName" v-model="selectedlocn.song" placeholder="Song" class="w-full"/> -->
+            <p-autocomplete id="songName" v-model="selectedlocn.song" placeholder="Song" class="w-full"
+               :suggestions="filteredSongs" @complete="filterSongs($event)">
+            </p-autocomplete>
           </div>
           <div class="field">
             <label for="locationName">Location Name</label>
@@ -341,6 +345,7 @@
   <script src="js/primevue/column.umd.min.js"></script>
   <script src="js/primevue/button.umd.min.js"></script>
   <script src="js/primevue/panel.umd.min.js"></script>
+  <script src="js/primevue/autocomplete.umd.js"></script>
 
   <script src="js/app/episodes-table.js"></script>
   <script src="js/app/locations-table.js"></script>
