@@ -162,11 +162,15 @@
           </div>
           <div class="field">
             <label for="locationProv">Location Province/State</label>
-            <p-inputtext id="locationProv" v-model="selectedlocn.locationProv" placeholder="State / Prov" class="w-full"/>
+            <!-- <p-inputtext id="locationProv" v-model="selectedlocn.locationProv" placeholder="State / Prov" class="w-full"/> -->
+            <p-autocomplete id="locationProv" v-model="selectedlocn.locationProv" placeholder="State / Prov" class="w-full"
+               :suggestions="filteredProvs" @complete="filterProvs($event)">
           </div>
           <div class="field">
             <label for="locationCountry">Country</label>
-            <p-inputtext id="locationCountry" v-model="selectedlocn.locationCountry" placeholder="Country" class="w-full"/>
+            <!-- <p-inputtext id="locationCountry" v-model="selectedlocn.locationCountry" placeholder="Country" class="w-full"/> -->
+            <p-autocomplete id="locationCountry" v-model="selectedlocn.locationCountry" placeholder="Country" class="w-full"
+               :suggestions="filteredCtrys" @complete="filterCtrys($event)">
           </div>
         </template>
         <template #footer>

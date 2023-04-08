@@ -50,6 +50,8 @@ var app = new Vue({
         books : null,
         filteredSongs : [],
         filteredLocs  : [],
+        filteredProvs : [],
+        filteredCtrys : [],
 
     },
     methods: {
@@ -72,6 +74,19 @@ var app = new Vue({
             // filtered
             var sw = ul.filter(s => s.toUpperCase().startsWith(event.query.toUpperCase()));
             this.filteredLocs = sw;
+        },
+        // for location name dropdown
+        filterProvs: function(event) {
+            this.filteredProvs = this.genUniqSorted(this.locations, 'locationProv', event.query);
+        },
+        filterCtrys: function(event) {
+            this.filteredCtrys = this.genUniqSorted(this.locations, 'locationCountry', event.query);
+        },
+        genUniqSorted: function(data, fldName, qry) {
+            console.log(data, fldName, qry)
+            var si = data.map(i => i[fldName]).filter(n => n).sort();
+            var ui = [... new Set(si)];
+            return ui.filter(i => i.toUpperCase().startsWith(qry.toUpperCase()));
         },
         // save as new
         saveDoc: function() {
