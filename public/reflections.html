@@ -134,7 +134,6 @@
         <template #content>
           <div class="field">
             <label for="episode">Episode</label>
-            <!-- <p-inputtext id="locationNum" v-model="selectedlocn.episodeId" placeholder="Episode Id" class="w-full"/> -->
             <p-dropdown v-model="selectedlocn.episodeId" :options="epOptions" option-label="name" option-value="code" placeholder="Select an Episode" class="w-full"></p-dropdown>
           </div>
           <div class="field">
@@ -143,32 +142,27 @@
           </div>
           <div class="field">
             <label for="startTime">Start Time</label>
-            <!-- <p-inputtext id="startTime" v-model="selectedLoc.startTime" placeholder="Time" class="w-full"/> -->
             <p-inputmask id="startTime" v-model="selectedlocn.startTime" mask="99:99" class="w-full" autofocus></p-inputmask>
           </div>
           <div class="field">
             <label for="songName">Song</label>
-            <!-- <p-inputtext id="songName" v-model="selectedlocn.song" placeholder="Song" class="w-full"/> -->
-            <p-autocomplete id="songName" v-model="selectedlocn.song" placeholder="Song" class="w-full"
+            <p-autocomplete id="song" v-model="selectedlocn.song" placeholder="Song" class="w-full"
                :suggestions="filteredSongs" @complete="filterSongs($event)">
             </p-autocomplete>
           </div>
           <div class="field">
             <label for="locationName">Location Name</label>
-            <!-- <p-inputtext id="locationName" v-model="selectedlocn.locationName" placeholder="Location Name" class="w-full"/> -->
             <p-autocomplete id="locationName" v-model="selectedlocn.locationName" placeholder="Location Name" class="w-full"
                :suggestions="filteredLocs" @complete="filterLocs($event)">
             </p-autocomplete>
           </div>
           <div class="field">
             <label for="locationProv">Location Province/State</label>
-            <!-- <p-inputtext id="locationProv" v-model="selectedlocn.locationProv" placeholder="State / Prov" class="w-full"/> -->
             <p-autocomplete id="locationProv" v-model="selectedlocn.locationProv" placeholder="State / Prov" class="w-full"
                :suggestions="filteredProvs" @complete="filterProvs($event)">
           </div>
           <div class="field">
             <label for="locationCountry">Country</label>
-            <!-- <p-inputtext id="locationCountry" v-model="selectedlocn.locationCountry" placeholder="Country" class="w-full"/> -->
             <p-autocomplete id="locationCountry" v-model="selectedlocn.locationCountry" placeholder="Country" class="w-full"
                :suggestions="filteredCtrys" @complete="filterCtrys($event)">
           </div>

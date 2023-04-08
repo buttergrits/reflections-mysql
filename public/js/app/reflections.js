@@ -52,38 +52,28 @@ var app = new Vue({
         filteredLocs  : [],
         filteredProvs : [],
         filteredCtrys : [],
-
+ 
     },
     methods: {
         // for song dropdown
         filterSongs: function(event) {
-            // full sorted song list
-            var fl = this.locations.map(l => l.song).sort();
-            // unique song list
-            var ul = [... new Set(fl)];
-            // filtered songs
-            var sw = ul.filter(s => s.toUpperCase().startsWith(event.query.toUpperCase()));
-            this.filteredSongs = sw;
+            this.filteredSongs = this.genUniqSorted(this.locations, 'song', event.query);
         },
         // for location name dropdown
         filterLocs: function(event) {
-            // full sorted
-            var fl = this.locations.map(l => l.locationName).sort();
-            // unique 
-            var ul = [... new Set(fl)];
-            // filtered
-            var sw = ul.filter(s => s.toUpperCase().startsWith(event.query.toUpperCase()));
-            this.filteredLocs = sw;
+            this.filteredLocs = this.genUniqSorted(this.locations, 'locationName', event.query);
         },
-        // for location name dropdown
+        // for location prov dropdown
         filterProvs: function(event) {
             this.filteredProvs = this.genUniqSorted(this.locations, 'locationProv', event.query);
         },
+        // for location country dropdown
         filterCtrys: function(event) {
-            this.filteredCtrys = this.genUniqSorted(this.locations, 'locationCountry', event.query);
+            this.filteredCtrys = this.genUniqSorted(this.locations, event.originalEvent.srcElement.id, event.query);
         },
+        // extract unique, sorted values array from object property 
         genUniqSorted: function(data, fldName, qry) {
-            console.log(data, fldName, qry)
+            //console.log(data, fldName, qry)
             var si = data.map(i => i[fldName]).filter(n => n).sort();
             var ui = [... new Set(si)];
             return ui.filter(i => i.toUpperCase().startsWith(qry.toUpperCase()));
