@@ -1,0 +1,4 @@
+/* Make dropdown full width - i.e. song field on locations dialog */
+.p-autocomplete.w-full input {
+    min-width: 100%; 
+}
