@@ -211,7 +211,10 @@
           </div>
           <div class="field">
             <label for="text">Text</label>
-            <p-inputtext id="text" v-model="selectedscript.text" placeholder="Text" class="w-full"/>
+            <div class="p-inputgroup">
+                <p-button icon="pi pi-search"></p-button>
+                <p-inputtext id="text" v-model="selectedscript.text" placeholder="Text" class="w-full"></p-inputtext>
+            </div>            
           </div>
         </template>
         <template #footer>
