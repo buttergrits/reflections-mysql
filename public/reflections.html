@@ -212,7 +212,7 @@
           <div class="field">
             <label for="text">Text</label>
             <div class="p-inputgroup">
-                <p-button icon="pi pi-search"></p-button>
+                <p-button icon="pi pi-search" v-on:click="lookupScripture" ></p-button>
                 <p-inputtext id="text" v-model="selectedscript.text" placeholder="Text" class="w-full"></p-inputtext>
             </div>            
           </div>

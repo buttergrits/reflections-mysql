@@ -346,6 +346,17 @@ var app = new Vue({
             }
             //this.selectedscript = {isnew : true};
         },
+        lookupScripture: function() {
+            var s = this.selectedscript;
+            var verse = `${s.book} ${s.chapter}.${s.verse}`;
+            var tr = s.translation;
+            console.log({verse : verse, tr : tr});
+            this.loading = true;
+            this.$http.post('/api/ref/scriptureLookup',{verse : verse, tr : tr}).then(function(resp) {
+                console.log(resp.body);
+                this.loading = false;
+            });
+        },
         updateScripture: function() {
             if(this.selectedscript?.isnew==true)
                 this.saveNewScripture();

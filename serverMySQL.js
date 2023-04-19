@@ -313,6 +313,23 @@ app.delete('/api/ref/scripture/:id', (req, res) => {
      res.send(results);
    });  
 })
+//------------------------------------------------------------------------------------------
+// lookup
+app.post('/api/ref/scriptureLookup', async (req, res) => {
+  console.log(req.body);
+  
+  let { verse, content } = await bgw.search(req.body.verse, req.body.tr);
+
+  res.send({ verse : verse, content : content });
+  //con.query(sql, data, (error, results, fields) => {
+  //  if (error){
+  //    return console.error(error.message);
+  //  }
+  //  console.log('Rows affected:', results.affectedRows);
+  //  console.log('Fields:', fields);
+  //  res.send(results);
+  //});  
+})
 
 //------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------
