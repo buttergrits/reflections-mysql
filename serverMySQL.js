@@ -241,14 +241,14 @@ app.get('/api/ref/scripture/:id?', (req, res) => {
 //------------------------------------------------------------------------------------------
 // update
 app.put('/api/ref/scripture', (req, res) => {
-  //res.send(req.body);
+  //console.log(req.body);
   var sql =  `UPDATE scriptures 
-              SET   locationId   = ?
-                    scriptureNum = ?
-                    book         = ?
-                    chapter      = ?
-                    verse        = ?
-                    translation  = ?
+              SET   locationId   = ?,
+                    scriptureNum = ?,
+                    book         = ?,
+                    chapter      = ?,
+                    verse        = ?,
+                    translation  = ?,
                     text         = ?
               WHERE id = ?
               LIMIT 1`;
