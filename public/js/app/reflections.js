@@ -79,25 +79,25 @@ var app = new Vue({
             return ui.filter(i => i.toUpperCase().startsWith(qry.toUpperCase()));
         },
         // save as new
-        saveDoc: function() {
-            delete this.selectedEp._id
-            this.loading = true;
-            this.$http.post('/reflectionsdata',this.selectedEp).then(function(resp) {
-                this.ref = resp.body;
-                this.loading = false;
-                this.refTable = this.genTable(this.ref);
-                this.dlgEpisode = false;
-           });
-        },
-        updateDoc: function() {
-            this.loading = true;
-            this.$http.put('/reflectionsdata',this.selectedEp).then(function(resp) {
-                this.ref = resp.body;
-                this.loading = false;
-                this.refTable = this.genTable(this.ref);
-                this.dlgEpisode = false;
-           });
-        },
+        //saveDoc: function() {
+        //    delete this.selectedEp._id
+        //    this.loading = true;
+        //    this.$http.post('/reflectionsdata',this.selectedEp).then(function(resp) {
+        //        this.ref = resp.body;
+        //        this.loading = false;
+        //        this.refTable = this.genTable(this.ref);
+        //        this.dlgEpisode = false;
+        //   });
+        //},
+        // updateDoc: function() {
+        //     this.loading = true;
+        //     this.$http.put('/reflectionsdata',this.selectedEp).then(function(resp) {
+        //         this.ref = resp.body;
+        //         this.loading = false;
+        //         this.refTable = this.genTable(this.ref);
+        //         this.dlgEpisode = false;
+        //    });
+        // },
         addLocation: function() {
             if(this.selectedEp.locations?.length) {
                 //this.selectedEp.locations = [];
@@ -136,7 +136,7 @@ var app = new Vue({
         getData: function() {
             this.loading = true;
             Promise.all([
-                this.$http.get('/reflectionsdata'),
+                //this.$http.get('/reflectionsdata'),
                 this.$http.get('/api/ref/episode'),
                 this.$http.get('/api/ref/location'),
                 this.$http.get('/api/ref/scripture'),
@@ -146,10 +146,10 @@ var app = new Vue({
                 this.refTable = this.genTable(this.ref);
 
                 this.loading = false;
-                this.episodes   = resp[1].body;
-                this.locations  = resp[2].body;
-                this.scriptures = resp[3].body;
-                this.books      = resp[4].body;
+                this.episodes   = resp[0].body;
+                this.locations  = resp[1].body;
+                this.scriptures = resp[2].body;
+                this.books      = resp[3].body;
                 this.genEpOpts();
                 this.genScOpts();
             });
