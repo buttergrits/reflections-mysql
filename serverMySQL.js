@@ -314,21 +314,25 @@ app.delete('/api/ref/scripture/:id', (req, res) => {
    });  
 })
 //------------------------------------------------------------------------------------------
-// lookup
+// lookup bible text
+//------------------------------------------------------------------------------------------
 app.post('/api/ref/scriptureLookup', async (req, res) => {
   console.log(req.body);
   
   let { verse, content } = await bgw.search(req.body.verse, req.body.tr);
 
-  res.send({ verse : verse, content : content });
-  //con.query(sql, data, (error, results, fields) => {
-  //  if (error){
-  //    return console.error(error.message);
-  //  }
-  //  console.log('Rows affected:', results.affectedRows);
-  //  console.log('Fields:', fields);
-  //  res.send(results);
-  //});  
+  // Extract passage from api result
+  var a = content;
+
+  // remove excess items from array
+  var b = a.slice(a.findIndex(e => e=='Store')+1                , 
+          a.findIndex(e => e.startsWith('Sign Up For')) );
+
+  // regex, trim, join into final string
+  const regex = /\d+|\(.\)|\[.\]/gm;
+  var c = b.map(b =>  b.replace(regex, '').trim()).join(' ');
+
+  res.send({ verse : verse, content: content, text : c });
 })
 
 //------------------------------------------------------------------------------------------

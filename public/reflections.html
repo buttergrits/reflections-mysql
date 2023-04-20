@@ -214,6 +214,7 @@
             <div class="p-inputgroup">
                 <p-button icon="pi pi-search" v-on:click="lookupScripture" ></p-button>
                 <p-inputtext id="text" v-model="selectedscript.text" placeholder="Text" class="w-full"></p-inputtext>
+                <p-button icon="pi pi-times" class="p-button-secondary" v-on:click="selectedscript.text=''" ></p-button>
             </div>            
           </div>
         </template>
