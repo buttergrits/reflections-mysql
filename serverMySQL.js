@@ -318,21 +318,24 @@ app.delete('/api/ref/scripture/:id', (req, res) => {
 //------------------------------------------------------------------------------------------
 app.post('/api/ref/scriptureLookup', async (req, res) => {
   console.log(req.body);
-  
-  let { verse, content } = await bgw.search(req.body.verse, req.body.tr);
+  try {
+    let { verse, content } = await bgw.search(req.body.verse, req.body.tr);
 
-  // Extract passage from api result
-  var a = content;
+    // Extract passage from api result
+    var a = content;
 
-  // remove excess items from array
-  var b = a.slice(a.findIndex(e => e=='Store')+1                , 
-          a.findIndex(e => e.startsWith('Sign Up For')) );
+    // remove excess items from array
+    var b = a.slice(a.findIndex(e => e=='Store')+1                , 
+            a.findIndex(e => e.startsWith('Sign Up For')) );
 
-  // regex, trim, join into final string
-  const regex = /\d+|\(.\)|\[.\]/gm;
-  var c = b.map(b =>  b.replace(regex, '').trim()).join(' ');
+    // regex, trim, join into final string
+    const regex = /\d+|\(.\)|\[.\]/gm;
+    var c = b.map(b =>  b.replace(regex, '').trim()).join(' ');
 
-  res.send({ verse : verse, content: content, text : c });
+    res.send({ verse : verse, content: content, text : c });
+  } catch (error) {
+    res.send({ verse : req.body.verse + ' -' + req.body.tr, error: error});
+  }
 })
 
 //------------------------------------------------------------------------------------------
