@@ -310,6 +310,7 @@ var app = new Vue({
         },
         doneSaving: function() {
             this.locdlg = false;
+            this.scrdlg = false;
             this.getData();
         },
         deleteLocation: function() {
@@ -384,6 +385,8 @@ var app = new Vue({
             this.$http.delete(`/api/ref/scripture/${this.selectedscript.id}`).then(function(resp) {
                 console.log(resp.body);
                 this.loading = false;
+                this.scrdlg = false;
+                this.getData();
            });
         },
         exportCSV() {
