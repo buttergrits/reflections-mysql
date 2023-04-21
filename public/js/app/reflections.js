@@ -353,7 +353,8 @@ var app = new Vue({
             console.log({verse : verse, tr : tr});
             this.loading = true;
             this.$http.post('/api/ref/scriptureLookup',{verse : verse, tr : tr}).then(function(resp) {
-                this.selectedscript.text = resp.body.text;
+                Vue.set(this.selectedscript, 'text', resp.body.text);
+                //this.selectedscript.text = resp.body.text;
                 console.log(resp.body);
                 this.loading = false;
             });
