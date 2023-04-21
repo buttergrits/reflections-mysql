@@ -357,6 +357,21 @@ app.get('/api/ref/books/:id?', (req, res) => {
   });
 })
 //------------------------------------------------------------------------------------------
+// Bible Translations / versions
+//------------------------------------------------------------------------------------------
+// load
+app.get('/api/ref/versions/:id?', (req, res) => {
+  var qry = "SELECT * FROM bible_translations";
+  if(req.params.id)
+      qry = `SELECT * FROM bible_translations WHERE id=${req.params.id}`
+
+  con.query(qry, function(err, result) {
+    if (err) throw err;
+    console.log(`/api/ref/versions - length:${result?.length}`);
+    res.send(result);
+  });
+})
+//------------------------------------------------------------------------------------------
 
 //app.get('/', (req, res) => {
 //  db.collection('quotes').find().toArray((err, result) => {

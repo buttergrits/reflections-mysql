@@ -190,7 +190,7 @@
           </div>
           <div class="field">
             <label for="scriptureNum">Scripture Number (sequence)</label>
-            <p-inputtext id="scriptureNum" v-model="selectedscript.scriptureNum" placeholder="Scripture Number" class="w-full"/>
+            <p-inputtext id="scriptureNum" v-model="selectedscript.scriptureNum" placeholder="Scripture Number" class="w-full" autofocus/>
           </div>
           <div class="field">
             <label for="book">Book</label>
@@ -207,7 +207,8 @@
           </div>
           <div class="field">
             <label for="translation">Translation</label>
-            <p-inputtext id="translation" v-model="selectedscript.translation" placeholder="Translation" class="w-full"/>
+            <!-- <p-inputtext id="translation" v-model="selectedscript.translation" placeholder="Translation" class="w-full"/> -->
+            <p-dropdown v-model="selectedscript.translation" :options="versions" option-label="code" option-value="code" placeholder="Translation" class="w-full" :editable="true" ></p-dropdown>
           </div>
           <div class="field">
             <label for="text">Text</label>

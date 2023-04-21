@@ -47,7 +47,8 @@ var app = new Vue({
         scrdlg         : null,
         scOptions      : [{ name : '1', code: 1}],
 
-        books : null,
+        books    : null,
+        versions : null,
         filteredSongs : [],
         filteredLocs  : [],
         filteredProvs : [],
@@ -55,6 +56,10 @@ var app = new Vue({
  
     },
     methods: {
+        // for version dropdown -- not used yet
+        filterVersions: function(event) {
+            this.filteredSongs = this.genUniqSorted(this.locations, 'song', event.query);
+        },
         // for song dropdown
         filterSongs: function(event) {
             this.filteredSongs = this.genUniqSorted(this.locations, 'song', event.query);
@@ -141,6 +146,7 @@ var app = new Vue({
                 this.$http.get('/api/ref/location'),
                 this.$http.get('/api/ref/scripture'),
                 this.$http.get('/api/ref/books'),
+                this.$http.get('/api/ref/versions'),
             ]).then(resp => {
                 this.ref = resp[0].body;
                 this.refTable = this.genTable(this.ref);
@@ -150,6 +156,7 @@ var app = new Vue({
                 this.locations  = resp[1].body;
                 this.scriptures = resp[2].body;
                 this.books      = resp[3].body;
+                this.versions   = resp[4].body;
                 this.genEpOpts();
                 this.genScOpts();
             });
