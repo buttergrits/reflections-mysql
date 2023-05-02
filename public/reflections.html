@@ -197,19 +197,27 @@
             <!-- <p-inputtext id="book" v-model="selectedscript.book" placeholder="Book" class="w-full"/> -->
             <p-dropdown v-model="selectedscript.book" :options="books" option-label="name" option-value="name" placeholder="Select a book" class="w-full"></p-dropdown>            
           </div>
-          <div class="field">
-            <label for="chapter">Chapter</label>
-            <p-inputtext id="chapter" v-model="selectedscript.chapter" placeholder="Chapter" class="w-full"/>
+
+          <div style="display: inline-flex;">
+            <div class="field">
+              <label for="chapter">Chapter</label>
+              <p-inputtext id="chapter" v-model="selectedscript.chapter" placeholder="Chapter" class="w-full"/>
+            </div>
+              <div class="field" style="margin-left: 4px;">
+              <label for="verse">Verse</label>
+              <p-inputtext id="verse" v-model="selectedscript.verse" placeholder="Verse" class="w-full"/>
+            </div>
+              <div class="field" style="margin-left: 4px;">
+              <label for="translation">Translation</label>
+              <p-dropdown v-model="selectedscript.translation" :options="versions" option-label="code" option-value="code" placeholder="Translation" class="w-full" :editable="true" ></p-dropdown>
+            </div>
           </div>
-          <div class="field">
-            <label for="verse">Verse</label>
-            <p-inputtext id="verse" v-model="selectedscript.verse" placeholder="Verse" class="w-full"/>
-          </div>
-          <div class="field">
+
+          <!-- <div class="field">
             <label for="translation">Translation</label>
-            <!-- <p-inputtext id="translation" v-model="selectedscript.translation" placeholder="Translation" class="w-full"/> -->
+            <p-inputtext id="translation" v-model="selectedscript.translation" placeholder="Translation" class="w-full"/>
             <p-dropdown v-model="selectedscript.translation" :options="versions" option-label="code" option-value="code" placeholder="Translation" class="w-full" :editable="true" ></p-dropdown>
-          </div>
+          </div> -->
           <div class="field">
             <label for="text">Text</label>
             <div class="p-inputgroup">
