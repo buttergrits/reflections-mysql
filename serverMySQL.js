@@ -346,7 +346,7 @@ app.post('/api/ref/scriptureLookup', async (req, res) => {
 //------------------------------------------------------------------------------------------
 // load
 app.get('/api/ref/books/:id?', (req, res) => {
-  var qry = "SELECT * FROM bible_books";
+  var qry = "SELECT * FROM bible_books ORDER BY name";
   if(req.params.id)
       qry = `SELECT * FROM bible_books WHERE id=${req.params.id}`
 
@@ -361,7 +361,7 @@ app.get('/api/ref/books/:id?', (req, res) => {
 //------------------------------------------------------------------------------------------
 // load
 app.get('/api/ref/versions/:id?', (req, res) => {
-  var qry = "SELECT * FROM bible_translations";
+  var qry = "SELECT * FROM bible_translations ORDER BY code";
   if(req.params.id)
       qry = `SELECT * FROM bible_translations WHERE id=${req.params.id}`
 
