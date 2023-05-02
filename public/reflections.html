@@ -192,10 +192,18 @@
             <label for="scriptureNum">Scripture Number (sequence)</label>
             <p-inputtext id="scriptureNum" v-model="selectedscript.scriptureNum" placeholder="Scripture Number" class="w-full" autofocus/>
           </div>
-          <div class="field">
-            <label for="book">Book</label>
-            <!-- <p-inputtext id="book" v-model="selectedscript.book" placeholder="Book" class="w-full"/> -->
-            <p-dropdown v-model="selectedscript.book" :options="books" option-label="name" option-value="name" placeholder="Select a book" class="w-full"></p-dropdown>            
+
+          <div>
+              <div class="field" v-if="false">
+                <label for="book">Book</label>
+                <!-- <p-inputtext id="book" v-model="selectedscript.book" placeholder="Book" class="w-full"/> -->
+                <p-dropdown v-model="selectedscript.book" :options="books" option-label="name" option-value="name" placeholder="Select a book" class="w-full"></p-dropdown>            
+              </div>
+              <div class="field">
+                <label for="booka">Book</label>
+                <p-autocomplete id="booka" v-model="selectedscript.book" placeholder="Book" class="w-full"
+                   :suggestions="filteredBooks" @complete="filterBooks($event)">
+              </div>
           </div>
 
           <div style="display: inline-flex;">

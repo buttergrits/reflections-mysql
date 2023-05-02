@@ -53,9 +53,15 @@ var app = new Vue({
         filteredLocs  : [],
         filteredProvs : [],
         filteredCtrys : [],
+        filteredBooks : [],
  
     },
     methods: {
+        // for version dropdown -- not used yet
+        filterBooks: function(event) {
+            console.log(event.query)
+            this.filteredBooks = this.books.map(b => b.name).filter(b => b.toUpperCase().startsWith(event.query.toUpperCase()));
+        },
         // for version dropdown -- not used yet
         filterVersions: function(event) {
             this.filteredSongs = this.genUniqSorted(this.locations, 'song', event.query);
