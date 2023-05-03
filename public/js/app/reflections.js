@@ -13,6 +13,7 @@ var app = new Vue({
         'p-selectbutton' : selectbutton ,
         'p-dropdown'     : dropdown     ,
         'p-autocomplete' : autocomplete ,
+        'p-textarea'     : textarea     ,
     },
     data: {
         message     : 'Hello Vue!',
