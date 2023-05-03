@@ -137,13 +137,15 @@
             <label for="episode">Episode</label>
             <p-dropdown v-model="selectedlocn.episodeId" :options="epOptions" option-label="name" option-value="code" placeholder="Select an Episode" class="w-full"></p-dropdown>
           </div>
-          <div class="field">
-            <label for="locationNum">Location #</label>
-            <p-inputtext id="locationNum" v-model="selectedlocn.locationNum" placeholder="Location Name" class="w-full"/>
-          </div>
-          <div class="field">
-            <label for="startTime">Start Time</label>
-            <p-inputmask id="startTime" v-model="selectedlocn.startTime" mask="99:99" class="w-full" autofocus></p-inputmask>
+          <div class="formgrid grid">
+            <div class="field col">
+              <label for="locationNum">Location #</label>
+              <p-inputtext id="locationNum" v-model="selectedlocn.locationNum" placeholder="Location Name" class="w-full"/>
+            </div>
+            <div class="field col">
+              <label for="startTime">Start Time</label>
+              <p-inputmask id="startTime" v-model="selectedlocn.startTime" mask="99:99" class="w-full" autofocus></p-inputmask>
+            </div>
           </div>
           <div class="field">
             <label for="songName">Song</label>
@@ -157,15 +159,18 @@
                :suggestions="filteredLocs" @complete="filterLocs($event)">
             </p-autocomplete>
           </div>
-          <div class="field">
-            <label for="locationProv">Location Province/State</label>
-            <p-autocomplete id="locationProv" v-model="selectedlocn.locationProv" placeholder="State / Prov" class="w-full"
-               :suggestions="filteredProvs" @complete="filterProvs($event)">
-          </div>
-          <div class="field">
-            <label for="locationCountry">Country</label>
-            <p-autocomplete id="locationCountry" v-model="selectedlocn.locationCountry" placeholder="Country" class="w-full"
-               :suggestions="filteredCtrys" @complete="filterCtrys($event)">
+          <div class="formgrid grid">
+            <div class="field col">
+              <label for="locationProv">Location Province/State</label>
+              <p-autocomplete id="locationProv" v-model="selectedlocn.locationProv" placeholder="State / Prov" class="w-full"
+                 :suggestions="filteredProvs" @complete="filterProvs($event)">
+            </div>
+            <div class="field col">
+              <label for="locationCountry">Country</label>
+              <p-autocomplete id="locationCountry" v-model="selectedlocn.locationCountry" placeholder="Country" class="w-full"
+                 :suggestions="filteredCtrys" @complete="filterCtrys($event)">
+            </div>
+  
           </div>
         </template>
         <template #footer>
