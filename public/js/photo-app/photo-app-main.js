@@ -8,6 +8,7 @@ const photoAppMain = Vue.component('photo-app-main', {
       </div>
       <h3>Single Selection</h3>
       <p-tree :value="nodes" selectionMode="single" :selectionKeys.sync="selectedKey1"></p-tree>
+      <!-- <p-tree :value="nodes" ></p-tree> -->
 
     </div>
     `,
@@ -21,8 +22,8 @@ const photoAppMain = Vue.component('photo-app-main', {
   },
   data() { 
     return {
-      epfilters  : {},
-      selectedepi: null,
+      nodes : null,
+      selectedKey1:{},
     } 
   },
   methods: {
@@ -34,17 +35,21 @@ const photoAppMain = Vue.component('photo-app-main', {
     }
   },
   computed: {
-    thing  :  function() { return this.name },
+    //thing  :  function() { return this.name },
   },
   mounted() {
     //this.myalert('Hello, world!');
+    this.$http.get('/treenodes.json').then(function(resp) {
+          this.nodes = resp.body.root;
+    });
+
   },
   watch: {
-    name: {
-      handler: function(newValue) {
-        if(newValue == 'fiz')
-          alert('Fiz!');
-      }
-    },
+    // name: {
+    //   handler: function(newValue) {
+    //     if(newValue == 'fiz')
+    //       alert('Fiz!');
+    //   }
+    // },
   },
 });
