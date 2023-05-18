@@ -6,8 +6,15 @@ const photoAppMain = Vue.component('photo-app-main', {
       <div style="margin-bottom:1em;">
         <p-button @click="getData"       icon="pi pi-caret-right" type="button" class="p-button-sm" label="Load Data"      ></p-button>
       </div>
-      <h3>Single Selection</h3>
-      <p-tree :value="nodes" selectionMode="single" :selectionKeys.sync="selectedKey1"></p-tree>
+      <h3>Photo Library</h3>
+      <div class="grid">
+        <div class="col-2">
+          <p-tree :value="nodes" selectionMode="single" :selectionKeys.sync="selectedKey1"></p-tree>
+        </div>
+        <div class="col">
+          <p-tree :value="nodes2" selectionMode="single" :selectionKeys.sync="selectedKey2"></p-tree>
+        </div>
+      </div>
       <!-- <p-tree :value="nodes" ></p-tree> -->
 
     </div>
@@ -22,8 +29,10 @@ const photoAppMain = Vue.component('photo-app-main', {
   },
   data() { 
     return {
-      nodes : null,
+      nodes  : null,
+      nodes2 : null,
       selectedKey1:{},
+      selectedKey2:{},
     } 
   },
   methods: {
@@ -40,7 +49,10 @@ const photoAppMain = Vue.component('photo-app-main', {
   mounted() {
     //this.myalert('Hello, world!');
     this.$http.get('/treenodes.json').then(function(resp) {
-          this.nodes = resp.body.root;
+      this.nodes = resp.body.root;
+    });
+    this.$http.get('/treenodes2.json').then(function(resp) {
+      this.nodes2 = resp.body.root;
     });
 
   },
