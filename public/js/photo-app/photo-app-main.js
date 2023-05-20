@@ -13,6 +13,8 @@ const photoAppMain = Vue.component('photo-app-main', {
         </div>
         <div class="col">
           <p-tree :value="nodes2" selectionMode="single" :selectionKeys.sync="selectedKey2"></p-tree>
+          <p-button @click="showViewer"       icon="pi pi-caret-right" type="button" class="p-button-sm" label="Show Viewer"      ></p-button>
+          
         </div>
       </div>
       <!-- <p-tree :value="nodes" ></p-tree> -->
@@ -33,6 +35,15 @@ const photoAppMain = Vue.component('photo-app-main', {
       nodes2 : null,
       selectedKey1:{},
       selectedKey2:{},
+
+      images: [
+        "https://picsum.photos/200/200",
+        "https://picsum.photos/300/200",
+        "https://picsum.photos/250/200",
+        "http://localhost:3300/pictures/DSC_3905.JPG",
+        "http://localhost:3300/pictures/DSC_3906.JPG",
+        "http://localhost:3300/pictures/DSC_3907.JPG",
+      ]
     } 
   },
   methods: {
@@ -41,7 +52,12 @@ const photoAppMain = Vue.component('photo-app-main', {
     },
     getData: function() {
       alert('Photo app');
-    }
+    },
+    showViewer: function() {
+      this.$viewerApi({
+        images: this.images,
+      })
+    },
   },
   computed: {
     //thing  :  function() { return this.name },
