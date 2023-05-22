@@ -1,3 +1,14 @@
+// for pi-photo-app  =================================================
+
+//const fs = require('fs');
+import fs from'fs';
+//const path = require('path');
+import path from'path';
+
+// ===================================================================
+
+
+
 import { BibleGatewayAPI } from "bible-gateway-api";
 let bgw = new BibleGatewayAPI();
 
@@ -112,7 +123,7 @@ app.post('/api/ref/episode', (req, res) => {
      res.send(results);
    });  
 })
-//------------------------------------------------------------------------------------------
+ //------------------------------------------------------------------------------------------
 // delete
 app.delete('/api/ref/episode/:id', (req, res) => {
   var sql = `DELETE FROM  episodes
@@ -488,3 +499,21 @@ app.get('/test', (req, res) => {
 //     })
 // });
 
+
+//---------------------------------------------------------------------------------------------------------
+// *****   pi-photo-project  *****
+//---------------------------------------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------------------------------------
+// get top folder
+//---------------------------------------------------------------------------------------------------------
+app.get('/api/photo/topFolder', (req, res) => {
+  var folders = getDirectories('E:\\DATA\\PHOTO\\_pi-photo-project\\photos');
+  res.send(folders);
+})
+
+function getDirectories(path) {
+  return fs.readdirSync(path).filter(function (file) {
+    return fs.statSync(path+'/'+file).isDirectory();
+  });
+}
