@@ -14,6 +14,7 @@ var app = new Vue({
         'p-dropdown'     : dropdown     ,
         'p-autocomplete' : autocomplete ,
         'p-textarea'     : textarea     ,
+        'p-checkbox'     : checkbox     ,
     },
     data: {
         message     : 'Hello Vue!',

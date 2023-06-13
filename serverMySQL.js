@@ -97,16 +97,18 @@ app.get('/api/ref/episode/:id?', (req, res) => {
 app.put('/api/ref/episode', (req, res) => {
   //res.send(req.body);
   var sql = `UPDATE episodes 
-             SET    seasonNum     = ?,
-                    episodeNum    = ?, 
-                    episodeNumAlt = ?,
-                    notes         = ? 
+             SET    seasonNum      = ?,
+                    episodeNum     = ?, 
+                    episodeNumAlt  = ?,
+                    doneScriptures = ?,
+                    notes          = ? 
              WHERE id = ?
              LIMIT 1`;
   var data = [
     req.body.seasonNum,
     req.body.episodeNum,
     req.body.episodeNumAlt,
+    req.body.doneScriptures,
     req.body.notes,
     req.body.id,
   ];

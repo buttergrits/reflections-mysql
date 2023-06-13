@@ -58,6 +58,7 @@ const episodesTable = Vue.component('episodes-table', {
     'p-column'      : column      ,
     'p-panel'       : panel       ,
     'p-inputtext'   : inputtext   ,
+    'p-checkbox'    : checkbox    ,
   },
   data() { 
     return {
