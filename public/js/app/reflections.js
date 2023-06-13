@@ -59,6 +59,10 @@ var app = new Vue({
  
     },
     methods: {
+        epidlgInput: function(event) {
+            console.log(event);
+            this.epdlg = event;
+        },
         // for version dropdown -- not used yet
         filterBooks: function(event) {
             console.log(event.query)

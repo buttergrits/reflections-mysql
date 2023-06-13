@@ -96,7 +96,9 @@
     <!-- ------------------------------------------------------------------------------------  -->
     <!-- Episode  Dialog                                                                       -->
     <!-- ------------------------------------------------------------------------------------  -->
-    <p-dialog id="epdlg" header="Episode" :visible.sync="epdlg" v-if="selectedepi">
+    <episode-dialog :showval="epdlg" :selectedepi="selectedepi" v-on:input="epidlgInput">
+
+    <p-dialog id="epdlg" header="Episode" :visible.sync="epdlg" v-if="false">
       <p-card >
         <template #content>
           <div class="formgrid grid">
@@ -382,27 +384,28 @@
 
   </div>
 
-  <script src="js/primevue/dropdown.umd.min.js"></script>
+  <script src="js/primevue/dropdown.umd.min.js"    ></script>
   <script src="js/primevue/selectbutton.umd.min.js"></script>
-  <script src="js/primevue/card.umd.min.js"></script>
-  <script src="js/primevue/inputnumber.umd.min.js"></script>
-  <script src="js/primevue/dialog.umd.min.js"></script>
-  <script src="js/primevue/inputtext.umd.min.js"></script>
-  <script src="js/primevue/inputmask.umd.min.js"></script>
-  <script src="js/primevue/datatable.umd.min.js"></script>
-  <script src="js/primevue/column.umd.min.js"></script>
-  <script src="js/primevue/button.umd.min.js"></script>
-  <script src="js/primevue/panel.umd.min.js"></script>
-  <script src="js/primevue/autocomplete.umd.js"></script>
-  <script src="js/primevue/textarea.umd.min.js"></script>
-  <script src="js/primevue/checkbox.umd.min.js"></script>
+  <script src="js/primevue/card.umd.min.js"        ></script>
+  <script src="js/primevue/inputnumber.umd.min.js" ></script>
+  <script src="js/primevue/dialog.umd.min.js"      ></script>
+  <script src="js/primevue/inputtext.umd.min.js"   ></script>
+  <script src="js/primevue/inputmask.umd.min.js"   ></script>
+  <script src="js/primevue/datatable.umd.min.js"   ></script>
+  <script src="js/primevue/column.umd.min.js"      ></script>
+  <script src="js/primevue/button.umd.min.js"      ></script>
+  <script src="js/primevue/panel.umd.min.js"       ></script>
+  <script src="js/primevue/autocomplete.umd.js"    ></script>
+  <script src="js/primevue/textarea.umd.min.js"    ></script>
+  <script src="js/primevue/checkbox.umd.min.js"    ></script>
 
-  <script src="js/app/episodes-table.js"></script>
-  <script src="js/app/locations-table.js"></script>
+  <script src="js/app/episode-dialog.js"  ></script>
+  <script src="js/app/episodes-table.js"  ></script>
+  <script src="js/app/locations-table.js" ></script>
   <script src="js/app/scriptures-table.js"></script>
-  <script src="js/app/reflections.js"></script>
+  <script src="js/app/reflections.js"     ></script>
 
-  <script src="js/jquery.min.js"></script>
+  <script src="js/jquery.min.js"   ></script>
   <script src="js/bootstrap.min.js"></script>
 
   <style type="text/css">
