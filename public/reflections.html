@@ -100,23 +100,27 @@
       <p-card >
         <template #content>
           <div class="formgrid grid">
-            <div class="field col-6">
+            <div class="field col">
               <label for="season">Season</label>
               <p-inputnumber id="episode" v-model="selectedepi.seasonNum" placeholder="Season" class="w-full"/>
             </div>
-            <div class="field col-6">
+            <div class="field col">
               <label for="episode">Episode Sequence</label>
               <p-inputnumber id="episode" v-model="selectedepi.episodeNum" placeholder="Episode Seq" class="w-full"/>
             </div>
-            <div class="field col-6">
+          </div>
+          <div class="formgrid grid">
+              <div class="field col">
               <label for="done">Done Scriptures</label>
               <p-checkbox id="done" v-model="selectedepi.doneScriptures" :binary="true" class="w-full" ></p-checkbox>
             </div>
-            <div class="field col-6">
+            <div class="field col">
               <label for="episode">Episode Number</label>
               <p-inputnumber id="episode" v-model="selectedepi.episodeNumAlt" placeholder="Episode #" class="w-full"/>
             </div>
-            <div class="field col-12">
+          </div>
+          <div class="formgrid grid">
+            <div class="field col">
               <label for="episode">Notes</label>
               <p-inputtext id="episode" v-model="selectedepi.notes" placeholder="Notes" class="w-full"/>
             </div>
