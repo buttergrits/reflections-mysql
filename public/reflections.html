@@ -56,39 +56,8 @@
                 @selscr="(e) => {selectedscript=e;scrdlg=true;}" @newscr="newScripture">
             </locations-table>
           </div>
-
-
-
         </div>
 
-        <!-- ------------------------------------------------------------------------------------  -->
-        <!-- Mongo table - disabled for now                                                        -->
-        <!-- ------------------------------------------------------------------------------------  -->
-        <p-datatable :value="refTable || ref" :loading="loading" :filters.sync="filters" removable-sort :auto-layout="true" v-if="false"
-                    ref="dt" :selection.sync="selectedRow" @row-select="rowSelected" selection-mode="single"
-                    data-key="rowId" >
-
-          <template #header>
-            <div >
-                <span class="p-input-icon-left">
-                    <i class="pi pi-search"></i>
-                    <p-inputtext v-model="filters['global']" placeholder="Keyword Search" />
-                </span>
-                <p-button icon="pi pi-external-link"     label="Export"    @click="exportCSV($event)" ></p-button>
-                <p-button icon="pi pi-arrow-circle-down" label="Save JSON" @click="newEpisode($event)"  ></p-button>
-            </div>
-          </template>
-
-          <p-column sortable field="episodeId"     header="Episode"></p-column>
-          <p-column sortable field="location"      header="Location"></p-column>
-          <p-column sortable field="startTime"     header="Start"></p-column>
-          <p-column sortable field="scriptureId"   header="Scripture ID"></p-column>
-          <p-column sortable field="scriptureNum"  header="Scripture #"></p-column>
-          <p-column sortable field="scriptureInfo" header="Verse"></p-column>
-          <p-column sortable field="scriptureText" header="Text"></p-column>
-
-        </p-datatable>
-  
       </p-panel>
     </div>
 
@@ -96,7 +65,7 @@
     <!-- Episode  Dialog                                                                       -->
     <!-- ------------------------------------------------------------------------------------  -->
     <p-dialog id="epdlg" header="Episode" :visible.sync="epdlg" v-if="selectedepi">
-      <p-card >
+      <p-card style="margin-top:1px;">
         <template #content>
           <div class="field">
             <label for="season">Season</label>
@@ -131,19 +100,21 @@
     <!-- Location  Dialog                                                                      -->
     <!-- ------------------------------------------------------------------------------------  -->
     <p-dialog id="locdlg" header="Location" :visible.sync="locdlg" v-if="selectedlocn">
-      <p-card class="ml-3 mr-3" v-if="selectedlocn">
+      <p-card class="ml-3 mr-3" v-if="selectedlocn" style="margin-top:1px;">
         <template #content>
           <div class="field">
             <label for="episode">Episode</label>
             <p-dropdown v-model="selectedlocn.episodeId" :options="epOptions" option-label="name" option-value="code" placeholder="Select an Episode" class="w-full"></p-dropdown>
           </div>
-          <div class="field">
-            <label for="locationNum">Location #</label>
-            <p-inputtext id="locationNum" v-model="selectedlocn.locationNum" placeholder="Location Name" class="w-full"/>
-          </div>
-          <div class="field">
-            <label for="startTime">Start Time</label>
-            <p-inputmask id="startTime" v-model="selectedlocn.startTime" mask="99:99" class="w-full" autofocus></p-inputmask>
+          <div class="formgrid grid">
+            <div class="field col">
+              <label for="locationNum">Location #</label>
+              <p-inputtext id="locationNum" v-model="selectedlocn.locationNum" placeholder="Location Name" class="w-full"/>
+            </div>
+            <div class="field col">
+              <label for="startTime">Start Time</label>
+              <p-inputmask id="startTime" v-model="selectedlocn.startTime" mask="99:99" class="w-full" autofocus></p-inputmask>
+            </div>
           </div>
           <div class="field">
             <label for="songName">Song</label>
@@ -157,15 +128,18 @@
                :suggestions="filteredLocs" @complete="filterLocs($event)">
             </p-autocomplete>
           </div>
-          <div class="field">
-            <label for="locationProv">Location Province/State</label>
-            <p-autocomplete id="locationProv" v-model="selectedlocn.locationProv" placeholder="State / Prov" class="w-full"
-               :suggestions="filteredProvs" @complete="filterProvs($event)">
-          </div>
-          <div class="field">
-            <label for="locationCountry">Country</label>
-            <p-autocomplete id="locationCountry" v-model="selectedlocn.locationCountry" placeholder="Country" class="w-full"
-               :suggestions="filteredCtrys" @complete="filterCtrys($event)">
+          <div class="formgrid grid">
+            <div class="field col">
+              <label for="locationProv">Location Province/State</label>
+              <p-autocomplete id="locationProv" v-model="selectedlocn.locationProv" placeholder="State / Prov" class="w-full"
+                 :suggestions="filteredProvs" @complete="filterProvs($event)">
+            </div>
+            <div class="field col">
+              <label for="locationCountry">Country</label>
+              <p-autocomplete id="locationCountry" v-model="selectedlocn.locationCountry" placeholder="Country" class="w-full"
+                 :suggestions="filteredCtrys" @complete="filterCtrys($event)">
+            </div>
+  
           </div>
         </template>
         <template #footer>
@@ -182,37 +156,70 @@
     <!-- Scripture  Dialog                                                                     -->
     <!-- ------------------------------------------------------------------------------------  -->
     <p-dialog id="scrdlg" header="Scriptures" :visible.sync="scrdlg" v-if="selectedscript">
-      <p-card v-if="selectedscript">
+      <p-card v-if="selectedscript" style="margin-top:1px;">
         <template #content>
           <div class="field">
             <label for="locationId">Location</label>
             <p-dropdown v-model="selectedscript.locationId" :options="scOptions" option-label="name" option-value="code" placeholder="Select a Location" class="w-full"></p-dropdown>
           </div>
-          <div class="field">
+          <!-- <div class="field">
             <label for="scriptureNum">Scripture Number (sequence)</label>
-            <p-inputtext id="scriptureNum" v-model="selectedscript.scriptureNum" placeholder="Scripture Number" class="w-full"/>
+            <p-inputtext id="scriptureNum" v-model="selectedscript.scriptureNum" placeholder="Scripture Number" class="w-full" autofocus/>
+          </div> -->
+
+          <div class="formgrid grid">
+              <!-- <div class="field" v-if="false">
+                <label for="book">Book</label>
+                <p-inputtext id="book" v-model="selectedscript.book" placeholder="Book" class="w-full"/>
+                <p-dropdown v-model="selectedscript.book" :options="books" option-label="name" option-value="name" placeholder="Select a book" class="w-full"></p-dropdown>            
+              </div> -->
+              <div class="field col-4">
+                <label for="scriptureNum">Scripture Number (sequence)</label>
+                <p-inputtext id="scriptureNum" v-model="selectedscript.scriptureNum" placeholder="Scripture Number" class="w-full" autofocus/>
+              </div>
+                  <div class="field col">
+                <label for="booka">Book</label>
+                <p-autocomplete id="booka" v-model="selectedscript.book" placeholder="Book" class="w-full"
+                   :suggestions="filteredBooks" @complete="filterBooks($event)">
+              </div>
           </div>
-          <div class="field">
-            <label for="book">Book</label>
-            <!-- <p-inputtext id="book" v-model="selectedscript.book" placeholder="Book" class="w-full"/> -->
-            <p-dropdown v-model="selectedscript.book" :options="books" option-label="name" option-value="name" placeholder="Select a book" class="w-full"></p-dropdown>            
+
+          <div class="formgrid grid">
+            <div class="field col">
+              <label for="chapter">Chapter</label>
+              <p-inputtext id="chapter" v-model="selectedscript.chapter" placeholder="Chapter" class="w-full"/>
+            </div>
+              <div class="field col" >
+              <label for="verse">Verse</label>
+              <p-inputtext id="verse" v-model="selectedscript.verse" placeholder="Verse" class="w-full"/>
+            </div>
+              <div class="field col" >
+              <label for="translation">Translation</label>
+              <p-dropdown v-model="selectedscript.translation" :options="versions" option-label="code" option-value="code" placeholder="Translation" class="w-full" :editable="true" ></p-dropdown>
+            </div>
           </div>
-          <div class="field">
-            <label for="chapter">Chapter</label>
-            <p-inputtext id="chapter" v-model="selectedscript.chapter" placeholder="Chapter" class="w-full"/>
-          </div>
-          <div class="field">
-            <label for="verse">Verse</label>
-            <p-inputtext id="verse" v-model="selectedscript.verse" placeholder="Verse" class="w-full"/>
-          </div>
-          <div class="field">
+
+          <!-- <div class="field">
             <label for="translation">Translation</label>
             <p-inputtext id="translation" v-model="selectedscript.translation" placeholder="Translation" class="w-full"/>
-          </div>
+            <p-dropdown v-model="selectedscript.translation" :options="versions" option-label="code" option-value="code" placeholder="Translation" class="w-full" :editable="true" ></p-dropdown>
+          </div> -->
           <div class="field">
-            <label for="text">Text</label>
-            <p-inputtext id="text" v-model="selectedscript.text" placeholder="Text" class="w-full"/>
+            <label for="texta">Text</label>
+            <div class="p-inputgroup">
+              <p-button icon="pi pi-search" v-on:click="lookupScripture" ></p-button>
+              <p-textarea id="texta" v-model="selectedscript.text" :auto-resize="true" rows="2" cols="30" class="w-full"></p-textarea>
+              <p-button icon="pi pi-times" class="p-button-secondary" v-on:click="selectedscript.text=''" ></p-button>
+            </div>            
           </div>
+          <!-- <div class="field">
+            <label for="text">Text</label>
+            <div class="p-inputgroup">
+                <p-button icon="pi pi-search" v-on:click="lookupScripture" ></p-button>
+                <p-inputtext id="text" v-model="selectedscript.text" placeholder="Text" class="w-full"></p-inputtext>
+                <p-button icon="pi pi-times" class="p-button-secondary" v-on:click="selectedscript.text=''" ></p-button>
+            </div>            
+          </div> -->
         </template>
         <template #footer>
           <p-button icon="pi pi-plus"  label="Save"   v-on:click="updateScripture"  class="p-button-sm "></p-button>
@@ -348,6 +355,7 @@
   <script src="js/primevue/button.umd.min.js"></script>
   <script src="js/primevue/panel.umd.min.js"></script>
   <script src="js/primevue/autocomplete.umd.js"></script>
+  <script src="js/primevue/textarea.umd.min.js"></script>
 
   <script src="js/app/episodes-table.js"></script>
   <script src="js/app/locations-table.js"></script>

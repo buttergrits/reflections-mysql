@@ -29,6 +29,7 @@ const episodesTable = Vue.component('episodes-table', {
             <!-- <p-column sortable field="episodeNumAlt"     header="Episode Num"></p-column>  -->
             <p-column sortable field="episodeTag"        header="Episode Tag"></p-column>
             <p-column sortable field="locationCount"     header="# Locations"></p-column>
+            <p-column sortable field="numLocsWithScrs"   header="# Locs W/Scrs"></p-column>
             <p-column sortable field="notes"             header="Notes"      ></p-column>
             <p-column :exportable="false" :styles="{'min-width':'8rem'}">
                 <template #body="slotProps">

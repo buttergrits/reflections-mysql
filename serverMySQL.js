@@ -1,4 +1,17 @@
-const express = require('express');
+import { BibleGatewayAPI } from "bible-gateway-api";
+let bgw = new BibleGatewayAPI();
+
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+//const bgw = require('bible-gateway-api');
+//let bgw = new BibleGatewayAPI();
+
+//const express = require('express');
+import express from 'express';
+
 //const bodyParser= require('body-parser')
 const app = express();
 // use express.json after express 4.16
@@ -10,17 +23,18 @@ app.set('view engine', 'ejs')
 app.use(express.static(__dirname + '/public'));
 
 var db
-const MongoClient = require('mongodb').MongoClient;
-const ObjectId    = require('mongodb').ObjectId;
-var mysql = require('mysql');
+//const MongoClient = require('mongodb').MongoClient;
+//const ObjectId    = require('mongodb').ObjectId;
+//var mysql = require('mysql');
+import mysql from 'mysql'
 
-MongoClient.connect('mongodb://fizzypi.lan:27017/test', (err, database) => {
-  if (err) return console.log(err)
-  db = database
-  app.listen(3300, () => {
-    console.log('listening on 3300')
-  })
-})
+//MongoClient.connect('mongodb://fizzypi.lan:27017/test', (err, database) => {
+//  if (err) return console.log(err)
+//  db = database
+//  app.listen(3300, () => {
+//    console.log('listening on 3300')
+//  })
+//})
 
 var con = mysql.createConnection({
   host         : "fizzypi.lan",
@@ -30,6 +44,11 @@ var con = mysql.createConnection({
   insecureAuth : true
 });
 con.connect();
+
+app.listen(3300, () => {
+  console.log('listening on 3300')
+})
+
 
 //------------------------------------------------------------------------------------------
 // Episode apis
@@ -222,14 +241,14 @@ app.get('/api/ref/scripture/:id?', (req, res) => {
 //------------------------------------------------------------------------------------------
 // update
 app.put('/api/ref/scripture', (req, res) => {
-  //res.send(req.body);
+  //console.log(req.body);
   var sql =  `UPDATE scriptures 
-              SET   locationId   = ?
-                    scriptureNum = ?
-                    book         = ?
-                    chapter      = ?
-                    verse        = ?
-                    translation  = ?
+              SET   locationId   = ?,
+                    scriptureNum = ?,
+                    book         = ?,
+                    chapter      = ?,
+                    verse        = ?,
+                    translation  = ?,
                     text         = ?
               WHERE id = ?
               LIMIT 1`;
@@ -294,6 +313,30 @@ app.delete('/api/ref/scripture/:id', (req, res) => {
      res.send(results);
    });  
 })
+//------------------------------------------------------------------------------------------
+// lookup bible text
+//------------------------------------------------------------------------------------------
+app.post('/api/ref/scriptureLookup', async (req, res) => {
+  console.log(req.body);
+  try {
+    let { verse, content } = await bgw.search(req.body.verse, req.body.tr);
+
+    // Extract passage from api result
+    var a = content;
+
+    // remove excess items from array
+    var b = a.slice(a.findIndex(e => e=='Store')+1                , 
+            a.findIndex(e => e.startsWith('Sign Up For')) );
+
+    // regex, trim, join into final string
+    const regex = /\d+|\(.\)|\[.\]/gm;
+    var c = b.map(b =>  b.replace(regex, '').trim()).join(' ');
+
+    res.send({ verse : verse, content: content, text : c });
+  } catch (error) {
+    res.send({ verse : req.body.verse + ' -' + req.body.tr, error: error});
+  }
+})
 
 //------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------
@@ -303,7 +346,7 @@ app.delete('/api/ref/scripture/:id', (req, res) => {
 //------------------------------------------------------------------------------------------
 // load
 app.get('/api/ref/books/:id?', (req, res) => {
-  var qry = "SELECT * FROM bible_books";
+  var qry = "SELECT * FROM bible_books ORDER BY name";
   if(req.params.id)
       qry = `SELECT * FROM bible_books WHERE id=${req.params.id}`
 
@@ -314,31 +357,46 @@ app.get('/api/ref/books/:id?', (req, res) => {
   });
 })
 //------------------------------------------------------------------------------------------
+// Bible Translations / versions
+//------------------------------------------------------------------------------------------
+// load
+app.get('/api/ref/versions/:id?', (req, res) => {
+  var qry = "SELECT * FROM bible_translations ORDER BY code";
+  if(req.params.id)
+      qry = `SELECT * FROM bible_translations WHERE id=${req.params.id}`
 
-app.get('/', (req, res) => {
-  db.collection('quotes').find().toArray((err, result) => {
-    if (err) return console.log(err)
-    // renders index.ejs
-    res.render('index.ejs', {quotes: result})
-  })
+  con.query(qry, function(err, result) {
+    if (err) throw err;
+    console.log(`/api/ref/versions - length:${result?.length}`);
+    res.send(result);
+  });
 })
+//------------------------------------------------------------------------------------------
 
-app.get('/reflect', (req, res) => {
-  db.collection('quotes').find().toArray((err, result) => {
-    if (err) return console.log(err)
-    // renders index.ejs
-    res.render('reflect.ejs', {quotes: result})
-  })
-})
+//app.get('/', (req, res) => {
+//  db.collection('quotes').find().toArray((err, result) => {
+//    if (err) return console.log(err)
+//    // renders index.ejs
+//    res.render('index.ejs', {quotes: result})
+//  })
+//})
 
-app.get('/refs', (req, res) => {
-  db.collection('reflections').find().toArray(function(err, results) {
-    console.log(results);
-    res.send(results);
-    //  res.sendfile(__dirname + '/index.html')
-    // send HTML file populated with quotes here
-  })
-})
+//app.get('/reflect', (req, res) => {
+//  db.collection('quotes').find().toArray((err, result) => {
+//    if (err) return console.log(err)
+//    // renders index.ejs
+//    res.render('reflect.ejs', {quotes: result})
+//  })
+//})
+
+//app.get('/refs', (req, res) => {
+//  db.collection('reflections').find().toArray(function(err, results) {
+//    console.log(results);
+//    res.send(results);
+//    //  res.sendfile(__dirname + '/index.html')
+//    // send HTML file populated with quotes here
+//  })
+//})
 
 
 app.get('/test', (req, res) => {
@@ -348,85 +406,85 @@ app.get('/test', (req, res) => {
 
 
 
-app.get('/weatherdata', (req, res) => {
-  //var cursor = db.collection('quotes').find()
-  db.collection('sunTimes').find().toArray(function(err, results) {
-    console.log(results);
-    res.send(results);
-//  res.sendfile(__dirname + '/index.html')
-    // send HTML file populated with quotes here
-  })
-
-  // Note: __dirname is directory that contains the JavaScript source code. Try logging it and see what you get!
-  // Mine was '/Users/zellwk/Projects/demo-repos/crud-express-mongo' for this app.
-})
+// app.get('/weatherdata', (req, res) => {
+//   //var cursor = db.collection('quotes').find()
+//   db.collection('sunTimes').find().toArray(function(err, results) {
+//     console.log(results);
+//     res.send(results);
+// //  res.sendfile(__dirname + '/index.html')
+//     // send HTML file populated with quotes here
+//   })
+// 
+//   // Note: __dirname is directory that contains the JavaScript source code. Try logging it and see what you get!
+//   // Mine was '/Users/zellwk/Projects/demo-repos/crud-express-mongo' for this app.
+// })
 
 //---------------------------------------------------------------------------------------------------------
 // Reflections - get all episodes
 //---------------------------------------------------------------------------------------------------------
-app.get('/reflectionsdata', (req, res) => {
-  db.collection('reflections').find().toArray(function(err, results) {
-    console.log(results);
-    res.send(results);
-  })
-})
+//app.get('/reflectionsdata', (req, res) => {
+//  db.collection('reflections').find().toArray(function(err, results) {
+//    console.log(results);
+//    res.send(results);
+//  })
+//})
 
 //---------------------------------------------------------------------------------------------------------
 // Reflections - update one episode (in progress)
 //---------------------------------------------------------------------------------------------------------
-app.put('/reflectionsdata', (req, res) => {
-  const objectId = new ObjectId(req.body._id)  ;
-  //remove id before updating object
-  delete req.body._id;
-  db.collection('reflections').findOneAndUpdate({_id: objectId}, req.body, function(err, result) {
-    if (err) return console.log(err)
-    db.collection('reflections').find().toArray(function(err, results) {
-      res.send(results);
-    })
-  });
-});
+// app.put('/reflectionsdata', (req, res) => {
+//   const objectId = new ObjectId(req.body._id)  ;
+//   //remove id before updating object
+//   delete req.body._id;
+//   db.collection('reflections').findOneAndUpdate({_id: objectId}, req.body, function(err, result) {
+//     if (err) return console.log(err)
+//     db.collection('reflections').find().toArray(function(err, results) {
+//       res.send(results);
+//     })
+//   });
+// });
 
 //---------------------------------------------------------------------------------------------------------
 // Reflections - create one episode (in progress)
 //---------------------------------------------------------------------------------------------------------
-app.post('/reflectionsdata', (req, res) => {
-  console.log(req.body);
-  db.collection('reflections').save(req.body, (err, result) => {
-    if (err) return console.log(err)
-    console.log('saved to database - Season:[' + req.body.season + '] Episode: [' + req.body.episode + ']')
-    db.collection('reflections').find().toArray(function(err, results) {
-      res.send(results);
-    });
-  });
-});
+// app.post('/reflectionsdata', (req, res) => {
+//   console.log(req.body);
+//   db.collection('reflections').save(req.body, (err, result) => {
+//     if (err) return console.log(err)
+//     console.log('saved to database - Season:[' + req.body.season + '] Episode: [' + req.body.episode + ']')
+//     db.collection('reflections').find().toArray(function(err, results) {
+//       res.send(results);
+//     });
+//   });
+// });
 
 //---------------------------------------------------------------------------------------------------------
 // Reflections - delete one episode (in progress)
 //---------------------------------------------------------------------------------------------------------
-app.delete('/reflectionsdata', (req, res) => {
-  console.log(req.body);
-  db.collection('reflections').find().toArray(function(err, results) {
-  //  console.log(results);
-    res.send(results);
-  })
-});
+//app.delete('/reflectionsdata', (req, res) => {
+//  console.log(req.body);
+//  db.collection('reflections').find().toArray(function(err, results) {
+//  //  console.log(results);
+//    res.send(results);
+//  })
+//});
 
 
-app.post('/quotes', (req, res) => {
- db.collection('quotes').save(req.body, (err, result) => {
-    if (err) return console.log(err)
-	    console.log('saved to database - Quote:[' + req.body.quote + '] By: [' + req.body.name + ']')
-//    console.log('saved to database')
-    res.redirect('/')
-  })
-//  console.log(req.body)
-})
+// app.post('/quotes', (req, res) => {
+//  db.collection('quotes').save(req.body, (err, result) => {
+//     if (err) return console.log(err)
+// 	    console.log('saved to database - Quote:[' + req.body.quote + '] By: [' + req.body.name + ']')
+// //    console.log('saved to database')
+//     res.redirect('/')
+//   })
+// //  console.log(req.body)
+// })
 
-app.post('/delquote', (req, res) => {
-    db.collection('quotes').findOneAndDelete({"name": req.body.name,"quote": req.body.quote }, (err, result) => {
-        if (err) return console.log(err)
-            console.log('deleted from database - Quote:[' + req.body.quote + '] By: [' + req.body.name + ']')
-        res.redirect('/')
-    })
-});
+// app.post('/delquote', (req, res) => {
+//     db.collection('quotes').findOneAndDelete({"name": req.body.name,"quote": req.body.quote }, (err, result) => {
+//         if (err) return console.log(err)
+//             console.log('deleted from database - Quote:[' + req.body.quote + '] By: [' + req.body.name + ']')
+//         res.redirect('/')
+//     })
+// });
 

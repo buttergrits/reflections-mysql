@@ -3,7 +3,9 @@
   "description": "Fizzy web app",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
   "dependencies": {
+    "bible-gateway-api": "^1.0.8",
     "body-parser": "^1.16.0",
     "ejs": "^2.5.5",
     "express": "3.x",

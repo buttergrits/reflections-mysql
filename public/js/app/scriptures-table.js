@@ -24,9 +24,9 @@ const scripturesTable = Vue.component('scriptures-table', {
         <p-column sortable field="id"             header="ID"         ></p-column>
         <p-column sortable field="scriptureNum"   header="#"          ></p-column>
         <p-column sortable field="scriptureTag"   header="Tag"        ></p-column>
+        <p-column sortable field="locationDesc"   header="Location"   ></p-column>
         <p-column sortable field="scriptureDesc"  header="Description"></p-column>
         <p-column sortable field="text"           header="Text"       ></p-column>
-        <p-column sortable field="locationDesc"   header="Location"   ></p-column>
 
     </p-datatable>
 </div>
