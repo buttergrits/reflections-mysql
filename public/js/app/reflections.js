@@ -422,7 +422,14 @@ var app = new Vue({
     computed: {
         filtLocations  :  function() { return this.selectedepi ? this.locations.filter(l => l.episodeId == this.selectedepi.id) : this.locations },
         filtLocName    :  function() { return "Locations" + (this.selectedepi ? ` (in episode ${this.selectedepi.episodeTag})` : "") },
-        filtScriptures :  function() { return this.selectedlocn ? this.scriptures.filter(l => l.locationId == this.selectedlocn.id) : this.scriptures },
+        filtScriptures :  function() { 
+            if (this.selectedlocn)
+                return this.scriptures.filter(l => l.locationId == this.selectedlocn.id);
+            else if(this.selectedepi)
+                return this.scriptures.filter(l => l.episodeId == this.selectedepi.id) ;
+            else
+                return this.scriptures
+        },
         filtScrName    :  function() { return "Scriptures" + (this.selectedlocn ? ` (for ${this.selectedlocn.locationDesc} /  ${this.selectedlocn.locationTag} )` : "") },
     },
     
