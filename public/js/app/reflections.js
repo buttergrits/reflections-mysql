@@ -430,7 +430,14 @@ var app = new Vue({
             else
                 return this.scriptures
         },
-        filtScrName    :  function() { return "Scriptures" + (this.selectedlocn ? ` (for ${this.selectedlocn.locationDesc} /  ${this.selectedlocn.locationTag} )` : "") },
+        filtScrName    :  function() { //return "Scriptures" + (this.selectedlocn ? ` (for ${this.selectedlocn.locationDesc} /  ${this.selectedlocn.locationTag} )` : "") 
+                                var rv = "Scriptures";
+                                if(this.selectedlocn)
+                                    rv = "Scriptures" + ` (for ${this.selectedlocn.locationDesc} /  ${this.selectedlocn.locationTag})`
+                                else if (this.selectedepi)
+                                    rv = "Scriptures" + ` (for ${this.selectedepi.episodeTag})`
+                                return rv;
+                            },
     },
     
     mounted: function() {
