@@ -214,11 +214,11 @@
               </div> -->
               <div class="field col-4">
                 <label for="scriptureNum">Scripture Number (sequence)</label>
-                <p-inputtext id="scriptureNum" v-model="selectedscript.scriptureNum" placeholder="Scripture Number" class="w-full" autofocus/>
+                <p-inputtext id="scriptureNum" v-model="selectedscript.scriptureNum" placeholder="Scripture Number" class="w-full" />
               </div>
                   <div class="field col">
                 <label for="booka">Book</label>
-                <p-autocomplete id="booka" v-model="selectedscript.book" placeholder="Book" class="w-full"
+                <p-autocomplete id="booka" v-model="selectedscript.book" placeholder="Book" class="w-full" autofocus
                    :suggestions="filteredBooks" @complete="filterBooks($event)">
               </div>
           </div>
