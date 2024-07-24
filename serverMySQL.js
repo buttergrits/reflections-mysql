@@ -47,34 +47,50 @@ import mysql from 'mysql'
 //  })
 //})
 
-var con = mysql.createConnection({
-  host         : "fizzypi.lan",
-  user         : "monty",
-  password     : "some_pass",
-  database     : "reflections",
-  insecureAuth : true,
-  typeCast     : function castField( field, useDefaultTypeCasting ) {
-
-    // We only want to cast bit fields that have a single-bit in them. If the field
-    // has more than one bit, then we cannot assume it is supposed to be a Boolean.
-    if ( ( field.type === "BIT" ) && ( field.length === 1 ) ) {
-
-        var bytes = field.buffer() ?? [0];
-
-        // A Buffer in Node represents a collection of 8-bit unsigned integers.
-        // Therefore, our single "bit field" comes back as the bits '0000 0001',
-        // which is equivalent to the number 1.
-        return( bytes[ 0 ]  ) === 1 ;
-
-    }
-    return( useDefaultTypeCasting() );
-}
-});
-con.connect();
+// var con = mysql.createConnection({
+//   host         : "fizzypi.lan",
+//   user         : "monty",
+//   password     : "some_pass",
+//   database     : "reflections",
+//   insecureAuth : true,
+//   typeCast     : function castField( field, useDefaultTypeCasting ) {
+// 
+//     // We only want to cast bit fields that have a single-bit in them. If the field
+//     // has more than one bit, then we cannot assume it is supposed to be a Boolean.
+//     if ( ( field.type === "BIT" ) && ( field.length === 1 ) ) {
+// 
+//         var bytes = field.buffer() ?? [0];
+// 
+//         // A Buffer in Node represents a collection of 8-bit unsigned integers.
+//         // Therefore, our single "bit field" comes back as the bits '0000 0001',
+//         // which is equivalent to the number 1.
+//         return( bytes[ 0 ]  ) === 1 ;
+// 
+//     }
+//     return( useDefaultTypeCasting() );
+// }
+// });
+// con.connect();
 
 app.listen(3300, () => {
   console.log('listening on 3300')
 })
+
+// -------------------------------------------------------------------------------------------------------
+// Using 'pool' below addresses issue where a mySQL connection is eventually lost, causing app exception.  
+// The solution uses mySQL connection pool to manage the connection, elimitating the timeout issue.
+// See url's below:
+// - https://stackoverflow.com/questions/75593795/mysql-close-connection-after-some-hours  (question)
+// - https://github.com/sidorares/node-mysql2/issues/836#issuecomment-414281593            (answer)
+// -------------------------------------------------------------------------------------------------------
+const pool = mysql.createPool({
+  host    : 'fizzypi.lan',
+  user    : 'monty',
+  database: 'reflections',
+  password: 'some_pass'
+});
+
+
 
 
 //------------------------------------------------------------------------------------------
@@ -86,7 +102,7 @@ app.get('/api/ref/episode/:id?', (req, res) => {
   if(req.params.id)
       qry = `SELECT * FROM v_episodes WHERE id=${req.params.id}`
 
-  con.query(qry, function(err, result) {
+  pool.query(qry, function(err, result) {
     if (err) throw err;
     console.log(result?.length);
     res.send(result);
@@ -112,7 +128,7 @@ app.put('/api/ref/episode', (req, res) => {
     req.body.notes,
     req.body.id,
   ];
-  con.query(sql, data, (error, results, fields) => {
+  pool.query(sql, data, (error, results, fields) => {
     if (error){
       return console.error(error.message);
     }
@@ -132,7 +148,7 @@ app.post('/api/ref/episode', (req, res) => {
     req.body.episodeNumAlt,
     req.body.notes
   ];
-  con.query(sql, data, (error, results, fields) => {
+  pool.query(sql, data, (error, results, fields) => {
      if (error){
        return console.error(error.message);
      }
@@ -151,7 +167,7 @@ app.delete('/api/ref/episode/:id', (req, res) => {
     req.params.id,
   ];
   //res.send(req.params.id);
-  con.query(sql, data, (error, results, fields) => {
+  pool.query(sql, data, (error, results, fields) => {
      if (error){
        return console.error(error.message);
      }
@@ -170,7 +186,7 @@ app.get('/api/ref/location/:id?', (req, res) => {
   if(req.params.id)
       qry = `SELECT * FROM v_locations WHERE id=${req.params.id}`
 
-  con.query(qry, function(err, result) {
+  pool.query(qry, function(err, result) {
     if (err) throw err;
     console.log(result?.length);
     res.send(result);
@@ -200,7 +216,7 @@ app.put('/api/ref/location', (req, res) => {
     req.body.startTime       ,
     req.body.id
   ];
-  con.query(sql, data, (error, results, fields) => {
+  pool.query(sql, data, (error, results, fields) => {
     if (error){
       return console.error(error.message);
     }
@@ -223,7 +239,7 @@ app.post('/api/ref/location', (req, res) => {
     req.body.song            ,
     req.body.startTime
   ];
-  con.query(sql, data, (error, results, fields) => {
+  pool.query(sql, data, (error, results, fields) => {
      if (error){
        return console.error(error.message);
      }
@@ -242,7 +258,7 @@ app.delete('/api/ref/location/:id', (req, res) => {
     req.params.id,
   ];
   //res.send(req.params.id);
-  con.query(sql, data, (error, results, fields) => {
+  pool.query(sql, data, (error, results, fields) => {
      if (error){
        return console.error(error.message);
      }
@@ -261,7 +277,7 @@ app.get('/api/ref/scripture/:id?', (req, res) => {
   if(req.params.id)
       qry = `SELECT * FROM v_scriptures WHERE id=${req.params.id}`
 
-  con.query(qry, function(err, result) {
+  pool.query(qry, function(err, result) {
     if (err) throw err;
     console.log(result?.length);
     res.send(result);
@@ -291,7 +307,7 @@ app.put('/api/ref/scripture', (req, res) => {
     req.body.text         ,
     req.body.id
   ];
-  con.query(sql, data, (error, results, fields) => {
+  pool.query(sql, data, (error, results, fields) => {
     if (error){
       return console.error(error.message);
     }
@@ -314,7 +330,7 @@ app.post('/api/ref/scripture', (req, res) => {
     req.body.translation  ,
     req.body.text
   ];
-  con.query(sql, data, (error, results, fields) => {
+  pool.query(sql, data, (error, results, fields) => {
      if (error){
        return console.error(error.message);
      }
@@ -333,7 +349,7 @@ app.delete('/api/ref/scripture/:id', (req, res) => {
     req.params.id,
   ];
   //res.send(req.params.id);
-  con.query(sql, data, (error, results, fields) => {
+  pool.query(sql, data, (error, results, fields) => {
      if (error){
        return console.error(error.message);
      }
@@ -379,7 +395,7 @@ app.get('/api/ref/books/:id?', (req, res) => {
   if(req.params.id)
       qry = `SELECT * FROM bible_books WHERE id=${req.params.id}`
 
-  con.query(qry, function(err, result) {
+  pool.query(qry, function(err, result) {
     if (err) throw err;
     console.log(`/api/ref/books - length:${result?.length}`);
     res.send(result);
@@ -394,7 +410,7 @@ app.get('/api/ref/versions/:id?', (req, res) => {
   if(req.params.id)
       qry = `SELECT * FROM bible_translations WHERE id=${req.params.id}`
 
-  con.query(qry, function(err, result) {
+  pool.query(qry, function(err, result) {
     if (err) throw err;
     console.log(`/api/ref/versions - length:${result?.length}`);
     res.send(result);
