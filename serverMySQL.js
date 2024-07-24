@@ -371,7 +371,7 @@ app.post('/api/ref/scriptureLookup', async (req, res) => {
 
     // remove excess items from array
     var b = a.slice(a.findIndex(e => e=='Store')+1                , 
-            a.findIndex(e => e.startsWith('Sign Up For')) );
+            a.findIndex(e => e.startsWith('Sign Up for')) );
 
     // regex, trim, join into final string
     const regex = /\d+|\(.\)|\[.\]/gm;
