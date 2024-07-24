@@ -17,6 +17,12 @@
   <div id="app" >
     <div>
       <p-panel header="Reflections (MySQL)" >
+        <template #header>
+            <div style="float: left;">
+              <span style="font-size: medium; font-weight: bold;">Reflections</span>
+            </div>
+            <p-button icon="pi pi-home" @click="goHome" label="Home" class="flex-order-1"  style="float: right;" ></p-button>
+        </template>
 
         <div style="margin-bottom:1em;">
           <p-button @click="getData"       icon="pi pi-caret-right" type="button" class="p-button-sm" label="Load Data"      ></p-button>

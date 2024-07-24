@@ -59,6 +59,9 @@ var app = new Vue({
  
     },
     methods: {
+        goHome: function() {
+            window.location.href = location.protocol + "//" + location.hostname + "/";
+        },
         // for version dropdown -- not used yet
         filterBooks: function(event) {
             console.log(event.query)
