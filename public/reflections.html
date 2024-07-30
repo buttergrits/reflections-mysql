@@ -133,7 +133,7 @@
           </div>
         </template>
         <template #footer>
-          <p-button icon="pi pi-plus"  label="Save"         v-on:click="updateEpisode"  class="p-button-sm "></p-button>
+          <p-button icon="pi pi-save"  label="Save"         v-on:click="updateEpisode"  class="p-button-sm "></p-button>
           <p-button icon="pi pi-times" label="Delete"       v-on:click="deleteEpisode"  class="p-button-sm  p-button-danger"    v-if="!selectedepi.isnew"></p-button>
           <p-button icon="pi pi-plus"  label="Add Location" v-on:click="episodeAddLoc"  class="p-button-sm  p-button-secondary" v-if="!selectedepi.isnew"></p-button>
         </template>
@@ -188,7 +188,7 @@
           </div>
         </template>
         <template #footer>
-          <p-button icon="pi pi-plus"  label="Save"          v-on:click="updateLocation"  class="p-button-sm "></p-button>
+          <p-button icon="pi pi-save"  label="Save"          v-on:click="updateLocation"  class="p-button-sm "></p-button>
           <p-button icon="pi pi-times" label="Delete"        v-on:click="deleteLocation"  class="p-button-sm  p-button-danger"    v-if="!selectedlocn.isnew"></p-button>
           <p-button icon="pi pi-plus"  label="Add Scripture" v-on:click="locationAddScr"  class="p-button-sm  p-button-secondary" v-if="!selectedlocn.isnew"></p-button>
         </template>
@@ -267,7 +267,7 @@
           </div> -->
         </template>
         <template #footer>
-          <p-button icon="pi pi-plus"  label="Save"   v-on:click="updateScripture"  class="p-button-sm "></p-button>
+          <p-button icon="pi pi-save"  label="Save"   v-on:click="updateScripture"  class="p-button-sm "></p-button>
           <p-button icon="pi pi-times" label="Delete" v-on:click="deleteScripture"  class="p-button-sm  p-button-danger" v-if="!selectedscript.isnew"></p-button>
         </template>
 
