@@ -19,12 +19,19 @@
       <p-panel header="Reflections (MySQL)" >
         <template #header>
             <div style="float: left;">
-              <span style="font-size: medium; font-weight: bold;">Reflections</span>
+              <span style="font-size: medium; font-weight: bold;margin-right:6em;">Reflections</span>
+              <p-button @click="getData"       icon="pi pi-caret-right" type="button" class="p-button-sm" label="Load Data"      ></p-button>
+              <p-button @click="genTable(ref)" icon="pi pi-caret-right" type="button" class="p-button-sm" label="Generate Table" ></p-button>
+              <p-selectbutton id="selbut" v-model="obj" :options="objs" style="display: inline-flex;margin-left: .5em;"></p-selectbutton>
+              <a class="p-button p-button-sm p-button-outlined" href="test-chart.html">Sample vue-chart-js</a>
+              <a class="p-button p-button-sm p-button-outlined" href="photo-test.html">Sample treeview</a>
             </div>
-            <p-button icon="pi pi-home" @click="goHome" label="Home" class="flex-order-1"  style="float: right;" ></p-button>
+            <div style="float: right;" class="flex-order-1">
+              <p-button icon="pi pi-home" @click="goHome" label="Home" style="float: right;" ></p-button>
+            </div>
         </template>
 
-        <div style="margin-bottom:1em;">
+        <div style="margin-bottom:1em;display: none;">
           <p-button @click="getData"       icon="pi pi-caret-right" type="button" class="p-button-sm" label="Load Data"      ></p-button>
           <p-button @click="genTable(ref)" icon="pi pi-caret-right" type="button" class="p-button-sm" label="Generate Table" ></p-button>
           <p-selectbutton id="selbut" v-model="obj" :options="objs" style="display: inline-flex;margin-left: .5em;"></p-selectbutton>

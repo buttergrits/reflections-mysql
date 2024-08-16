@@ -2,13 +2,13 @@ const episodesTable = Vue.component('episodes-table', {
   props: ['name', 'episodes', 'loading'],
   template: /*html*/ `
     <div>
-      <p-datatable :value="episodes" :loading="loading" :filters.sync="epfilters" removable-sort :auto-layout="true" :rows="5"
+      <p-datatable :value="episodes" :loading="loading" :filters.sync="epfilters" removable-sort :auto-layout="true" :rows="6"
             ref="dt" :selection.sync="selectedepi" @row-select="$emit('selrow',selectedepi)" selection-mode="single"
             @row-unselect="$emit('unselrow',selectedepi)"
             :meta-key-selection="false"
             data-key="id" :paginator="true"
             paginator-template="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
-            :rows-per-page-options="[5,20,50]"
+            :rows-per-page-options="[6,20,50]"
             current-page-report-template="Showing {first} to {last} of {totalRecords}">
 
             <template #header>
