@@ -1,0 +1,1 @@
+select `e`.`id` AS `id`,count(`l`.`episodeId`) AS `locationCount` from (`episodes` `e` left join `locations` `l` on((`l`.`episodeId` = `e`.`id`))) group by `e`.`id`

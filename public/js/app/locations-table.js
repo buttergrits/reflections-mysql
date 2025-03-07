@@ -2,13 +2,13 @@ const locationsTable = Vue.component('locations-table', {
   props: ['name', 'locations', 'loading'],
   template: /*html*/ `
     <div>
-      <p-datatable :value="locations" :loading="loading" :filters.sync="locfilters" removable-sort :auto-layout="true" :rows="8"
+      <p-datatable :value="locations" :loading="loading" :filters.sync="locfilters" removable-sort :auto-layout="true" :rows="6"
             ref="dt" :selection.sync="selectedlocn" @row-select="$emit('selrow',selectedlocn)" selection-mode="single"
             @row-unselect="$emit('selrow',selectedlocn)"
             :meta-key-selection="false"
             data-key="id" :paginator="true"
             paginator-template="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
-            :rows-per-page-options="[8,20,50]"
+            :rows-per-page-options="[6,20,50]"
             current-page-report-template="Showing {first} to {last} of {totalRecords}">
 
         <template #header>
@@ -25,6 +25,7 @@ const locationsTable = Vue.component('locations-table', {
 
         <p-column sortable field="id"            header="ID"           ></p-column>
         <p-column sortable field="locationNum"   header="Seq #"        ></p-column>
+        <p-column sortable field="numScriptures" header="Scrs"         ></p-column>
         <p-column sortable field="locationTag"   header="Tag"          ></p-column>
         <p-column sortable field="startTime"     header="Start Time"   ></p-column>
         <p-column sortable field="duration"      header="Duration"     ></p-column>

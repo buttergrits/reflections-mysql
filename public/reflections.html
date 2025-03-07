@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>MY APP</title>
+  <title>Reflections App</title>
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/primeicons.css" rel="stylesheet">
   <link href="css/primevue.min.css" rel="stylesheet">
@@ -17,12 +17,26 @@
   <div id="app" >
     <div>
       <p-panel header="Reflections (MySQL)" >
+        <template #header>
+            <div style="float: left;">
+              <span style="font-size: medium; font-weight: bold;margin-right:6em;">Reflections</span>
+              <p-button @click="getData"       icon="pi pi-caret-right" type="button" class="p-button-sm" label="Load Data"      ></p-button>
+              <p-button @click="genTable(ref)" icon="pi pi-caret-right" type="button" class="p-button-sm" label="Generate Table" ></p-button>
+              <p-selectbutton id="selbut" v-model="obj" :options="objs" style="display: inline-flex;margin-left: .5em;"></p-selectbutton>
+              <a class="p-button p-button-sm p-button-outlined" href="test-chart.html">Sample vue-chart-js</a>
+              <a class="p-button p-button-sm p-button-outlined" href="photo-test.html">Sample treeview</a>
+            </div>
+            <div style="float: right;" class="flex-order-1">
+              <p-button icon="pi pi-home" @click="goHome" label="Home" style="float: right;" ></p-button>
+            </div>
+        </template>
 
-        <div style="margin-bottom:1em;">
+        <div style="margin-bottom:1em;display: none;">
           <p-button @click="getData"       icon="pi pi-caret-right" type="button" class="p-button-sm" label="Load Data"      ></p-button>
           <p-button @click="genTable(ref)" icon="pi pi-caret-right" type="button" class="p-button-sm" label="Generate Table" ></p-button>
           <p-selectbutton id="selbut" v-model="obj" :options="objs" style="display: inline-flex;margin-left: .5em;"></p-selectbutton>
-          <a href="test-chart.html">Sample vue-chart-js</a>
+          <a class="p-button p-button-sm p-button-outlined" href="test-chart.html">Sample vue-chart-js</a>
+          <a class="p-button p-button-sm p-button-outlined" href="photo-test.html">Sample treeview</a>
         </div>
 
         <div class="row">
@@ -98,28 +112,35 @@
     <p-dialog id="epdlg" header="Episode" :visible.sync="epdlg" v-if="selectedepi">
       <p-card >
         <template #content>
-          <div class="field">
-            <label for="season">Season</label>
-            <!-- <p-inputtext id="season" v-model="selectedepi.season" placeholder="Season" class="w-full"/> -->
-            <p-inputnumber id="episode" v-model="selectedepi.seasonNum" placeholder="Season" class="w-full"/>
+          <div class="formgrid grid">
+            <div class="field col">
+              <label for="season">Season</label>
+              <p-inputnumber id="episode" v-model="selectedepi.seasonNum" placeholder="Season" class="w-full"/>
+            </div>
+            <div class="field col">
+              <label for="episode">Episode Sequence</label>
+              <p-inputnumber id="episode" v-model="selectedepi.episodeNum" placeholder="Episode Seq" class="w-full"/>
+            </div>
           </div>
-          <div class="field">
-            <label for="episode">Episode Sequence</label>
-            <!-- <p-inputtext id="episode" v-model="selectedEp.episode" placeholder="Season" class="w-full"/> -->
-            <p-inputnumber id="episode" v-model="selectedepi.episodeNum" placeholder="Episode Seq" class="w-full"/>
+          <div class="formgrid grid">
+              <div class="field col">
+              <label for="done">Done Scriptures</label>
+              <p-checkbox id="done" v-model="selectedepi.doneScriptures" :binary="true" class="w-full" ></p-checkbox>
+            </div>
+            <div class="field col">
+              <label for="episode">Episode Number</label>
+              <p-inputnumber id="episode" v-model="selectedepi.episodeNumAlt" placeholder="Episode #" class="w-full"/>
+            </div>
           </div>
-          <div class="field">
-            <label for="episode">Episode Number</label>
-            <!-- <p-inputtext id="episode" v-model="selectedEp.episode" placeholder="Season" class="w-full"/> -->
-            <p-inputnumber id="episode" v-model="selectedepi.episodeNumAlt" placeholder="Episode #" class="w-full"/>
-          </div>
-          <div class="field">
-            <label for="episode">Notes</label>
-            <p-inputtext id="episode" v-model="selectedepi.notes" placeholder="Notes" class="w-full"/>
+          <div class="formgrid grid">
+            <div class="field col">
+              <label for="episode">Notes</label>
+              <p-inputtext id="episode" v-model="selectedepi.notes" placeholder="Notes" class="w-full"/>
+            </div>
           </div>
         </template>
         <template #footer>
-          <p-button icon="pi pi-plus"  label="Save"         v-on:click="updateEpisode"  class="p-button-sm "></p-button>
+          <p-button icon="pi pi-save"  label="Save"         v-on:click="updateEpisode"  class="p-button-sm "></p-button>
           <p-button icon="pi pi-times" label="Delete"       v-on:click="deleteEpisode"  class="p-button-sm  p-button-danger"    v-if="!selectedepi.isnew"></p-button>
           <p-button icon="pi pi-plus"  label="Add Location" v-on:click="episodeAddLoc"  class="p-button-sm  p-button-secondary" v-if="!selectedepi.isnew"></p-button>
         </template>
@@ -137,13 +158,15 @@
             <label for="episode">Episode</label>
             <p-dropdown v-model="selectedlocn.episodeId" :options="epOptions" option-label="name" option-value="code" placeholder="Select an Episode" class="w-full"></p-dropdown>
           </div>
-          <div class="field">
-            <label for="locationNum">Location #</label>
-            <p-inputtext id="locationNum" v-model="selectedlocn.locationNum" placeholder="Location Name" class="w-full"/>
-          </div>
-          <div class="field">
-            <label for="startTime">Start Time</label>
-            <p-inputmask id="startTime" v-model="selectedlocn.startTime" mask="99:99" class="w-full" autofocus></p-inputmask>
+          <div class="formgrid grid">
+            <div class="field col">
+              <label for="locationNum">Location #</label>
+              <p-inputtext id="locationNum" v-model="selectedlocn.locationNum" placeholder="Location Name" class="w-full"/>
+            </div>
+            <div class="field col">
+              <label for="startTime">Start Time</label>
+              <p-inputmask id="startTime" v-model="selectedlocn.startTime" mask="99:99" class="w-full" autofocus></p-inputmask>
+            </div>
           </div>
           <div class="field">
             <label for="songName">Song</label>
@@ -157,19 +180,22 @@
                :suggestions="filteredLocs" @complete="filterLocs($event)">
             </p-autocomplete>
           </div>
-          <div class="field">
-            <label for="locationProv">Location Province/State</label>
-            <p-autocomplete id="locationProv" v-model="selectedlocn.locationProv" placeholder="State / Prov" class="w-full"
-               :suggestions="filteredProvs" @complete="filterProvs($event)">
-          </div>
-          <div class="field">
-            <label for="locationCountry">Country</label>
-            <p-autocomplete id="locationCountry" v-model="selectedlocn.locationCountry" placeholder="Country" class="w-full"
-               :suggestions="filteredCtrys" @complete="filterCtrys($event)">
+          <div class="formgrid grid">
+            <div class="field col">
+              <label for="locationProv">Location Province/State</label>
+              <p-autocomplete id="locationProv" v-model="selectedlocn.locationProv" placeholder="State / Prov" class="w-full"
+                 :suggestions="filteredProvs" @complete="filterProvs($event)">
+            </div>
+            <div class="field col">
+              <label for="locationCountry">Country</label>
+              <p-autocomplete id="locationCountry" v-model="selectedlocn.locationCountry" placeholder="Country" class="w-full"
+                 :suggestions="filteredCtrys" @complete="filterCtrys($event)">
+            </div>
+  
           </div>
         </template>
         <template #footer>
-          <p-button icon="pi pi-plus"  label="Save"          v-on:click="updateLocation"  class="p-button-sm "></p-button>
+          <p-button icon="pi pi-save"  label="Save"          v-on:click="updateLocation"  class="p-button-sm "></p-button>
           <p-button icon="pi pi-times" label="Delete"        v-on:click="deleteLocation"  class="p-button-sm  p-button-danger"    v-if="!selectedlocn.isnew"></p-button>
           <p-button icon="pi pi-plus"  label="Add Scripture" v-on:click="locationAddScr"  class="p-button-sm  p-button-secondary" v-if="!selectedlocn.isnew"></p-button>
         </template>
@@ -188,34 +214,67 @@
             <label for="locationId">Location</label>
             <p-dropdown v-model="selectedscript.locationId" :options="scOptions" option-label="name" option-value="code" placeholder="Select a Location" class="w-full"></p-dropdown>
           </div>
-          <div class="field">
+          <!-- <div class="field">
             <label for="scriptureNum">Scripture Number (sequence)</label>
-            <p-inputtext id="scriptureNum" v-model="selectedscript.scriptureNum" placeholder="Scripture Number" class="w-full"/>
+            <p-inputtext id="scriptureNum" v-model="selectedscript.scriptureNum" placeholder="Scripture Number" class="w-full" autofocus/>
+          </div> -->
+
+          <div class="formgrid grid">
+              <!-- <div class="field" v-if="false">
+                <label for="book">Book</label>
+                <p-inputtext id="book" v-model="selectedscript.book" placeholder="Book" class="w-full"/>
+                <p-dropdown v-model="selectedscript.book" :options="books" option-label="name" option-value="name" placeholder="Select a book" class="w-full"></p-dropdown>            
+              </div> -->
+              <div class="field col-4">
+                <label for="scriptureNum">Scripture Number (sequence)</label>
+                <p-inputtext id="scriptureNum" v-model="selectedscript.scriptureNum" placeholder="Scripture Number" class="w-full" />
+              </div>
+                  <div class="field col">
+                <label for="booka">Book</label>
+                <p-autocomplete id="booka" v-model="selectedscript.book" placeholder="Book" class="w-full" autofocus
+                   :suggestions="filteredBooks" @complete="filterBooks($event)">
+              </div>
           </div>
-          <div class="field">
-            <label for="book">Book</label>
-            <!-- <p-inputtext id="book" v-model="selectedscript.book" placeholder="Book" class="w-full"/> -->
-            <p-dropdown v-model="selectedscript.book" :options="books" option-label="name" option-value="name" placeholder="Select a book" class="w-full"></p-dropdown>            
+
+          <div class="formgrid grid">
+            <div class="field col">
+              <label for="chapter">Chapter</label>
+              <p-inputtext id="chapter" v-model="selectedscript.chapter" placeholder="Chapter" class="w-full"/>
+            </div>
+              <div class="field col" >
+              <label for="verse">Verse</label>
+              <p-inputtext id="verse" v-model="selectedscript.verse" placeholder="Verse" class="w-full"/>
+            </div>
+              <div class="field col" >
+              <label for="translation">Translation</label>
+              <p-dropdown v-model="selectedscript.translation" :options="versions" option-label="code" option-value="code" placeholder="Translation" class="w-full" :editable="true" ></p-dropdown>
+            </div>
           </div>
-          <div class="field">
-            <label for="chapter">Chapter</label>
-            <p-inputtext id="chapter" v-model="selectedscript.chapter" placeholder="Chapter" class="w-full"/>
-          </div>
-          <div class="field">
-            <label for="verse">Verse</label>
-            <p-inputtext id="verse" v-model="selectedscript.verse" placeholder="Verse" class="w-full"/>
-          </div>
-          <div class="field">
+
+          <!-- <div class="field">
             <label for="translation">Translation</label>
             <p-inputtext id="translation" v-model="selectedscript.translation" placeholder="Translation" class="w-full"/>
-          </div>
+            <p-dropdown v-model="selectedscript.translation" :options="versions" option-label="code" option-value="code" placeholder="Translation" class="w-full" :editable="true" ></p-dropdown>
+          </div> -->
           <div class="field">
-            <label for="text">Text</label>
-            <p-inputtext id="text" v-model="selectedscript.text" placeholder="Text" class="w-full"/>
+            <label for="texta">Text</label>
+            <div class="p-inputgroup">
+              <p-button icon="pi pi-search" v-on:click="lookupScripture" ></p-button>
+              <p-textarea id="texta" v-model="selectedscript.text" :auto-resize="true" rows="2" cols="30" class="w-full"></p-textarea>
+              <p-button icon="pi pi-times" class="p-button-secondary" v-on:click="selectedscript.text=''" ></p-button>
+            </div>            
           </div>
+          <!-- <div class="field">
+            <label for="text">Text</label>
+            <div class="p-inputgroup">
+                <p-button icon="pi pi-search" v-on:click="lookupScripture" ></p-button>
+                <p-inputtext id="text" v-model="selectedscript.text" placeholder="Text" class="w-full"></p-inputtext>
+                <p-button icon="pi pi-times" class="p-button-secondary" v-on:click="selectedscript.text=''" ></p-button>
+            </div>            
+          </div> -->
         </template>
         <template #footer>
-          <p-button icon="pi pi-plus"  label="Save"   v-on:click="updateScripture"  class="p-button-sm "></p-button>
+          <p-button icon="pi pi-save"  label="Save"   v-on:click="updateScripture"  class="p-button-sm "></p-button>
           <p-button icon="pi pi-times" label="Delete" v-on:click="deleteScripture"  class="p-button-sm  p-button-danger" v-if="!selectedscript.isnew"></p-button>
         </template>
 
@@ -348,6 +407,8 @@
   <script src="js/primevue/button.umd.min.js"></script>
   <script src="js/primevue/panel.umd.min.js"></script>
   <script src="js/primevue/autocomplete.umd.js"></script>
+  <script src="js/primevue/textarea.umd.min.js"></script>
+  <script src="js/primevue/checkbox.umd.min.js"></script>
 
   <script src="js/app/episodes-table.js"></script>
   <script src="js/app/locations-table.js"></script>

@@ -13,6 +13,8 @@ var app = new Vue({
         'p-selectbutton' : selectbutton ,
         'p-dropdown'     : dropdown     ,
         'p-autocomplete' : autocomplete ,
+        'p-textarea'     : textarea     ,
+        'p-checkbox'     : checkbox     ,
     },
     data: {
         message     : 'Hello Vue!',
@@ -47,14 +49,28 @@ var app = new Vue({
         scrdlg         : null,
         scOptions      : [{ name : '1', code: 1}],
 
-        books : null,
+        books    : null,
+        versions : null,
         filteredSongs : [],
         filteredLocs  : [],
         filteredProvs : [],
         filteredCtrys : [],
+        filteredBooks : [],
  
     },
     methods: {
+        goHome: function() {
+            window.location.href = location.protocol + "//" + location.hostname + "/";
+        },
+        // for version dropdown -- not used yet
+        filterBooks: function(event) {
+            console.log(event.query)
+            this.filteredBooks = this.books.map(b => b.name).filter(b => b.toUpperCase().startsWith(event.query.toUpperCase()));
+        },
+        // for version dropdown -- not used yet
+        filterVersions: function(event) {
+            this.filteredSongs = this.genUniqSorted(this.locations, 'song', event.query);
+        },
         // for song dropdown
         filterSongs: function(event) {
             this.filteredSongs = this.genUniqSorted(this.locations, 'song', event.query);
@@ -79,25 +95,25 @@ var app = new Vue({
             return ui.filter(i => i.toUpperCase().startsWith(qry.toUpperCase()));
         },
         // save as new
-        saveDoc: function() {
-            delete this.selectedEp._id
-            this.loading = true;
-            this.$http.post('/reflectionsdata',this.selectedEp).then(function(resp) {
-                this.ref = resp.body;
-                this.loading = false;
-                this.refTable = this.genTable(this.ref);
-                this.dlgEpisode = false;
-           });
-        },
-        updateDoc: function() {
-            this.loading = true;
-            this.$http.put('/reflectionsdata',this.selectedEp).then(function(resp) {
-                this.ref = resp.body;
-                this.loading = false;
-                this.refTable = this.genTable(this.ref);
-                this.dlgEpisode = false;
-           });
-        },
+        //saveDoc: function() {
+        //    delete this.selectedEp._id
+        //    this.loading = true;
+        //    this.$http.post('/reflectionsdata',this.selectedEp).then(function(resp) {
+        //        this.ref = resp.body;
+        //        this.loading = false;
+        //        this.refTable = this.genTable(this.ref);
+        //        this.dlgEpisode = false;
+        //   });
+        //},
+        // updateDoc: function() {
+        //     this.loading = true;
+        //     this.$http.put('/reflectionsdata',this.selectedEp).then(function(resp) {
+        //         this.ref = resp.body;
+        //         this.loading = false;
+        //         this.refTable = this.genTable(this.ref);
+        //         this.dlgEpisode = false;
+        //    });
+        // },
         addLocation: function() {
             if(this.selectedEp.locations?.length) {
                 //this.selectedEp.locations = [];
@@ -136,20 +152,22 @@ var app = new Vue({
         getData: function() {
             this.loading = true;
             Promise.all([
-                this.$http.get('/reflectionsdata'),
+                //this.$http.get('/reflectionsdata'),
                 this.$http.get('/api/ref/episode'),
                 this.$http.get('/api/ref/location'),
                 this.$http.get('/api/ref/scripture'),
                 this.$http.get('/api/ref/books'),
+                this.$http.get('/api/ref/versions'),
             ]).then(resp => {
                 this.ref = resp[0].body;
                 this.refTable = this.genTable(this.ref);
 
                 this.loading = false;
-                this.episodes   = resp[1].body;
-                this.locations  = resp[2].body;
-                this.scriptures = resp[3].body;
-                this.books      = resp[4].body;
+                this.episodes   = resp[0].body;
+                this.locations  = resp[1].body;
+                this.scriptures = resp[2].body;
+                this.books      = resp[3].body;
+                this.versions   = resp[4].body;
                 this.genEpOpts();
                 this.genScOpts();
             });
@@ -310,6 +328,7 @@ var app = new Vue({
         },
         doneSaving: function() {
             this.locdlg = false;
+            this.scrdlg = false;
             this.getData();
         },
         deleteLocation: function() {
@@ -346,6 +365,19 @@ var app = new Vue({
             }
             //this.selectedscript = {isnew : true};
         },
+        lookupScripture: function() {
+            var s = this.selectedscript;
+            var verse = `${s.book} ${s.chapter}.${s.verse}`;
+            var tr = s.translation;
+            console.log({verse : verse, tr : tr});
+            this.loading = true;
+            this.$http.post('/api/ref/scriptureLookup',{verse : verse, tr : tr}).then(function(resp) {
+                Vue.set(this.selectedscript, 'text', resp.body.text);
+                //this.selectedscript.text = resp.body.text;
+                console.log(resp.body);
+                this.loading = false;
+            });
+        },
         updateScripture: function() {
             if(this.selectedscript?.isnew==true)
                 this.saveNewScripture();
@@ -371,6 +403,8 @@ var app = new Vue({
             this.$http.delete(`/api/ref/scripture/${this.selectedscript.id}`).then(function(resp) {
                 console.log(resp.body);
                 this.loading = false;
+                this.scrdlg = false;
+                this.getData();
            });
         },
         exportCSV() {
@@ -391,8 +425,22 @@ var app = new Vue({
     computed: {
         filtLocations  :  function() { return this.selectedepi ? this.locations.filter(l => l.episodeId == this.selectedepi.id) : this.locations },
         filtLocName    :  function() { return "Locations" + (this.selectedepi ? ` (in episode ${this.selectedepi.episodeTag})` : "") },
-        filtScriptures :  function() { return this.selectedlocn ? this.scriptures.filter(l => l.locationId == this.selectedlocn.id) : this.scriptures },
-        filtScrName    :  function() { return "Scriptures" + (this.selectedlocn ? ` (for ${this.selectedlocn.locationDesc} /  ${this.selectedlocn.locationTag} )` : "") },
+        filtScriptures :  function() { 
+            if (this.selectedlocn)
+                return this.scriptures.filter(l => l.locationId == this.selectedlocn.id);
+            else if(this.selectedepi)
+                return this.scriptures.filter(l => l.episodeId == this.selectedepi.id) ;
+            else
+                return this.scriptures
+        },
+        filtScrName    :  function() { //return "Scriptures" + (this.selectedlocn ? ` (for ${this.selectedlocn.locationDesc} /  ${this.selectedlocn.locationTag} )` : "") 
+                                var rv = "Scriptures";
+                                if(this.selectedlocn)
+                                    rv = "Scriptures" + ` (for ${this.selectedlocn.locationDesc} /  ${this.selectedlocn.locationTag})`
+                                else if (this.selectedepi)
+                                    rv = "Scriptures" + ` (for ${this.selectedepi.episodeTag})`
+                                return rv;
+                            },
     },
     
     mounted: function() {
