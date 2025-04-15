@@ -37,7 +37,7 @@ var db
 //const MongoClient = require('mongodb').MongoClient;
 //const ObjectId    = require('mongodb').ObjectId;
 //var mysql = require('mysql');
-import mysql from 'mysql'
+import mysql from 'mysql2'
 
 //MongoClient.connect('mongodb://fizzypi.lan:27017/test', (err, database) => {
 //  if (err) return console.log(err)
@@ -84,7 +84,8 @@ app.listen(3300, () => {
 // - https://github.com/sidorares/node-mysql2/issues/836#issuecomment-414281593            (answer)
 // -------------------------------------------------------------------------------------------------------
 const pool = mysql.createPool({
-  host    : 'fizzypi.lan',
+  //host    : 'fizzypi.lan',
+  host    : 'fiz.lan',
   user    : 'monty',
   database: 'reflections',
   password: 'some_pass'
@@ -98,9 +99,13 @@ const pool = mysql.createPool({
 //------------------------------------------------------------------------------------------
 // load
 app.get('/api/ref/episode/:id?', (req, res) => {
-  var qry = "SELECT * FROM v_episodes ORDER BY episodeTag;";
+  var qry = `SELECT 
+             id, seasonNum, episodeNum, episodeNumAlt, (COALESCE(doneScriptures, 0) = 1) as doneScriptures, locationCount, numLocsWithScrs, numLocsWithoutScrs, episodeTag, notes
+             FROM v_episodes ` 
   if(req.params.id)
-      qry = `SELECT * FROM v_episodes WHERE id=${req.params.id}`
+      qry += ` WHERE id=${req.params.id};`
+  else
+      qry += ` ORDER BY episodeTag;`
 
   pool.query(qry, function(err, result) {
     if (err) throw err;
