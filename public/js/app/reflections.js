@@ -356,25 +356,51 @@ var app = new Vue({
         //--------------------------------------------------------------------------------------
         // Scripture crud stuff
         //--------------------------------------------------------------------------------------
-        freeFormInput: function() {
-            //--------------------------------------------------------------------------------------
-            // Parse free-form text into :   [book chapter:verse translation]
-            //--------------------------------------------------------------------------------------
-            const regex      = /((?:\d\s+)?[a-zA-Z]+)\s+(\d+):(\d+\-\d+|\d+)\s+([a-zA-Z]+)/gm;
+
+
+        //--------------------------------------------------------------------------------------
+        // Parse free-form text into :   [book chapter:verse translation]
+        //--------------------------------------------------------------------------------------
+            freeFormInput: function() {
+            var rBook = "";
+            var rChap = "";
+            var rVers = "";
+            var rTran = "";
+
+            const regex      = /((?:\d\s+)?[a-zA-Z]+)\s+(\d+):(\d+\-\d+|\d+)\s+([a-zA-Z]\w+)/gm;
+            const regex1     = /((?:\d\s+)?[a-zA-Z]+).*/gm;
+            const regex2     = /((?:\d\s+)?[a-zA-Z]+)\s+(\d+).*/gm;
+            const regex3     = /((?:\d\s+)?[a-zA-Z]+)\s+(\d+):(\d+\-\d+|\d+).*/gm;
+
             const string     = (' ' + this.selectedscript.freeForm).slice(1);  // copy string without reference
+
             var   matches    = regex.exec(string);
+            var   matches1   = regex1.exec(string);
+            var   matches2   = regex2.exec(string);
+            var   matches3   = regex3.exec(string);
+            
             var   msgResult  = "*** invalid entry - should be [book chapter:verse translation]  ***";
 
-            // to do - update regex to include numeric in translation! e.g. nasb1995
-
             if (matches) {
-                const rBook = matches[1];
-                const rChap = matches[2];
-                const rVers = matches[3];
-                const rTran = matches[4];
-
+                rBook = matches[1];
+                rChap = matches[2];
+                rVers = matches[3];
+                rTran = matches[4];
+                msgResult = `Parms : [${rBook}|${rChap}|${rVers}|${rTran}]`;
+            } else if (matches3) {
+                rBook = matches1[1];
+                rChap = matches2[2];
+                rVers = matches3[3];
+                msgResult = `Parms : [${rBook}|${rChap}|${rVers}|${rTran}]`;
+            } else if (matches2) {
+                rBook = matches1[1];
+                rChap = matches2[2];
+                msgResult = `Parms : [${rBook}|${rChap}|${rVers}|${rTran}]`;
+            } else if (matches1) {
+                rBook = matches1[1];
                 msgResult = `Parms : [${rBook}|${rChap}|${rVers}|${rTran}]`;
             }
+
             this.selectedscript.freeformResult = msgResult;
         },
         newScripture: function() {
