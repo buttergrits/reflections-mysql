@@ -356,6 +356,27 @@ var app = new Vue({
         //--------------------------------------------------------------------------------------
         // Scripture crud stuff
         //--------------------------------------------------------------------------------------
+        freeFormInput: function() {
+            //--------------------------------------------------------------------------------------
+            // Parse free-form text into :   [book chapter:verse translation]
+            //--------------------------------------------------------------------------------------
+            const regex      = /((?:\d\s+)?[a-zA-Z]+)\s+(\d+):(\d+\-\d+|\d+)\s+([a-zA-Z]+)/gm;
+            const string     = (' ' + this.selectedscript.freeForm).slice(1);  // copy string without reference
+            var   matches    = regex.exec(string);
+            var   msgResult  = "*** invalid entry - should be [book chapter:verse translation]  ***";
+
+            // to do - update regex to include numeric in translation! e.g. nasb1995
+
+            if (matches) {
+                const rBook = matches[1];
+                const rChap = matches[2];
+                const rVers = matches[3];
+                const rTran = matches[4];
+
+                msgResult = `Parms : [${rBook}|${rChap}|${rVers}|${rTran}]`;
+            }
+            this.selectedscript.freeformResult = msgResult;
+        },
         newScripture: function() {
             this.scrdlg = true;
             if(!!this.selectedlocn) {

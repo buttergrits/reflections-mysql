@@ -214,22 +214,24 @@
             <label for="locationId">Location</label>
             <p-dropdown v-model="selectedscript.locationId" :options="scOptions" option-label="name" option-value="code" placeholder="Select a Location" class="w-full"></p-dropdown>
           </div>
-          <!-- <div class="field">
-            <label for="scriptureNum">Scripture Number (sequence)</label>
-            <p-inputtext id="scriptureNum" v-model="selectedscript.scriptureNum" placeholder="Scripture Number" class="w-full" autofocus/>
-          </div> -->
+
+          <div v-if="selectedscript.isnew">
+            <div class="field">
+              <label for="scriptureFreeform">Scripture Reference - Free Form Input</label>
+              <p-inputtext id="scriptureFreeform" v-model="selectedscript.freeForm" placeholder="Scripture Reference" class="w-full" v-on:input="freeFormInput" />
+            </div>
+            <div class="field">
+              <!-- <label for="scriptureFreeformResult">Scripture Reference - Free Form Input (experimental)</label> -->
+              <p-inputtext id="scriptureFreeformResult" v-model="selectedscript.freeformResult" placeholder="Result" class="w-full" />
+            </div>
+          </div>
 
           <div class="formgrid grid">
-              <!-- <div class="field" v-if="false">
-                <label for="book">Book</label>
-                <p-inputtext id="book" v-model="selectedscript.book" placeholder="Book" class="w-full"/>
-                <p-dropdown v-model="selectedscript.book" :options="books" option-label="name" option-value="name" placeholder="Select a book" class="w-full"></p-dropdown>            
-              </div> -->
               <div class="field col-4">
                 <label for="scriptureNum">Scripture Number (sequence)</label>
                 <p-inputtext id="scriptureNum" v-model="selectedscript.scriptureNum" placeholder="Scripture Number" class="w-full" />
               </div>
-                  <div class="field col">
+              <div class="field col">
                 <label for="booka">Book</label>
                 <p-autocomplete id="booka" v-model="selectedscript.book" placeholder="Book" class="w-full" autofocus
                    :suggestions="filteredBooks" @complete="filterBooks($event)">
@@ -251,11 +253,6 @@
             </div>
           </div>
 
-          <!-- <div class="field">
-            <label for="translation">Translation</label>
-            <p-inputtext id="translation" v-model="selectedscript.translation" placeholder="Translation" class="w-full"/>
-            <p-dropdown v-model="selectedscript.translation" :options="versions" option-label="code" option-value="code" placeholder="Translation" class="w-full" :editable="true" ></p-dropdown>
-          </div> -->
           <div class="field">
             <label for="texta">Text</label>
             <div class="p-inputgroup">
@@ -264,14 +261,7 @@
               <p-button icon="pi pi-times" class="p-button-secondary" v-on:click="selectedscript.text=''" ></p-button>
             </div>            
           </div>
-          <!-- <div class="field">
-            <label for="text">Text</label>
-            <div class="p-inputgroup">
-                <p-button icon="pi pi-search" v-on:click="lookupScripture" ></p-button>
-                <p-inputtext id="text" v-model="selectedscript.text" placeholder="Text" class="w-full"></p-inputtext>
-                <p-button icon="pi pi-times" class="p-button-secondary" v-on:click="selectedscript.text=''" ></p-button>
-            </div>            
-          </div> -->
+
         </template>
         <template #footer>
           <p-button icon="pi pi-save"  label="Save"   v-on:click="updateScripture"  class="p-button-sm "></p-button>
