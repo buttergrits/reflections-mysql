@@ -406,7 +406,7 @@ var app = new Vue({
             if(matches1) {
                 let ucBook        = rBook.toUpperCase();
                 let matchingBooks = ucBook ? this.books.filter((b) => b.name.toUpperCase().startsWith(ucBook)) : [];
-                console.log(matchingBooks.map((m) => m.name));
+                //console.log(matchingBooks.map((m) => m.name));
                 this.selectedscript.book = (matchingBooks.length === 1) ? matchingBooks[0].name : "";
                 if(this.selectedscript.book)
                     msgResult = `Parms : [${this.selectedscript.book}|${rChap}|${rVers}|${rTran}]`;
@@ -416,8 +416,17 @@ var app = new Vue({
             if(matches) {
                 let ucTran = rTran.toUpperCase();
                 let matchingTrans = ucTran ? this.versions.filter((v) => v.code.toUpperCase().startsWith(ucTran)) : [];
+                let identicalTrans = matchingTrans.filter((t) => t.code.toUpperCase() == ucTran);
                 console.log(matchingTrans.map((m) => m.code));
-                this.selectedscript.translation = (matchingTrans.length === 1) ? matchingTrans[0].code : "";
+
+                if(matchingTrans.length==1) {
+                    this.selectedscript.translation = matchingTrans[0].code;
+                } else if(identicalTrans.length==1) {
+                    this.selectedscript.translation = identicalTrans[0].code;
+                } else {
+                    this.selectedscript.translation = "";
+                }
+                
                 if(this.selectedscript.translation) {
                     msgResult = `Parms : [${this.selectedscript.book}|${rChap}|${rVers}|${this.selectedscript.translation}]`;
                 }
@@ -425,16 +434,14 @@ var app = new Vue({
 
             // re-set parms
             this.parseDone = (this.selectedscript.translation) ? true : false;
-            rBook = this.selectedscript.book ? this.selectedscript.book : "";
-            rChap = matches2 ? rChap : "";
-            rVers = matches3 ? rVers : "";
-            rTran = this.selectedscript.translation ? this.selectedscript.translation : "";
-            rColon = string.includes(":") ? ":" : "";
-            msgResult = `${rBook} ${rChap}${rColon}${rVers} ${rTran}`;
+            rBook          = this.selectedscript.book ? this.selectedscript.book : "";
+            rChap          = matches2 ? rChap : "";
+            rVers          = matches3 ? rVers : "";
+            rTran          = this.selectedscript.translation ? this.selectedscript.translation : "";
+            rColon         = string.includes(":") ? ":" : "";
+            msgResult      = `${rBook} ${rChap}${rColon}${rVers} ${rTran}`;
 
             // todo: fix this function to only run when field is active (otherwise can't change individual fiels)
-            // todo: match the translation when exact match (i.e. nasb vs nasb1995)
-
 
             this.selectedscript.freeformResult = msgResult;
         },
