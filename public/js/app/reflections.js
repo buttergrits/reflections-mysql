@@ -28,6 +28,7 @@ var app = new Vue({
         selectedEp  : null,
         selectedLoc : null,
         selectedScr : null,
+        parseDone   : null,
 
         // sql items
         objs        : ["Episodes", "Locations", "Scriptures"] ,
@@ -361,7 +362,7 @@ var app = new Vue({
         //--------------------------------------------------------------------------------------
         // Parse free-form text into :   [book chapter:verse translation]
         //--------------------------------------------------------------------------------------
-            freeFormInput: function() {
+        freeFormInput: function() {
             var rBook = "";
             var rChap = "";
             var rVers = "";
@@ -423,6 +424,7 @@ var app = new Vue({
             }
 
             // re-set parms
+            this.parseDone = (this.selectedscript.translation) ? true : false;
             rBook = this.selectedscript.book ? this.selectedscript.book : "";
             rChap = matches2 ? rChap : "";
             rVers = matches3 ? rVers : "";
@@ -430,7 +432,8 @@ var app = new Vue({
             rColon = string.includes(":") ? ":" : "";
             msgResult = `${rBook} ${rChap}${rColon}${rVers} ${rTran}`;
 
-            // todo: adjust styling on result field to bold, and make color red until translation is entered, then make it green
+            // todo: fix this function to only run when field is active (otherwise can't change individual fiels)
+            // todo: match the translation when exact match (i.e. nasb vs nasb1995)
 
 
             this.selectedscript.freeformResult = msgResult;

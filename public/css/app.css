@@ -2,3 +2,13 @@
 .p-autocomplete.w-full input {
     min-width: 100%; 
 }
+
+.parse-incomplete  {
+    color: red;
+    font-weight: bold;
+}
+
+.parse-done  {
+    color: green;
+    font-weight: bold;
+}

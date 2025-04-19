@@ -222,7 +222,8 @@
             </div>
             <div class="field">
               <!-- <label for="scriptureFreeformResult">Scripture Reference - Free Form Input (experimental)</label> -->
-              <p-inputtext id="scriptureFreeformResult" v-model="selectedscript.freeformResult" placeholder="Result" class="w-full" />
+              <p-inputtext id="scripture-freeform-result" v-model="selectedscript.freeformResult" placeholder="Result" 
+                  class="w-full" v-bind:class='{ "parse-incomplete" : !parseDone, "parse-done" : parseDone }'></p-inputtext>
             </div>
           </div>
 
