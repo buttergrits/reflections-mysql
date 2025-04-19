@@ -401,6 +401,38 @@ var app = new Vue({
                 msgResult = `Parms : [${rBook}|${rChap}|${rVers}|${rTran}]`;
             }
 
+            // autofill chapter
+            if(matches1) {
+                let ucBook        = rBook.toUpperCase();
+                let matchingBooks = ucBook ? this.books.filter((b) => b.name.toUpperCase().startsWith(ucBook)) : [];
+                console.log(matchingBooks.map((m) => m.name));
+                this.selectedscript.book = (matchingBooks.length === 1) ? matchingBooks[0].name : "";
+                if(this.selectedscript.book)
+                    msgResult = `Parms : [${this.selectedscript.book}|${rChap}|${rVers}|${rTran}]`;
+            }
+
+            // autofill translation
+            if(matches) {
+                let ucTran = rTran.toUpperCase();
+                let matchingTrans = ucTran ? this.versions.filter((v) => v.code.toUpperCase().startsWith(ucTran)) : [];
+                console.log(matchingTrans.map((m) => m.code));
+                this.selectedscript.translation = (matchingTrans.length === 1) ? matchingTrans[0].code : "";
+                if(this.selectedscript.translation) {
+                    msgResult = `Parms : [${this.selectedscript.book}|${rChap}|${rVers}|${this.selectedscript.translation}]`;
+                }
+            }
+
+            // re-set parms
+            rBook = this.selectedscript.book ? this.selectedscript.book : "";
+            rChap = matches2 ? rChap : "";
+            rVers = matches3 ? rVers : "";
+            rTran = this.selectedscript.translation ? this.selectedscript.translation : "";
+            rColon = string.includes(":") ? ":" : "";
+            msgResult = `${rBook} ${rChap}${rColon}${rVers} ${rTran}`;
+
+            // todo: adjust styling on result field to bold, and make color red until translation is entered, then make it green
+
+
             this.selectedscript.freeformResult = msgResult;
         },
         newScripture: function() {
