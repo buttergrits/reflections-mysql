@@ -219,7 +219,7 @@
             <div class="field">
               <label for="scriptureFreeform">Scripture Reference - Free Form Input</label>
               <p-inputtext id="scriptureFreeform" v-model="selectedscript.freeForm" 
-                    placeholder="Scripture reference - format [book chapter:verse translation]" class="w-full" v-on:input="freeFormInput" />
+                    placeholder="Scripture reference - format [book chapter:verse translation].  Hit enter to get scripture text" class="w-full" v-on:input="freeFormInput" v-on:keyup="freeFormKeyup" />
             </div>
             <div class="field">
               <p-inputtext id="scripture-freeform-result" v-model="selectedscript.freeformResult" placeholder="Parsing Result" 

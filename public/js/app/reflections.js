@@ -423,7 +423,12 @@ var app = new Vue({
             this.selectedscript.freeformResult  = `${ps.pBook} ${ps.pChap}${rColon}${ps.pVers} ${ps.pTran}`;
 
             // to do: do scripture lookup when 'enter' pressed
-            
+
+        },
+        freeFormKeyup: function(e) {
+            if (e.key === 'Enter' || e.keyCode === 13) {
+                if(this.parseDone) this.lookupScripture()
+            }
         },
 
         newScripture: function() {
