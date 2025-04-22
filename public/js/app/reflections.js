@@ -363,12 +363,11 @@ var app = new Vue({
         //--------------------------------------------------------------------------------------
         parseScriptureText: function(txt) {
             rc = { 
+                rBook   : "",  pBook   : "",
+                rChap   : "",  pChap   : "",
+                rVers   : "",  pVers   : "",
+                rTran   : "",  pTran   : "",
                 rText   : txt,
-                rBook   : "",
-                rChap   : "",
-                rVers   : "",
-                rTran   : "",
-                msg     : "",
                 matches : 0
             };
 
@@ -387,65 +386,44 @@ var app = new Vue({
             if(m3) { rc.rVers = m3[3]; rc.matches = 3; };
             if(m4) { rc.rTran = m4[4]; rc.matches = 4; };
 
-            rc.msg  = `Parms : [${rc.rBook}|${rc.rChap}|${rc.rVers}|${rc.rTran}]`;
-
-            if(rc.matches == 0) rc.msg  = "*** invalid entry - should be [book chapter:verse translation]  ***";
+            // book
+            if(rc.rBook) {
+                let matchingBooks = this.books.filter((b) => b.name.toUpperCase().startsWith(rc.rBook.toUpperCase() ));
+                if(matchingBooks?.length === 1) { rc.pBook = matchingBooks[0].name; }
+            }
+            // chapter
+            if(rc.rChap) { rc.pChap = rc.rChap; }
+            // verse
+            if(rc.rVers) { rc.pVers = rc.rVers; }
+            // translation / version
+            if(rc.rTran) {
+                let matchingTrans  = this.versions.filter((b) => b.code.toUpperCase().startsWith(rc.rTran.toUpperCase() ));
+                let identicalTrans = matchingTrans.filter((t) => t.code.toUpperCase()         == rc.rTran.toUpperCase() );
+                if     ( matchingTrans?.length === 1) { rc.pTran = matchingTrans[0].code; } 
+                else if(identicalTrans?.length === 1) { rc.pTran = identicalTrans[0].code; }
+            }
 
             return rc;
         },
-
         //--------------------------------------------------------------------------------------
         // Parse free-form text into :   [book chapter:verse translation]
         //--------------------------------------------------------------------------------------
         freeFormInput: function(e) {
 
             let ps = this.parseScriptureText( (' ' + this.selectedscript.freeForm).slice(1) );
-            msgResult = ps.msg;
 
-            // autofill chapter
-            if(ps.matches > 0) {
-                let ucBook               = ps.rBook.toUpperCase();
-                let matchingBooks        = ucBook ? this.books.filter((b) => b.name.toUpperCase().startsWith(ucBook)) : [];
-                this.selectedscript.book = (matchingBooks.length === 1) ? matchingBooks[0].name : "";
-                if(this.selectedscript.book)
-                    msgResult = `Parms : [${this.selectedscript.book}|${ps.rChap}|${ps.rVers}|${ps.rTran}]`;
-            }
-
-            if(ps.matches > 1) { this.selectedscript.chapter = ps.rChap; }
-            if(ps.matches > 2) { this.selectedscript.verse   = ps.rVers; }
-
-            // autofill translation
-             if(ps.matches == 4) {
-                 let ucTran = ps.rTran.toUpperCase();
-                 let matchingTrans = ucTran ? this.versions.filter((v) => v.code.toUpperCase().startsWith(ucTran)) : [];
-                 let identicalTrans = matchingTrans.filter((t) => t.code.toUpperCase() == ucTran);
-                 //console.log(matchingTrans.map((m) => m.code));
-
-                 if(matchingTrans.length==1) {
-                     this.selectedscript.translation = matchingTrans[0].code;
-                 } else if(identicalTrans.length==1) {
-                     this.selectedscript.translation = identicalTrans[0].code;
-                 } else {
-                     this.selectedscript.translation = "";
-                 }
-                 
-                 if(this.selectedscript.translation) {
-                     msgResult = `Parms : [${this.selectedscript.book}|${ps.rChap}|${ps.rVers}|${this.selectedscript.translation}]`;
-                 }
-             }
+            if(ps.pBook) { this.selectedscript.book        = ps.pBook; }
+            if(ps.pChap) { this.selectedscript.chapter     = ps.pChap; }
+            if(ps.pVers) { this.selectedscript.verse       = ps.pVers; }
+            if(ps.pTran) { this.selectedscript.translation = ps.pTran; }
 
             // re-set parms
-            this.parseDone = (this.selectedscript.translation) ? true : false;
-            ps.rBook       = this.selectedscript.book ? this.selectedscript.book : "";
-            ps.rChap       = ps.matches > 1 ? ps.rChap : "";
-            ps.rVers       = ps.matches > 2 ? ps.rVers : "";
-            ps.rTran       = this.selectedscript.translation ? this.selectedscript.translation : "";
-            let rColon     = ps.rText.includes(":") ? ":" : "";
-            msgResult      = `${ps.rBook} ${ps.rChap}${rColon}${ps.rVers} ${ps.rTran}`;
+            this.parseDone                      = (ps.pTran) ? true : false;
+            let rColon                          = ps.rText.includes(":") ? ":" : "";
+            this.selectedscript.freeformResult  = `${ps.pBook} ${ps.pChap}${rColon}${ps.pVers} ${ps.pTran}`;
 
-            // todo: fix this function to only run when field is active (otherwise can't change individual fiels)
-
-            this.selectedscript.freeformResult = msgResult;
+            // to do: do scripture lookup when 'enter' pressed
+            
         },
 
         newScripture: function() {
@@ -455,7 +433,6 @@ var app = new Vue({
             } else {
                 this.selectedscript = {isnew : true};
             }
-            //this.selectedscript = {isnew : true};
         },
         lookupScripture: function() {
             var s = this.selectedscript;

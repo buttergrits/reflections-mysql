@@ -218,11 +218,11 @@
           <div v-if="selectedscript.isnew">
             <div class="field">
               <label for="scriptureFreeform">Scripture Reference - Free Form Input</label>
-              <p-inputtext id="scriptureFreeform" v-model="selectedscript.freeForm" placeholder="Scripture Reference" class="w-full" v-on:input="freeFormInput" />
+              <p-inputtext id="scriptureFreeform" v-model="selectedscript.freeForm" 
+                    placeholder="Scripture reference - format [book chapter:verse translation]" class="w-full" v-on:input="freeFormInput" />
             </div>
             <div class="field">
-              <!-- <label for="scriptureFreeformResult">Scripture Reference - Free Form Input (experimental)</label> -->
-              <p-inputtext id="scripture-freeform-result" v-model="selectedscript.freeformResult" placeholder="Result" 
+              <p-inputtext id="scripture-freeform-result" v-model="selectedscript.freeformResult" placeholder="Parsing Result" 
                   class="w-full" v-bind:class='{ "parse-incomplete" : !parseDone, "parse-done" : parseDone }'></p-inputtext>
             </div>
           </div>
