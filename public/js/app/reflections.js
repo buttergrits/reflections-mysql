@@ -358,93 +358,96 @@ var app = new Vue({
         // Scripture crud stuff
         //--------------------------------------------------------------------------------------
 
+        //--------------------------------------------------------------------------------------
+        // Parse Scripture Text
+        //--------------------------------------------------------------------------------------
+        parseScriptureText: function(txt) {
+            rc = { 
+                rText   : txt,
+                rBook   : "",
+                rChap   : "",
+                rVers   : "",
+                rTran   : "",
+                msg     : "",
+                matches : 0
+            };
+
+            const regex1     = /((?:\d\s+)?[a-zA-Z]+).*/gm;
+            const regex2     = /((?:\d\s+)?[a-zA-Z]+)\s+(\d+).*/gm;
+            const regex3     = /((?:\d\s+)?[a-zA-Z]+)\s+(\d+):(\d+\-\d+|\d+).*/gm;
+            const regex4     = /((?:\d\s+)?[a-zA-Z]+)\s+(\d+):(\d+\-\d+|\d+)\s+([a-zA-Z]\w+)/gm;
+
+            let m1 = regex1.exec(txt);
+            let m2 = regex2.exec(txt);
+            let m3 = regex3.exec(txt);
+            let m4 = regex4.exec(txt);
+
+            if(m1) { rc.rBook = m1[1]; rc.matches = 1; };
+            if(m2) { rc.rChap = m2[2]; rc.matches = 2; };
+            if(m3) { rc.rVers = m3[3]; rc.matches = 3; };
+            if(m4) { rc.rTran = m4[4]; rc.matches = 4; };
+
+            rc.msg  = `Parms : [${rc.rBook}|${rc.rChap}|${rc.rVers}|${rc.rTran}]`;
+
+            if(rc.matches == 0) rc.msg  = "*** invalid entry - should be [book chapter:verse translation]  ***";
+
+            return rc;
+        },
 
         //--------------------------------------------------------------------------------------
         // Parse free-form text into :   [book chapter:verse translation]
         //--------------------------------------------------------------------------------------
-        freeFormInput: function() {
-            var rBook = "";
-            var rChap = "";
-            var rVers = "";
-            var rTran = "";
+        freeFormInput: function(e) {
 
-            const regex      = /((?:\d\s+)?[a-zA-Z]+)\s+(\d+):(\d+\-\d+|\d+)\s+([a-zA-Z]\w+)/gm;
-            const regex1     = /((?:\d\s+)?[a-zA-Z]+).*/gm;
-            const regex2     = /((?:\d\s+)?[a-zA-Z]+)\s+(\d+).*/gm;
-            const regex3     = /((?:\d\s+)?[a-zA-Z]+)\s+(\d+):(\d+\-\d+|\d+).*/gm;
-
-            const string     = (' ' + this.selectedscript.freeForm).slice(1);  // copy string without reference
-
-            var   matches    = regex.exec(string);
-            var   matches1   = regex1.exec(string);
-            var   matches2   = regex2.exec(string);
-            var   matches3   = regex3.exec(string);
-            
-            var   msgResult  = "*** invalid entry - should be [book chapter:verse translation]  ***";
-
-            if (matches) {
-                rBook = matches[1];
-                rChap = matches[2];
-                rVers = matches[3];
-                rTran = matches[4];
-                msgResult = `Parms : [${rBook}|${rChap}|${rVers}|${rTran}]`;
-            } else if (matches3) {
-                rBook = matches1[1];
-                rChap = matches2[2];
-                rVers = matches3[3];
-                msgResult = `Parms : [${rBook}|${rChap}|${rVers}|${rTran}]`;
-            } else if (matches2) {
-                rBook = matches1[1];
-                rChap = matches2[2];
-                msgResult = `Parms : [${rBook}|${rChap}|${rVers}|${rTran}]`;
-            } else if (matches1) {
-                rBook = matches1[1];
-                msgResult = `Parms : [${rBook}|${rChap}|${rVers}|${rTran}]`;
-            }
+            let ps = this.parseScriptureText( (' ' + this.selectedscript.freeForm).slice(1) );
+            msgResult = ps.msg;
 
             // autofill chapter
-            if(matches1) {
-                let ucBook        = rBook.toUpperCase();
-                let matchingBooks = ucBook ? this.books.filter((b) => b.name.toUpperCase().startsWith(ucBook)) : [];
-                //console.log(matchingBooks.map((m) => m.name));
+            if(ps.matches > 0) {
+                let ucBook               = ps.rBook.toUpperCase();
+                let matchingBooks        = ucBook ? this.books.filter((b) => b.name.toUpperCase().startsWith(ucBook)) : [];
                 this.selectedscript.book = (matchingBooks.length === 1) ? matchingBooks[0].name : "";
                 if(this.selectedscript.book)
-                    msgResult = `Parms : [${this.selectedscript.book}|${rChap}|${rVers}|${rTran}]`;
+                    msgResult = `Parms : [${this.selectedscript.book}|${ps.rChap}|${ps.rVers}|${ps.rTran}]`;
             }
+
+            if(ps.matches > 1) { this.selectedscript.chapter = ps.rChap; }
+            if(ps.matches > 2) { this.selectedscript.verse   = ps.rVers; }
 
             // autofill translation
-            if(matches) {
-                let ucTran = rTran.toUpperCase();
-                let matchingTrans = ucTran ? this.versions.filter((v) => v.code.toUpperCase().startsWith(ucTran)) : [];
-                let identicalTrans = matchingTrans.filter((t) => t.code.toUpperCase() == ucTran);
-                console.log(matchingTrans.map((m) => m.code));
+             if(ps.matches == 4) {
+                 let ucTran = ps.rTran.toUpperCase();
+                 let matchingTrans = ucTran ? this.versions.filter((v) => v.code.toUpperCase().startsWith(ucTran)) : [];
+                 let identicalTrans = matchingTrans.filter((t) => t.code.toUpperCase() == ucTran);
+                 //console.log(matchingTrans.map((m) => m.code));
 
-                if(matchingTrans.length==1) {
-                    this.selectedscript.translation = matchingTrans[0].code;
-                } else if(identicalTrans.length==1) {
-                    this.selectedscript.translation = identicalTrans[0].code;
-                } else {
-                    this.selectedscript.translation = "";
-                }
-                
-                if(this.selectedscript.translation) {
-                    msgResult = `Parms : [${this.selectedscript.book}|${rChap}|${rVers}|${this.selectedscript.translation}]`;
-                }
-            }
+                 if(matchingTrans.length==1) {
+                     this.selectedscript.translation = matchingTrans[0].code;
+                 } else if(identicalTrans.length==1) {
+                     this.selectedscript.translation = identicalTrans[0].code;
+                 } else {
+                     this.selectedscript.translation = "";
+                 }
+                 
+                 if(this.selectedscript.translation) {
+                     msgResult = `Parms : [${this.selectedscript.book}|${ps.rChap}|${ps.rVers}|${this.selectedscript.translation}]`;
+                 }
+             }
 
             // re-set parms
             this.parseDone = (this.selectedscript.translation) ? true : false;
-            rBook          = this.selectedscript.book ? this.selectedscript.book : "";
-            rChap          = matches2 ? rChap : "";
-            rVers          = matches3 ? rVers : "";
-            rTran          = this.selectedscript.translation ? this.selectedscript.translation : "";
-            rColon         = string.includes(":") ? ":" : "";
-            msgResult      = `${rBook} ${rChap}${rColon}${rVers} ${rTran}`;
+            ps.rBook       = this.selectedscript.book ? this.selectedscript.book : "";
+            ps.rChap       = ps.matches > 1 ? ps.rChap : "";
+            ps.rVers       = ps.matches > 2 ? ps.rVers : "";
+            ps.rTran       = this.selectedscript.translation ? this.selectedscript.translation : "";
+            let rColon     = ps.rText.includes(":") ? ":" : "";
+            msgResult      = `${ps.rBook} ${ps.rChap}${rColon}${ps.rVers} ${ps.rTran}`;
 
             // todo: fix this function to only run when field is active (otherwise can't change individual fiels)
 
             this.selectedscript.freeformResult = msgResult;
         },
+
         newScripture: function() {
             this.scrdlg = true;
             if(!!this.selectedlocn) {
