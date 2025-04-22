@@ -29,6 +29,7 @@ var app = new Vue({
         selectedLoc : null,
         selectedScr : null,
         parseDone   : null,
+        readySave   : null,
 
         // sql items
         objs        : ["Episodes", "Locations", "Scriptures"] ,
@@ -417,13 +418,12 @@ var app = new Vue({
             if(ps.pVers) { this.selectedscript.verse       = ps.pVers; }
             if(ps.pTran) { this.selectedscript.translation = ps.pTran; }
 
-            // re-set parms
-            this.parseDone                      = (ps.pTran) ? true : false;
+            // check if parsing is complete (for color/styling)
+            this.parseDone  = (ps.pTran) ? true : false;
+ 
+            // prep message
             let rColon                          = ps.rText.includes(":") ? ":" : "";
             this.selectedscript.freeformResult  = `${ps.pBook} ${ps.pChap}${rColon}${ps.pVers} ${ps.pTran}`;
-
-            // to do: do scripture lookup when 'enter' pressed
-
         },
         freeFormKeyup: function(e) {
             if (e.key === 'Enter' || e.keyCode === 13) {
@@ -447,6 +447,8 @@ var app = new Vue({
             this.loading = true;
             this.$http.post('/api/ref/scriptureLookup',{verse : verse, tr : tr}).then(function(resp) {
                 Vue.set(this.selectedscript, 'text', resp.body.text);
+                if(resp.body.text.length>2)
+                    this.readySave = true;
                 //this.selectedscript.text = resp.body.text;
                 console.log(resp.body);
                 this.loading = false;

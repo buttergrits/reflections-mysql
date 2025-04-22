@@ -218,8 +218,12 @@
           <div v-if="selectedscript.isnew">
             <div class="field">
               <label for="scriptureFreeform">Scripture Reference - Free Form Input</label>
-              <p-inputtext id="scriptureFreeform" v-model="selectedscript.freeForm" 
-                    placeholder="Scripture reference - format [book chapter:verse translation].  Hit enter to get scripture text" class="w-full" v-on:input="freeFormInput" v-on:keyup="freeFormKeyup" />
+              <div class="p-inputgroup">
+                <p-inputtext id="scriptureFreeform" v-model="selectedscript.freeForm"  class="w-full" v-on:input="freeFormInput" v-on:keyup="freeFormKeyup"
+                    placeholder="Scripture reference - format [book chapter:verse translation].  Hit enter to get scripture text"  >
+                </p-inputtext>
+                <p-button icon="pi pi-save" v-on:click="updateScripture" :disabled="!readySave" ></p-button>
+              </div>
             </div>
             <div class="field">
               <p-inputtext id="scripture-freeform-result" v-model="selectedscript.freeformResult" placeholder="Parsing Result" 
