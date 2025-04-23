@@ -70,39 +70,8 @@
                 @selscr="(e) => {selectedscript=e;scrdlg=true;}" @newscr="newScripture">
             </locations-table>
           </div>
-
-
-
         </div>
 
-        <!-- ------------------------------------------------------------------------------------  -->
-        <!-- Mongo table - disabled for now                                                        -->
-        <!-- ------------------------------------------------------------------------------------  -->
-        <p-datatable :value="refTable || ref" :loading="loading" :filters.sync="filters" removable-sort :auto-layout="true" v-if="false"
-                    ref="dt" :selection.sync="selectedRow" @row-select="rowSelected" selection-mode="single"
-                    data-key="rowId" >
-
-          <template #header>
-            <div >
-                <span class="p-input-icon-left">
-                    <i class="pi pi-search"></i>
-                    <p-inputtext v-model="filters['global']" placeholder="Keyword Search" />
-                </span>
-                <p-button icon="pi pi-external-link"     label="Export"    @click="exportCSV($event)" ></p-button>
-                <p-button icon="pi pi-arrow-circle-down" label="Save JSON" @click="newEpisode($event)"  ></p-button>
-            </div>
-          </template>
-
-          <p-column sortable field="episodeId"     header="Episode"></p-column>
-          <p-column sortable field="location"      header="Location"></p-column>
-          <p-column sortable field="startTime"     header="Start"></p-column>
-          <p-column sortable field="scriptureId"   header="Scripture ID"></p-column>
-          <p-column sortable field="scriptureNum"  header="Scripture #"></p-column>
-          <p-column sortable field="scriptureInfo" header="Verse"></p-column>
-          <p-column sortable field="scriptureText" header="Text"></p-column>
-
-        </p-datatable>
-  
       </p-panel>
     </div>
 
@@ -110,7 +79,7 @@
     <!-- Episode  Dialog                                                                       -->
     <!-- ------------------------------------------------------------------------------------  -->
     <p-dialog id="epdlg" header="Episode" :visible.sync="epdlg" v-if="selectedepi">
-      <p-card >
+      <p-card style="margin-top:1px;">
         <template #content>
           <div class="formgrid grid">
             <div class="field col">
@@ -152,7 +121,7 @@
     <!-- Location  Dialog                                                                      -->
     <!-- ------------------------------------------------------------------------------------  -->
     <p-dialog id="locdlg" header="Location" :visible.sync="locdlg" v-if="selectedlocn">
-      <p-card class="ml-3 mr-3" v-if="selectedlocn">
+      <p-card class="ml-3 mr-3" v-if="selectedlocn" style="margin-top:1px;">
         <template #content>
           <div class="field">
             <label for="episode">Episode</label>
@@ -208,7 +177,7 @@
     <!-- Scripture  Dialog                                                                     -->
     <!-- ------------------------------------------------------------------------------------  -->
     <p-dialog id="scrdlg" header="Scriptures" :visible.sync="scrdlg" v-if="selectedscript">
-      <p-card v-if="selectedscript">
+      <p-card v-if="selectedscript" style="margin-top:1px;">
         <template #content>
           <div class="field">
             <label for="locationId">Location</label>
